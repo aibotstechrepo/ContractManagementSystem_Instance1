@@ -1,0 +1,1405 @@
+﻿@model ContractManagementSystem.Models.tblVendorMaster
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+
+}
+
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Vendor Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Vendor/Repository">Vendor Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        New Vendor
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            @*<div class="card-title"><b>New Vendor</b></div>*@
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title"><b>New Vendor</b></div>
+                                </div>
+
+                                <div class="col-sm-6 text-right">
+                                    <button type="button" @*onclick="window.location = '/Vendor/Repository'"*@ id="discard" class="btn btn-sm btn-light" value="Discard"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Cancel</button>&nbsp;
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @******************************Integrted on 14/3/20***************************@
+                           
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="entity">Type of Entity<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" maxlength="180" onchange="TypeOfEntity(this.value);" id="type_of_entity_vendor" style="padding-bottom:3px;padding-top:3px;">
+                                                <option>Company</option>
+                                                <option>Partnership Firm</option>
+                                                <option>Sole Proprietorship</option>
+                                                <option>Limited Liability Partnership Firm</option>
+                                                <option>Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                            <label id="Vendor_Name">Name of the Company<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" id="vendorname" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Name" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="IDforCompany">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="cin">Corporate Identification Number (CIN)<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="12" id="vendorcin" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" class="form-control" placeholder="Enter Corporate Identification Number (CIN)" >
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="signatory">Authorised Signatory<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="180" id="vendorauthorisedsignatoryname" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Authorised Signatory Name" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="reg address">Registered Address<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="vendorregisteredaddress" placeholder="Enter Registered Address" ></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="reg address">Corporate Address<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="CorporateAddress" placeholder="Enter Corporate Address" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="IDforSole" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                                <label for="name">Name of the Proprietorship<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="NameoftheProprietor" class="form-control" placeholder="Enter Name of the Proprietorship" >
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>PAN number<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="10" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" id="PAN" class="form-control" placeholder="Enter PAN number" >
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Adhaar Card No<span class="asteriskicon"> *</span></label>
+                                                <input type="number" min="1" maxlength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="AdhaarCardNo" class="form-control" placeholder="Enter Adhaar Card No" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="reg address">Address of the Proprietorship Concern<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="ProprietorshipAddress" placeholder="Enter Address of the Proprietorship Concern" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="IDforLimited" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Limited Liability Partnership Identification Number (LLP IN)<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="8" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" id="LLPIN" class="form-control" placeholder="Enter LLP IN" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="reg address">Registered Address of the LLP<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="LLPAddress" placeholder="Enter Address of the LLP" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="IDforOthers" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="reg address">Address<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="OthersAddress" placeholder="Enter Address" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="IDforPartnership" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="signatory">Authorised Signatory<span class="asteriskicon"> *</span></label>
+                                                <input type="text" maxlength="180" id="Partnership_AuthSign" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Authorised Signatory Name" >
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="reg address">Registered Address<span class="asteriskicon"> *</span></label>
+                                                <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="PartnershipAddress" placeholder="Enter Registered Address" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+
+                                <div class="row" id="back_to_branch_button">
+                                    <div class="col-lg-12">
+                                        <div class="form-group" id="branch_address1">
+                                            <button type="button" class="btn btn-light" onclick="add_branch1();"><i class="flaticon-plus"></i>&nbsp; Add Branch Address</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="branch_address2">
+                                </div>
+
+
+
+                                <div class="IDforPartnership" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>First Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" class="btn btn-sm btn-light" id="FirstP_add" style="color:green;" onclick="AddPartner2();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner1Name" class="form-control"  placeholder="Enter Name of the First Partner" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of First Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="Partner1Age" class="form-control" placeholder="Enter Age of First Partner" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner1FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of First Partner" >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area PartyAddress" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner1Address"  placeholder="Enter Address of the First Partner" ></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="Second_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Second Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="SecondP_add" onclick="AddPartner3();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" id="SecondP_remove" onclick="RemovePartner2();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner2Name" class="form-control"  placeholder="Enter Name of the Second Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner2Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Second Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner2FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Second Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner2Address"  placeholder="Enter Address of the Second Partner"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Third_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Third Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="ThirdP_add" onclick="AddPartner4();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="ThirdP_remove" onclick="RemovePartner3();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner3Name" class="form-control"  placeholder="Enter Name of the Third Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner3Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Third Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner3FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Third Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner3Address"  placeholder="Enter Address of the Third Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Fourth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Fourth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="FourthP_add" onclick="AddPartner5();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="FourthP_remove" onclick="RemovePartner4();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner4Name" class="form-control"  placeholder="Enter Name of the Fourth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner4Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Fourth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner4FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Fourth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner4Address"  placeholder="Enter Address of the Fourth Partner"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Fifth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Fifth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="FifthP_add" onclick="AddPartner6();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="FifthP_remove" onclick="RemovePartner5();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner5Name" class="form-control"  placeholder="Enter Name of the Fifth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner5Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner5FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Fifth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner5Address"  placeholder="Enter Address of the Fifth Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Sixth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Sixth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="SixthP_add" onclick="AddPartner7();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="SixthP_remove" onclick="RemovePartner6();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner6Name" class="form-control"  placeholder="Enter Name of the Sixth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner6Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Sixth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner6FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Sixth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner6Address"  placeholder="Enter Address of the Sixth Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Seventh_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Seventh Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="SeventhP_add" onclick="AddPartner8();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="SeventhP_remove" onclick="RemovePartner7();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner7Name" class="form-control"  placeholder="Enter Name of the Seventh Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner7Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Seventh Partner">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner7FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Seventh Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner7Address"  placeholder="Enter Address of the Seventh Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Eighth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Eighth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="EighthP_add" onclick="AddPartner9();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="EighthP_remove" onclick="RemovePartner8();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner8Name" class="form-control"  placeholder="Enter Name of the Eighth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner8Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Eighth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner8FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Eighth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner8Address"  placeholder="Enter Address of the Eighth Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Ninth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Ninth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" id="NinthP_add" onclick="AddPartner10();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                    &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" id="NinthP_remove" onclick="RemovePartner9();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner9Name" class="form-control"  placeholder="Enter Name of the Ninth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" id="Partner9Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Ninth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner9FatherName" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Ninth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner9Address"  placeholder="Enter Address of the Ninth Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="Tenth_Partner" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-6">
+                                                                    <h4><b>Tenth Partner Details</b></h4>
+                                                                </div>
+                                                                <div class="col-lg-6 text-right">
+                                                                   <button type="button" class="btn btn-sm btn-light" style="color:red;" id="TenthP_remove" onclick="RemovePartner10();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Name of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner10Name" class="form-control"  placeholder="Enter Name of the Tenth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Age of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="number" min="1" max="200" maxlength="3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="Partner10Age" class="form-control" placeholder="Enter Age of the Tenth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Father’s / Husband’s Name of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <input type="text" maxlength="180" id="Partner10FatherName" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control"  placeholder="Enter Father’s / Husband’s Name of the Tenth Partner" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="reg address">Address of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                        <textarea maxlength="1800" rows="1" class="form-control  text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner10Address"  placeholder="Enter Address of the Tenth Partner" ></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                   
+                                </div>
+
+
+
+
+                                <div class="card-action text-right card_footer_button">
+                                    <button type="button" onclick="SubmitVendorDetails();" class="btn  btn-success btn_SaveClearDiscard">
+                                        Save
+                                    </button>
+                                    <button type="button" id="ClearForms" class="btn btn-secondary btn_SaveClearDiscard">
+                                        Clear
+                                    </button>
+                                    <button type="button" id="discard2" class="btn btn-danger btn_SaveClearDiscard">
+                                        Cancel
+                                    </button>
+                                </div>
+                                
+
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    function add_branch1() {
+        var x = '<label for="reg address">Branch 1 Address</label><div class="row"><div class="col-sm-9"><textarea maxlength="1800" onkeyup="address1();" id="branchaddress1" class="form-control text_area_description text_area" placeholder="Enter Branch Address" name="VendorBranchOffice1"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch2()" style="color:green;" id="branch_00";><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" onclick="back_to_branch();" id="branch_01" style="color:red;"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div>';
+        document.getElementById('branch_address1').innerHTML = x;
+    }
+
+    function back_to_branch() {
+        var x = '<div class="col-lg-12"><div class="form-group" id="branch_address1"><button type="button" class="btn btn-light" onclick="add_branch1();">Add Branch Address</button></div ></div >';
+        document.getElementById('back_to_branch_button').innerHTML = x;
+    }
+
+    function add_branch2() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 2 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress2" onkeyup="address2();" maxlength="1800" class="form-control text_area_description text_area" placeholder="Enter Branch Address" name="VendorBranchOffice2"></textarea></div><div class="col-sm-3 button_align"><button type="button" style="color:green;" class="btn btn-sm btn-light" onclick="add_branch3();" id="branch_10"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch2();" id="branch_11"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch3"></div>';
+        document.getElementById('branch_address2').innerHTML = x;
+        document.getElementById("branch_00").disabled = true;
+        document.getElementById("branch_01").disabled = true;
+
+    }
+
+    function remove_branch2() {
+        document.getElementById('branch_address2').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_00").disabled = false;
+        document.getElementById("branch_01").disabled = false;
+    }
+
+    function add_branch3() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 3 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress3" onkeyup="address3();" maxlength="1800" class="form-control text_area_description text_area" placeholder="Enter Branch Address" name="VendorBranchOffice3"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch4();" style="color:green;" id="branch_20"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" onclick="remove_branch3();" style="color:red;" id="branch_21"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch4"></div>';
+        document.getElementById('add_branch3').innerHTML = x;
+        document.getElementById("branch_10").disabled = true;
+        document.getElementById("branch_11").disabled = true;
+    }
+
+    function remove_branch3() {
+        document.getElementById('add_branch3').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_10").disabled = false;
+        document.getElementById("branch_11").disabled = false;
+    }
+
+    function add_branch4() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 4 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress4" onkeyup="address4();" maxlength="1800" class="form-control text_area_description text_area" placeholder="Enter Branch Address" name="VendorBranchOffice4"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch5();" style="color:green;" id="branch_30"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" onclick="remove_branch4();" style="color:red;" id="branch_31"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch5"></div>';
+        document.getElementById('add_branch4').innerHTML = x;
+        document.getElementById("branch_20").disabled = true;
+        document.getElementById("branch_21").disabled = true;
+    }
+
+
+    function remove_branch4() {
+        document.getElementById('add_branch4').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_20").disabled = false;
+        document.getElementById("branch_21").disabled = false;
+    }
+
+    function add_branch5() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 5 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress5" onkeyup="address5();" maxlength="1800" class="form-control text_area_description text_area" placeholder="Enter Branch Address" name="VendorBranchOffice5"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="remove_branch5();" style="color:red;"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div>';
+        document.getElementById('add_branch5').innerHTML = x;
+        document.getElementById("branch_30").disabled = true;
+        document.getElementById("branch_31").disabled = true;
+    }
+
+    function remove_branch5() {
+        document.getElementById('add_branch5').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_30").disabled = false;
+        document.getElementById("branch_31").disabled = false;
+    }
+
+
+</script>
+<script>
+   
+        function address1() {
+           
+            var toedit = document.getElementById("branchaddress1").value;
+            var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+            document.getElementById("branchaddress1").value = txt;
+    }
+    function address2() {
+           
+            var toedit = document.getElementById("branchaddress2").value;
+            var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+            document.getElementById("branchaddress2").value = txt;
+    }
+    function address3() {
+           
+            var toedit = document.getElementById("branchaddress3").value;
+            var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+            document.getElementById("branchaddress3").value = txt;
+    }
+    function address4() {
+           
+            var toedit = document.getElementById("branchaddress4").value;
+             var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+            document.getElementById("branchaddress4").value = txt;
+    }
+    function address5() {
+           
+            var toedit = document.getElementById("branchaddress5").value;
+            var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+            document.getElementById("branchaddress5").value = txt;
+         }
+</script>
+
+
+
+<script>
+
+    $('#ClearForms').click(function (e) {
+
+        swal({
+             title: 'Are you sure?',
+            text: "You want to Clear all input fields !",
+            type: 'warning',
+            buttons: {
+                confirm: {
+                    text: 'Yes, Clear it !',
+                    className: 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                      text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                $('input[type="text"]').val('');
+                $('input[type="number"]').val('');
+                $('textarea').val('');
+               
+                swal({
+                    title: 'Cleared!',
+                    text: 'Your form has been Cleared.',
+                    type: 'success',
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+</script>
+<script>
+
+    $("#discard").click(function () {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+               window.location = '/Vendor/Repository'
+
+            }
+        });
+    });
+
+     $("#discard2").click(function () {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+               window.location = '/Vendor/Repository'
+
+            }
+        });
+    });
+</script>
+
+<script>
+    function TypeOfEntity(Option) {
+        if (Option == "Partnership Firm") {
+            $(".IDforPartnership").show();
+            $("#Vendor_Name").html("Name of the Partnership Firm<span class='asteriskicon'> *</span>");
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Company") {
+            $("#IDforCompany").show();
+            $("#Vendor_Name").html("Name of the Company<span class='asteriskicon'> *</span>");
+            $(".IDforPartnership").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Sole Proprietorship") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").show();
+            $("#Vendor_Name").html("Name of the Proprietorship Concern<span class='asteriskicon'> *</span>");
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Limited Liability Partnership Firm") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").show();
+            $("#Vendor_Name").html("Name of the Limited Liability Partnership<span class='asteriskicon'> *</span>");
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Others") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").show();
+            $("#Vendor_Name").html("Name<span class='asteriskicon'> *</span>");
+        }
+    }
+</script>
+
+<script>
+    function AddPartner2() {
+        $("#Second_Partner").show();
+        $("#FirstP_add").attr('disabled', 'disabled');
+    }
+
+    function RemovePartner2() {
+        $("#Second_Partner").hide();
+        $("#FirstP_add").removeAttr('disabled');
+    }
+    
+
+    function AddPartner3() {
+        $("#Third_Partner").show();
+        $("#SecondP_add").attr('disabled', 'disabled');
+        $("#SecondP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner3() {
+        $("#Third_Partner").hide();
+        $("#SecondP_add").removeAttr('disabled');
+        $("#SecondP_remove").removeAttr('disabled');
+    }
+
+
+    function AddPartner4() {
+        $("#Fourth_Partner").show();
+        $("#ThirdP_add").attr('disabled', 'disabled');
+        $("#ThirdP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner4() {
+        $("#Fourth_Partner").hide();
+        $("#ThirdP_add").removeAttr('disabled');
+        $("#ThirdP_remove").removeAttr('disabled');
+    }
+
+    function AddPartner5() {
+        $("#Fifth_Partner").show();
+        $("#FourthP_add").attr('disabled', 'disabled');
+        $("#FourthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner5() {
+        $("#Fifth_Partner").hide();
+        $("#FourthP_add").removeAttr('disabled');
+        $("#FourthP_remove").removeAttr('disabled');
+    }
+
+    function AddPartner6() {
+        $("#Sixth_Partner").show();
+        $("#FifthP_add").attr('disabled', 'disabled');
+        $("#FifthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner6() {
+        $("#Sixth_Partner").hide();
+        $("#FifthP_add").removeAttr('disabled');
+        $("#FifthP_remove").removeAttr('disabled');
+    }
+
+    function AddPartner7() {
+        $("#Seventh_Partner").show();
+        $("#SixthP_add").attr('disabled', 'disabled');
+        $("#SixthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner7() {
+        $("#Seventh_Partner").hide();
+        $("#SixthP_add").removeAttr('disabled');
+        $("#SixthP_remove").removeAttr('disabled');
+    }
+
+    function AddPartner8() {
+        $("#Eighth_Partner").show();
+        $("#SeventhP_add").attr('disabled', 'disabled');
+        $("#SeventhP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner8() {
+        $("#Eighth_Partner").hide();
+        $("#SeventhP_add").removeAttr('disabled');
+        $("#SeventhP_remove").removeAttr('disabled');
+    }
+
+     function AddPartner9() {
+        $("#Ninth_Partner").show();
+        $("#EighthP_add").attr('disabled', 'disabled');
+        $("#EighthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner9() {
+        $("#Ninth_Partner").hide();
+        $("#EighthP_add").removeAttr('disabled');
+        $("#EighthP_remove").removeAttr('disabled');
+    }
+
+      function AddPartner10() {
+        $("#Tenth_Partner").show();
+        $("#NinthP_add").attr('disabled', 'disabled');
+        $("#NinthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner10() {
+        $("#Tenth_Partner").hide();
+        $("#NinthP_add").removeAttr('disabled');
+        $("#NinthP_remove").removeAttr('disabled');
+    }
+    
+</script>
+
+<script>
+    function SubmitVendorDetails() {
+        var TypeOfEntity = $("#type_of_entity_vendor").val();
+        var VendorName = $("#vendorname").val();
+
+        var CIN = $("#vendorcin").val();
+        var AuthSign = $("#vendorauthorisedsignatoryname").val();
+        var RegAddress = $("#vendorregisteredaddress").val();
+        var CorporateAddress = $("#CorporateAddress").val();
+
+        var Branch1 = $("#branchaddress1").val();
+        var Branch2 = $("#branchaddress2").val();
+        var Branch3 = $("#branchaddress3").val();
+        var Branch4 = $("#branchaddress4").val();
+        var Branch5 = $("#branchaddress5").val();
+
+        var NameoftheProprietor = $("#NameoftheProprietor").val();
+        var PAN = $("#PAN").val();
+        var AdhaarCardNo = $("#AdhaarCardNo").val();
+        var ProprietorshipAddress = $("#ProprietorshipAddress").val();
+
+        var LLPIN = $("#LLPIN").val();
+        var LLPAddress = $("#LLPAddress").val();
+
+        var OthersAddress = $("#OthersAddress").val();
+
+        var PartnershipAuthSign = $("#Partnership_AuthSign").val();
+        var PartnershipAddress = $("#PartnershipAddress").val();
+
+        var Partner1Name = $("#Partner1Name").val();
+        var Partner1Age = $("#Partner1Age").val();
+       
+        var Partner1FatherName = $("#Partner1FatherName").val();
+        var Partner1Address = $("#Partner1Address").val();
+        var Partner2Name = $("#Partner2Name").val();
+        var Partner2Age = $("#Partner2Age").val();
+        var Partner2FatherName = $("#Partner2FatherName").val();
+        var Partner2Address = $("#Partner2Address").val();
+        var Partner3Name = $("#Partner3Name").val();
+        var Partner3Age = $("#Partner3Age").val();
+        var Partner3FatherName = $("#Partner3FatherName").val();
+        var Partner3Address = $("#Partner3Address").val();
+        var Partner4Name = $("#Partner4Name").val();
+        var Partner4Age = $("#Partner4Age").val();
+        var Partner4FatherName = $("#Partner4FatherName").val();
+        var Partner4Address = $("#Partner4Address").val();
+        var Partner5Name = $("#Partner5Name").val();
+        var Partner5Age = $("#Partner5Age").val();
+        var Partner5FatherName = $("#Partner5FatherName").val();
+        var Partner5Address = $("#Partner5Address").val();
+        var Partner6Name = $("#Partner6Name").val();
+        var Partner6Age = $("#Partner6Age").val();
+        var Partner6FatherName = $("#Partner6FatherName").val();
+        var Partner6Address = $("#Partner6Address").val();
+        var Partner7Name = $("#Partner7Name").val();
+        var Partner7Age = $("#Partner7Age").val();
+        var Partner7FatherName = $("#Partner7FatherName").val();
+        var Partner7Address = $("#Partner7Address").val();
+        var Partner8Name = $("#Partner8Name").val();
+        var Partner8Age = $("#Partner8Age").val();
+        var Partner8FatherName = $("#Partner8FatherName").val();
+        var Partner8Address = $("#Partner8Address").val();
+        var Partner9Name = $("#Partner9Name").val();
+        var Partner9Age = $("#Partner9Age").val();
+        var Partner9FatherName = $("#Partner9FatherName").val();
+        var Partner9Address = $("#Partner9Address").val();
+        var Partner10Name = $("#Partner10Name").val();
+        var Partner10Age = $("#Partner10Age").val();
+        var Partner10FatherName = $("#Partner10FatherName").val();
+        var Partner10Address = $("#Partner10Address").val();
+       
+
+        if (TypeOfEntity == "Company") {
+            if (VendorName.length > 0 && CIN.length > 0 && AuthSign.length > 0 && RegAddress.length > 0 && CorporateAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/SubmitCompanyVendor',
+                    type: 'POST',
+                    data: { TypeOfEntity: TypeOfEntity,VendorName: VendorName, CIN: CIN, AuthSign: AuthSign, RegAddress: RegAddress, CorporateAddress: CorporateAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details created successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+        else if (TypeOfEntity == "Sole Proprietorship") {
+            if (VendorName.length > 0 && NameoftheProprietor.length > 0 && PAN.length > 0 && AdhaarCardNo.length > 0 && ProprietorshipAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/SubmitSoleProprietorshipVendor',
+                    type: 'POST',
+                    data: { TypeOfEntity: TypeOfEntity, VendorName:VendorName, NameoftheProprietor: NameoftheProprietor, PAN: PAN, AdhaarCardNo: AdhaarCardNo, ProprietorshipAddress: ProprietorshipAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details created successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }   
+        
+        else if (TypeOfEntity == "Limited Liability Partnership Firm") {
+            if (VendorName.length > 0 && LLPIN.length > 0 && LLPAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/SubmitLLPFirmVendor',
+                    type: 'POST',
+                    data: { TypeOfEntity: TypeOfEntity, VendorName:VendorName, LLPIN: LLPIN, LLPAddress: LLPAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details created successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }   
+
+        else if (TypeOfEntity == "Others") {
+            if (VendorName.length > 0 && OthersAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/SubmitOtherVendor',
+                    type: 'POST',
+                    data: { TypeOfEntity: TypeOfEntity, VendorName:VendorName, OthersAddress: OthersAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details created successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }   
+
+         else if (TypeOfEntity == "Partnership Firm") {
+            if (VendorName.length > 0 && PartnershipAuthSign.length > 0 && PartnershipAddress.length > 0 && Partner1Name.length > 0 && Partner1Age.length > 0 && Partner1FatherName.length > 0 && Partner1Address.length > 0) {
+                
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/SubmitPartnershipVendor',
+                    type: 'POST',
+                    data: {
+                        TypeOfEntity: TypeOfEntity, VendorName: VendorName, PartnershipAuthSign: PartnershipAuthSign, PartnershipAddress: PartnershipAddress,
+                        Partner1Name: Partner1Name, Partner1Age: Partner1Age, Partner1FatherName: Partner1FatherName, Partner1Address: Partner1Address,
+                        Partner2Name: Partner2Name, Partner2Age: Partner2Age, Partner2FatherName: Partner2FatherName, Partner2Address: Partner2Address,
+                        Partner3Name: Partner3Name, Partner3Age: Partner3Age, Partner3FatherName: Partner3FatherName, Partner3Address: Partner3Address,
+                        Partner4Name: Partner4Name, Partner4Age: Partner4Age, Partner4FatherName: Partner4FatherName, Partner4Address: Partner4Address,
+                        Partner5Name: Partner5Name, Partner5Age: Partner5Age, Partner5FatherName: Partner5FatherName, Partner5Address: Partner5Address,
+                        Partner6Name: Partner6Name, Partner6Age: Partner6Age, Partner6FatherName: Partner6FatherName, Partner6Address: Partner6Address,
+                        Partner7Name: Partner7Name, Partner7Age: Partner7Age, Partner7FatherName: Partner7FatherName, Partner7Address: Partner7Address,
+                        Partner8Name: Partner8Name, Partner8Age: Partner8Age, Partner8FatherName: Partner8FatherName, Partner8Address: Partner8Address,
+                        Partner9Name: Partner9Name, Partner9Age: Partner9Age, Partner9FatherName: Partner9FatherName, Partner9Address: Partner9Address,
+                        Partner10Name: Partner10Name, Partner10Age: Partner10Age, Partner10FatherName: Partner10FatherName, Partner10Address: Partner10Address,
+                        Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details created successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }   
+
+    }
+</script>

@@ -1,0 +1,1061 @@
+﻿.sidebar {
+    /*background-color: #0e0c28;*/
+    background-color: white;
+}
+body {
+    background: #f5f5f5;
+    font-family:'Segoe UI';
+}
+.sidebar .nav > .nav-item a p, .sidebar[data-background-color=white] .nav > .nav-item a p {
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-right: 5px;
+    white-space: nowrap;
+    color: dimgrey;
+}
+    .sidebar .user .info a > span, .sidebar[data-background-color=white] .user .info a > span {
+        font-size: 14px;
+        font-weight: 400;
+        color: white;
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar .nav > .nav-item a, .sidebar[data-background-color=white] .nav > .nav-item a {
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 6px 25px;
+        width: 100%;
+        font-size: 14px;
+        font-weight: 400;
+        position: relative;
+        margin-bottom: 3px;
+    }
+.sidebar.sidebar-style-2 .nav .nav-item a:focus i, .sidebar.sidebar-style-2 .nav .nav-item a:focus p, .sidebar.sidebar-style-2 .nav .nav-item a:hover i, .sidebar.sidebar-style-2 .nav .nav-item a:hover p, .sidebar.sidebar-style-2 .nav .nav-item a[data-toggle=collapse][aria-expanded=true] i, .sidebar.sidebar-style-2 .nav .nav-item a[data-toggle=collapse][aria-expanded=true] p {
+    color: white !important;
+    
+}
+
+    .sidebar .nav > .nav-item a i, .sidebar[data-background-color=white] .nav > .nav-item a i {
+        color: dimgrey;
+        margin-right: 15px;
+        width: 25px;
+        text-align: center;
+        vertical-align: middle;
+        float: left;
+        font-size: 18px;
+        line-height: 30px;
+    }
+.sidebar .nav > .nav-item a .caret, .sidebar[data-background-color=white] .nav > .nav-item a .caret {
+    margin-left: auto;
+    margin-right: 10px;
+    transition: all .5s;
+    color: dimgrey;
+}
+.sidebar .user .info .caret, .sidebar[data-background-color=white] .user .info .caret {
+    position: absolute;
+    top: 17px;
+    right: 0;
+    border-top-color: dimgrey;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 13px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+.card .card_footer_button .btn {
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
+.form-group .text_area_description {
+    height: 7rem;
+}
+
+.badge {
+    border-radius: 2px;
+    margin-left: auto;
+    line-height: 1;
+    padding: 7px 15px;
+    vertical-align: middle;
+    font-weight: 400;
+    font-size: 13px;
+    border: 1px solid white;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+.Initiator_icon {
+    background-color: #1572e8;
+    color: white;
+}
+
+.Approver_icon {
+    background-color: #28a745;
+    color: white;
+}
+
+.Legal_icon {
+    background-color: #b333c5;
+    color: white;
+}
+
+.Admin_icon {
+    background-color: #d6262f;
+    color: white;
+}
+
+.Master_icon {
+    background-color: #6861ce;
+    color: white;
+}
+
+.Reviewer_icon {
+    background-color: deeppink;
+    color: white;
+}
+
+
+
+.shadow {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+.button_align {
+    padding-top: 30px;
+}
+
+.card .card-header .editicon,
+.card .card-header .deleteicon {
+    font-size: 16px;
+}
+
+.card .card-body .asteriskicon{
+    color:red;
+}
+
+.table .multiselectsize td,
+.table .multiselectsize th {
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+}
+
+.table thead th {
+    border-top-width: 1px;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    opacity: 1 !important;
+}
+.Modelarrowcircleicon{
+    font-size: 1.1rem;
+}
+.fa-eye{
+    color:blue;
+}
+
+.swal-modal {
+    width: 415px;
+    opacity: 0;
+    pointer-events: none;
+    background-color: white;
+    text-align: center;
+    border-radius: 5px;
+    position: static;
+    margin: 20px auto;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    z-index: 10001;
+    transition: opacity .2s,-webkit-transform .3s;
+    transition: transform .3s,opacity .2s;
+    transition: transform .3s,opacity .2s,-webkit-transform .3s;
+}
+
+.sidebar .user .info a > span .user-level, .sidebar[data-background-color=white] .user .info a > span .user-level {
+    color: #9c9797;
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.form-control:focus {
+    border-color: #31ce36;
+}
+.sidebar.sidebar-style-2 .nav .nav-item a:focus, .sidebar.sidebar-style-2 .nav .nav-item a:hover, .sidebar.sidebar-style-2 .nav .nav-item a[data-toggle=collapse][aria-expanded=true] {
+    background-color: #001d55 !important;
+}
+
+.card .alertpanel {
+    padding-left: 6rem;
+    padding-right:6rem;
+}
+
+.form-group-resize{
+    padding-bottom:0px;
+    padding-top:0px;
+
+}
+.form-group-resize-top {
+    padding-bottom: 0px;
+    padding-top: 20px;
+}
+
+hr {
+    border: 1px dashed #ebedf2;
+}
+
+.new_hr {
+    border: 1px solid #ebedf2;
+}
+.nav-pills .nav-link {
+    padding: 10px 40px;
+}
+
+.nav-pills-rezise .nav-link {
+    padding: 10px 15px;
+}
+
+.nav-pills-rezise > li > .nav-link {
+    margin-left: -1px;
+    border-radius: 0 !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*border: 1px solid #002366;*/
+    color: #585c5d;
+    width: 10rem;
+    text-align: center;
+}
+
+.nav-pills.nav-secondary .nav-link.active {
+    background: #002366;
+    border: 1px solid #002366;
+}
+.nav-pills.nav-danger .nav-link, .nav-pills.nav-default .nav-link, .nav-pills.nav-info .nav-link, .nav-pills.nav-primary .nav-link, .nav-pills.nav-secondary .nav-link, .nav-pills.nav-success .nav-link, .nav-pills.nav-warning .nav-link {
+    border: 1px solid #002366;
+}
+
+
+.addbtnarea {
+    border: 2px dashed;
+  
+    align-items: center;
+    color: #ebedf2;
+    margin-left:13px;
+    margin-right:13px;
+}
+
+.addbtnareas {
+    border: 2px dashed;
+  
+    align-items: center;
+    color: #ebedf2;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.sidebar.sidebar-style-2 .nav.nav-primary > .nav-item.active > a {
+    background: #001d55 !important;
+    box-shadow: 4px 4px 10px 0 rgba(0,0,0,.1),4px 4px 15px -5px rgba(21,114,232,.4) !important;
+}
+
+.badge {
+    border-radius: 2px;
+    margin-left: auto;
+    line-height: 1;
+    padding: 7px 15px;
+    vertical-align: middle;
+    font-weight: 400;
+    font-size: 13px;
+    border: 1px solid #c3c3c3;
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.content .TemplateDraft_Card {
+    padding-left: 0px;
+    padding-right:0px;
+
+}
+
+.card_Editor{
+    padding-left:2rem;
+    padding-right:4px;
+    padding-bottom:15px;
+   
+}
+
+.card .tblVariableCard{
+    padding:0rem;
+}
+
+.btn-sm-custom {
+    font-size: 10px;
+    padding: 5px 7px;
+}
+
+#tblVariable td {
+    font-size: 13px;
+    height: 38px;
+    padding: 0 5px !important;
+}
+
+#tblVariable th {
+    padding: 0 5px !important;
+}
+
+.VersionCompare_Modal {
+    background: #f5f5f5;
+}
+
+.file {
+    visibility: hidden;
+    position: absolute;
+}
+
+.uploadbtnsizing {
+    padding-top: 6px;
+    padding-bottom: 8px;
+}
+
+#tblVendorVariable td {
+    font-size: 12px;
+    height: 38px;
+    padding: 0 5px !important;
+    border-top-width: 1px;
+}
+#tblVendorVariable th {
+    padding: 0 5px !important;
+    
+}
+
+
+
+#tblVendorVariable > td > select {
+    font-size: 12px;
+}
+
+#tblVendorVariable td > input{
+    font-size: 12px;
+    height: 30px;
+}
+
+
+.Variable_Value {
+    border: none;  
+}
+
+.Variable_textarea {
+    border: none;
+    resize: none;
+}
+
+
+.btnupdate {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+green-color {
+    color: red;
+}
+
+a{
+    color:black;
+}
+
+a:hover {
+    color:black;
+    text-decoration: none;
+    font-weight: bold;
+}
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.library_dot {
+    height: 6px;
+    width: 6px;
+    background-color: blueviolet;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Draft_dot {
+    height: 6px;
+    width: 6px;
+    background-color: #6fef61;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/*.Initiated_dot {
+    height: 6px;
+    width: 6px;
+    background-color: blue;
+    border-radius: 50%;
+    display: inline-block;
+}*/
+
+.pendingapproval_dot {
+    height: 6px;
+    width: 6px;
+    background-color: #ffce1a;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Rework_dot {
+    height: 6px;
+    width: 6px;
+    background-color: #ff7979;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Approve_dot {
+    height: 6px;
+    width: 6px;
+    background-color: lawngreen;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Ineffect_dot {
+    height: 6px;
+    width: 6px;
+    background-color: #0f9200;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Expired_dot {
+    height: 6px;
+    width: 6px;
+    background-color: #f00;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.Amendments_dot {
+    height: 6px;
+    width: 6px;
+    background-color: hotpink;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.draft {
+    color: black;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #6fef61;
+    margin-left: 30px;
+}
+
+
+.Pennding_Approvals {
+    color: black;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #ffce1a;
+    margin-left: 30px;
+}
+
+
+.Rework {
+    color: black;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #ff7979;
+    margin-left: 30px;
+}
+
+.Approve {
+    color:black;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color:lawngreen;
+    margin-left: 30px;
+}
+
+.Ineffect {
+    color:white;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #0f9200;
+    margin-left: 30px;
+}
+
+.Expired {
+    color:white;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #f00;
+    margin-left: 30px;
+}
+
+.Under_negotiation {
+    color: black;
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #ffe279;
+    margin-left: 30px;
+}
+
+.modalload {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba( 255, 255, 255, .8 ) url('/Content/assets/img/preloader.gif') 50% 50% no-repeat;
+}
+
+/* When the body has the loading class, we turn
+        the scrollbar off with overflow:hidden */
+body.loading .modalload {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+        modal element will be visible */
+body.loading .modalload {
+    display: block;
+}
+
+.variable_name_button {
+    background-color:white;
+    /* margin: .375rem; */
+    color: inherit;
+    /* text-transform: uppercase; */
+    word-wrap: break-word;
+    white-space: normal;
+    cursor: pointer;
+    border: 0;
+    border-radius: .125rem;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.AuditTrailButton {
+    background-color: #22dbd4;
+    color:white;
+  
+}
+
+.btn-cancel {
+    background-color: #ff6666;
+    color:white;
+}
+
+.card .card-header {
+    background-color: #f1f1f1;
+}
+
+.modal .modal-header {
+    color: white;
+    background-color: darkblue;
+}
+
+.modal .modal-header label, .modal .modal-header label > b,
+.modal .modal-header a{
+    color:white;
+}
+
+.modal .modal-header button > span{
+    color:white;
+}
+
+.Dashboard_Navigation {
+    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2), 0px 4px 1px -5px rgba(21,114,232,0.4)  !important;
+}
+
+.btn-link {
+    color:black;
+    padding:10px;
+}
+
+h1,h2,h3,h4,h5,h6{
+    margin:0px;
+}
+
+.card .CardHeader_Approvers{
+  
+   padding-top:8px;
+   padding-bottom:8px;
+}
+
+.appoverTabelTextBox {
+    border: none;
+    resize: none;
+    padding-bottom: 0;
+    padding: 0px 0px !important;
+}
+
+.appoverTabel {
+    padding: 0px 0px !important;
+    border: 2px solid #dee2e6;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    vertical-align: middle;
+}
+
+
+input.larger {
+    transform: scale(1.5);
+}
+
+.card, .card-light {
+    border-radius: 5px;
+    background-color: #fff;
+    /*margin-bottom: 30px;*/
+    -webkit-box-shadow: 2px 6px 15px 0 rgba(69, 65, 78, .1);
+    -moz-box-shadow: 2px 6px 15px 0 rgba(69, 65, 78, .1);
+    box-shadow: 2px 6px 15px 0px rgba(69,65,78,0.1);
+    border: 1px solid rgba(216, 216, 216, 216);
+}
+
+    .card :first-child.card-header, .card-light :first-child.card-header {
+        border-radius: 5px;
+    }
+.card-title {
+    margin: 0;
+    color: rgba(0, 29, 85, 1);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.dataTables_wrapper {
+    clear: both;
+    zoom: 1;
+    padding-bottom: 20px;
+}
+div.dataTables_wrapper div.dataTables_length label {
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+    padding-bottom: 20px;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid rgba(216, 216, 216, 216);
+}
+.card .card-body, .card-light .card-body {
+    /*padding: 1.25rem;*/
+    /*padding-bottom: 0px;*/
+    padding:10px 10px 10px 10px;
+}
+.card .card-action, .card-light .card-action {
+    padding:10px 10px 0px 10px;
+    background-color: transparent;
+    /*margin-bottom:0px;*/
+    border-top: 1px solid #ebecec !important;
+    font-size: 14px;
+}
+td{
+    text-align:center;
+}
+
+.tableFixHead {
+    overflow-y: auto;
+    height: 500px;
+}
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f1f1f1;
+    }
+
+
+.tableFixHead_search {
+    overflow-y: auto;
+    height: 300px;
+}
+
+    .tableFixHead_search thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f1f1f1;
+    }
+
+.tableFixHead_LogHistory {
+    overflow-y: auto;
+    height: 410px;
+}
+
+    .tableFixHead_LogHistory thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f1f1f1;
+    }
+
+.tableFixHead_Vendor {
+    overflow-y: auto;
+    height: 460px;
+}
+
+    .tableFixHead_Vendor thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f1f1f1;
+    }
+
+
+/*the following html and body rule sets are required only if using a % width or height*/
+.scrollingtable {
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    width: auto; /*if you want a fixed width, set it here, else set to auto*/
+    min-width: /*0*/ 100%; /*if you want a % width, set it here, else set to 0*/
+    height: /*188px*/ 100%; /*set table height here; can be fixed value or %*/
+    min-height: /*0*/ 104px; /*if using % height, make this large enough to fit scrollbar arrows + caption + thead*/
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 15px;
+    line-height: 50px;
+    padding: 20px 0 20px 0; /*need enough padding to make room for caption(s)*/
+    text-align: left;
+}
+
+    .scrollingtable * {
+        box-sizing: border-box;
+    }
+
+    .scrollingtable > div {
+        position: relative;
+        border-top: 1px solid black;
+        height: 100%;
+        padding-top: 20px; /*this determines column header height*/
+    }
+
+        .scrollingtable > div:before {
+            top: 0;
+            background: cornflowerblue; /*header row background color*/
+        }
+
+        .scrollingtable > div:before,
+        .scrollingtable > div > div:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            left: 0;
+        }
+
+        .scrollingtable > div > div {
+            min-height: /*0*/ 43px; /*if using % height, make this large enough to fit scrollbar arrows*/
+            max-height: 100%;
+            overflow: /*scroll*/ auto; /*set to auto if using fixed or % width; else scroll*/
+            overflow-x: hidden;
+            border: 1px solid black; /*border around table body*/
+        }
+
+            .scrollingtable > div > div:after {
+                background: white;
+            }
+            /*match page background color*/
+            .scrollingtable > div > div > table {
+                width: 100%;
+                border-spacing: 0;
+                margin-top: -20px; /*inverse of column header height*/
+                margin-right: 17px; /*uncomment if using % width*/
+            }
+
+                .scrollingtable > div > div > table > caption {
+                    position: absolute;
+                    top: -20px; /*inverse of top caption height*/
+                    margin-top: -1px; /*inverse of border-width*/
+                    width: 100%;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: top;
+                }
+
+                .scrollingtable > div > div > table > * > tr > * {
+                    padding: 0;
+                }
+
+                .scrollingtable > div > div > table > thead {
+                    vertical-align: bottom;
+                    white-space: nowrap;
+                    text-align: center;
+                }
+
+                    .scrollingtable > div > div > table > thead > tr > * > div {
+                        display: inline-block;
+                        padding: 0 6px 0 6px; /*header cell padding*/
+                    }
+
+                    .scrollingtable > div > div > table > thead > tr > :first-child:before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 20px; /*match column header height*/
+                        border-left: 1px solid black; /*leftmost header border*/
+                    }
+
+                    .scrollingtable > div > div > table > thead > tr > * > div[label]:before,
+                    .scrollingtable > div > div > table > thead > tr > * > div > div:first-child,
+                    .scrollingtable > div > div > table > thead > tr > * + :before {
+                        position: absolute;
+                        top: 0;
+                        white-space: pre-wrap;
+                        color: black; /*header row font color*/
+                    }
+
+                    .scrollingtable > div > div > table > thead > tr > * > div[label]:before,
+                    .scrollingtable > div > div > table > thead > tr > * > div[label]:after {
+                        content: attr(label);
+                    }
+
+                    .scrollingtable > div > div > table > thead > tr > * + :before {
+                        content: "";
+                        display: block;
+                        min-height: 100px; /*match column header height*/
+                        padding-top: 1px;
+                        border-left: 1px solid black; /*borders between header cells*/
+                    }
+
+    .scrollingtable .scrollbarhead {
+        float: right;
+    }
+
+        .scrollingtable .scrollbarhead:before {
+            position: absolute;
+            width: 100px;
+            top: -1px; /*inverse border-width*/
+            background: black; /*match page background color*/
+        }
+
+    .scrollingtable > div > div > table > tbody > tr:after {
+        content: "";
+        display: table-cell;
+        position: relative;
+        padding: 0;
+        border-top: 1px solid black;
+        top: -1px; /*inverse of border width*/
+    }
+
+    .scrollingtable > div > div > table > tbody {
+        vertical-align: top;
+    }
+
+        .scrollingtable > div > div > table > tbody > tr {
+            background: white;
+        }
+
+            .scrollingtable > div > div > table > tbody > tr > * {
+                border-bottom: 1px solid black;
+                padding: 0 6px 0 6px;
+                height: 20px; /*match column header height*/
+            }
+
+        .scrollingtable > div > div > table > tbody:last-of-type > tr:last-child > * {
+            border-bottom: none;
+        }
+
+        .scrollingtable > div > div > table > tbody > tr:nth-child(even) {
+            background: gainsboro;
+        }
+        /*alternate row color*/
+        .scrollingtable > div > div > table > tbody > tr > * + * {
+            border-left: 1px solid black;
+        }
+/*borders between body cells*/
+
+
+.swal-text{
+    text-align:center !important;
+}
+
+.nav-pills.nav-primary .nav-link.active {
+    background: #002366;
+    border: 1px solid #002366;
+}
+
+/******************Buttons*************************/
+.btn-light {
+    background: transparent !important;
+    border-color: transparent !important;
+    font-size: 14px !important;
+    font-weight: bold;
+}
+
+    .btn-light > i {
+        font-size: 15px !important;
+        font-weight: bold;
+    }
+
+.btn_create {
+    background: transparent !important;
+    border-color: #0073b1 !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: #0073b1 !important;
+}
+
+.btn_SaveClearDiscard {
+    width: 120px;
+    padding: .65rem 0.4rem !important;
+    font-size: 17px !important;
+    font-weight: bold;
+}
+
+.btn-light[value="Discard"] {
+    color: red;
+    font-weight: bold;
+}
+
+.btn_close {
+    background: transparent !important;
+    border-color: white !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: white !important;
+}
+
+    .btn_close:hover {
+        color: black !important;
+    }
+
+.btn_success {
+    background: transparent !important;
+    border-color: green !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: green !important;
+}
+
+
+.btn_danger {
+    background: transparent !important;
+    border-color: red !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: red !important;
+}
+
+    .btn_success:hover, .btn_danger:hover {
+        color: white !important;
+    }
+
+.btn_history {
+    /*background: transparent !important;*/
+    /*border-color: orange !important;*/
+    font-size: 14px !important;
+    font-weight: bold;
+    color: white;
+}
+
+    .btn_history:hover {
+        color: black !important;
+    }
+
+.btn_Discard {
+    background: transparent !important;
+    border-color: red !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: red !important;
+}
+
+.btn_edit {
+    background: transparent !important;
+    border-color: blue !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: blue !important;
+}
+/**********************End of Buttons*************************/
+
+.Amendments_badge {
+    background-color: #e44eff;
+    color: white;
+}
+
+.Extension_badge {
+    background-color: #82fc60;
+    color: black;
+}
+
+.Termination_badge {
+    background-color: #ff8a8a;
+    color: white;
+}
+

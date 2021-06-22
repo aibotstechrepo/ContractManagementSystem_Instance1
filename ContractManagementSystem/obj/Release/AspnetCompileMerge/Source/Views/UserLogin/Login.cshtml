@@ -1,0 +1,163 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../Content/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/assets/css/atlantis.min.css">
+
+    <link href="../../Content/Custom_css/custom_css.css" rel="stylesheet" />
+    <script src="~/Content/assets/js/plugin/webfont/webfont.min.js"></script>
+
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <div class="card" style="margin-left:25%; margin-right:25%;">
+        <div class="card-header">
+            <center><h2>Authentication</h2></center>
+
+        </div>
+
+        <form>
+            <div class="card-body">
+                @*<div class="row">*@
+                    @*<div class="col-lg-6" style="margin-top:15%">
+                        <center>
+                            <button type="button" class="btn btn-success btn-lg" onclick="SSOLogin();">Login with Windows credential</button>
+                        </center>
+
+                    </div>*@
+                    @*<div class="col-lg-6" style="border-left: 1px dashed grey;">*@
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>User Name</label>
+                                    <input type="text" id="Login_Username" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" id="Login_Password" class="form-control" />
+
+                                    <div class="col-sm-12 text-right">
+                                        <h6><a id="ForgotPasswordLink" href="#">Forgot Password ?</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div align="right">
+                            <hr />
+                            <button type="button" class="btn btn-success" onclick="loginsave();">Login</button>
+                        </div>
+
+                    @*</div>*@
+                @*</div>*@
+
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // document.body.style.zoom = "80%";
+    </script>
+    <script src="~/Scripts/default_jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script>
+        function loginsave() {
+            //var username = $("#Login_Username").val();
+            // var password = $("#Login_Password").val();
+            $.ajax({
+                type: "POST",
+                url: "/UserLogin/LoginDetails",
+                data: { username: username, password: password },
+
+
+                success: function (response) {
+                    alert(response);
+                },
+
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        $('#ForgotPasswordLink').on('click', function () {
+            $.notify({
+                // options
+                title: 'Password Reset',
+                message: 'Kindly contact application admin to reset the password.',
+                target: '_blank'
+            }, {
+                    // settings
+                    element: 'body',
+                    position: null,
+                    type: "warning",
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: null,
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                        '<div class="progress" data-notify="progressbar">' +
+                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                        '</div>'
+                });
+        });
+
+        //function SSOLogin() {
+        //    //var username = $("#Login_Username").val();
+        //    // var password = $("#Login_Password").val();
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Account/SSO",
+
+        //        success: function (response) {
+        //            alert(response);
+        //        },
+
+        //        error: function (xhr, status, error) {
+        //            alert(xhr.responseText);
+        //        }
+        //    });
+        //}
+    </script>
+</body>
+</html>

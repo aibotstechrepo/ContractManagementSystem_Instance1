@@ -1,0 +1,202 @@
+﻿@model IQueryable<ContractManagementSystem.Models.UsersRepositoryModel>
+@{
+    ViewBag.Title = "Repository";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">User Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        User Master
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Repository
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title"><b>Repository</b></div>
+                                </div>
+
+                                <div class="col-sm-6 text-right redirectionallink">
+                                    @*<a href="~/Users/New"><i class="fa fa-plus" aria-hidden="true"></i></a>*@
+                                    <button type="button" class="btn btn-sm btn-light btn_create" onclick="window.location = '/Users/New'">Create New User</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="basic-datatables" class="display table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Employee ID</center></th>
+                                                    <th><center>Name</center></th>
+                                                    <th><center>Email address</center></th>
+
+                                                    <th><center>Cluster</center></th>
+                                                    <th><center>Function</center></th>
+                                                    <th><center>Role</center></th>
+                                                    <th><center>Status</center></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+
+
+                                                    <tr>
+                                                        <td class="redirectionallink">
+                                                            <center>
+                                                                <a href="@Url.Action("Details", "Users", new { id = item.UserID})"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                            </center>
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            @item.UserEmployeeID
+                                                        </td>
+                                                        <td>@item.UserEmployeeName</td>
+                                                        <td>@item.UserEmployeeEmail</td>
+
+                                                        <td>@item.UserCategory</td>
+                                                        <td>@item.UserSubCategory</td>
+                                                        <td>
+
+                                                            @{if (item.UserRoleInitiator == true)
+                                                                {
+                                                                    <span class='badge Initiator_icon shadow'>
+                                                                        <i class="la flaticon-pencil" aria-hidden="true"></i>
+                                                                        &nbsp; &nbsp;Initiator
+                                                                    </span>
+                                                                }
+                                                                if (item.UserRoleLegal == true)
+                                                                {
+                                                                    <span class='badge Legal_icon shadow'><i class="icon-graduation"></i>&nbsp; &nbsp; Legal  </span>
+                                                                }
+                                                                if (item.UserRoleApprover == true)
+                                                                {
+                                                                    <span class='badge Approver_icon shadow'><i class="la flaticon-success"></i>&nbsp; &nbsp;Approver </span>
+                                                                }
+                                                                if (item.UserRoleFinance == true)
+                                                                {
+                                                                    <span class='badge Master_icon shadow'><i class="la flaticon-coins"></i>&nbsp; &nbsp;Finance </span>
+                                                                }
+                                                                if (item.UserRoleAdmin == true)
+                                                                {
+                                                                    <span class='badge Admin_icon shadow'><i class="la flaticon-user-1"></i>&nbsp; &nbsp;Admin</span>
+                                                                }
+                                                                if (item.UserRoleReviewer == true)
+                                                                {
+                                                                    <span class='badge Reviewer_icon shadow'><i class="la flaticon-profile-1"></i>&nbsp; &nbsp;Reviewer</span>
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td>@item.UserStatus</td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="card-action text-right card_footer_button">
+                                    <button class="btn btn-success">Submit</button>
+                                    <button class="btn btn-danger">Cancel</button>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Datatables -->
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+             "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "25%", "targets": 2 },
+                { "width": "20%", "targets": 3 },
+                { "width": "10%", "targets": 4 },
+                { "width": "10%", "targets": 5 },
+                { "width": "10%", "targets": 6 },
+                  { "width": "10%", "targets": 7}
+           
+            ]
+        });
+
+    });
+
+
+</script>
+
+<script>
+    $(function () {
+        var msg = '@ViewBag.Status';
+        if (msg == "Success") {
+           // alert("updated");
+
+            swal("Updated successfully !", {
+            icon: "success",
+
+        })
+               .then(function (result) {
+                        if (result){
+
+                  //  window.location = "/Users/Repository";
+                }
+            });
+        }
+        if (msg == "DeleteSuccess") {
+           // alert("updated");
+
+            swal("Successfully removed the record !", {
+            icon: "success",
+
+        })
+               .then(function (result) {
+                        if (result){
+
+                   // window.location = "/Users/Repository";
+                }
+            });
+        }
+        
+    });
+</script>
+

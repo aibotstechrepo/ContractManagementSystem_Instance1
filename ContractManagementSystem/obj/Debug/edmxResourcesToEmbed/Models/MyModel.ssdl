@@ -1,0 +1,835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ContractManagementSystemDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblAlertLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogAlertUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblAlertSystem">
+    <Key>
+      <PropertyRef Name="AlertID" />
+    </Key>
+    <Property Name="AlertID" Type="int" Nullable="false" />
+    <Property Name="ContractExpiryReminder1Date" Type="int" />
+    <Property Name="ContractExpiryReminder1Duration" Type="varchar" MaxLength="200" />
+    <Property Name="ContractExpiryReminder2Date" Type="int" />
+    <Property Name="ContractExpiryReminder2Duration" Type="varchar" MaxLength="200" />
+    <Property Name="ContractExpiryReminder3Date" Type="int" />
+    <Property Name="ContractExpiryReminder3Duration" Type="varchar" MaxLength="200" />
+    <Property Name="ContractExpiryReminder4Date" Type="int" />
+    <Property Name="ContractExpiryReminder4Duration" Type="varchar" MaxLength="200" />
+    <Property Name="ContractExpiryReminder5Date" Type="int" />
+    <Property Name="ContractExpiryReminder5Duration" Type="varchar" MaxLength="200" />
+    <Property Name="TemplateHod" Type="varchar" MaxLength="200" />
+    <Property Name="TemplateLegal" Type="varchar" MaxLength="200" />
+    <Property Name="TemplateFinance" Type="varchar" MaxLength="200" />
+    <Property Name="ContractHod" Type="varchar" MaxLength="200" />
+    <Property Name="ContractLegal" Type="varchar" MaxLength="200" />
+    <Property Name="ContractFinance" Type="varchar" MaxLength="200" />
+    <Property Name="EsclationHod" Type="varchar" MaxLength="200" />
+    <Property Name="EsclationLegal" Type="varchar" MaxLength="200" />
+    <Property Name="EsclationFinance" Type="varchar" MaxLength="200" />
+    <Property Name="AuditTemplateDate" Type="int" />
+    <Property Name="AuditTemplateDuration" Type="varchar" MaxLength="200" />
+    <Property Name="AuditContractDate" Type="int" />
+    <Property Name="AuditClauseDuration" Type="varchar" MaxLength="200" />
+    <Property Name="AuditClauseDate" Type="int" />
+    <Property Name="AuditContractDuration" Type="varchar" MaxLength="200" />
+    <Property Name="OldContractDate" Type="int" />
+    <Property Name="OldContractDuration" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblApprovalEscalation">
+    <Key>
+      <PropertyRef Name="UID" />
+    </Key>
+    <Property Name="UID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Plant" Type="varchar" MaxLength="200" />
+    <Property Name="Department" Type="varchar" MaxLength="200" />
+    <Property Name="SubDepartment" Type="varchar" MaxLength="200" />
+    <Property Name="EmployeeID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblApprovalLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogApprovalUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApprovalMaster">
+    <Key>
+      <PropertyRef Name="ApprovalID" />
+    </Key>
+    <Property Name="ApprovalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WorkflowType" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="SubCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Approver1ID" Type="int" Nullable="false" />
+    <Property Name="Approver1Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver1Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver2ID" Type="int" />
+    <Property Name="Approver2Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver2Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver3ID" Type="int" />
+    <Property Name="Approver3Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver3Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver4ID" Type="int" />
+    <Property Name="Approver4Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver4Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver5ID" Type="int" />
+    <Property Name="Approver5Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver5Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver6ID" Type="int" />
+    <Property Name="Approver6Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver6Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver7ID" Type="int" />
+    <Property Name="Approver7Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver7Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver8ID" Type="int" />
+    <Property Name="Approver8Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver8Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver9ID" Type="int" />
+    <Property Name="Approver9Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver9Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver10ID" Type="int" />
+    <Property Name="Approver10Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver10Status" Type="varchar" MaxLength="200" />
+    <Property Name="LastModified" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCategory">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LastModified" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCategoryLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogCategoryUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblClauseAudit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AuditClauseID" Type="int" Nullable="false" />
+    <Property Name="AuditClauseComments" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="AuditEmployeeID" Type="int" Nullable="false" />
+    <Property Name="AuditLastReviewed" Type="datetime" Nullable="false" />
+    <Property Name="AuditStatus" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblClauseLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogClauseUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblClauseMaster">
+    <Key>
+      <PropertyRef Name="ClauseClauseID" />
+    </Key>
+    <Property Name="ClauseClauseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClauseClauseTitle" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ClauseClauseDescription" Type="varchar" MaxLength="200" />
+    <Property Name="ClauseClauseText" Type="varchar(max)" Nullable="false" />
+    <Property Name="ClauseLastModified" Type="datetime" Nullable="false" />
+    <Property Name="ClauseStatus" Type="varchar" MaxLength="200" />
+    <Property Name="OriginalClauseID" Type="int" />
+    <Property Name="ClauseModificationType" Type="varchar" MaxLength="200" />
+    <Property Name="Enable" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblConfiguration">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaperType" Type="varchar" MaxLength="200" />
+    <Property Name="PaperSize" Type="varchar" MaxLength="200" />
+    <Property Name="MarginTop" Type="varchar" MaxLength="200" />
+    <Property Name="MarginLeft" Type="varchar" MaxLength="200" />
+    <Property Name="MarginBottom" Type="varchar" MaxLength="200" />
+    <Property Name="MarginRight" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblContractAudit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AuditContractD" Type="int" Nullable="false" />
+    <Property Name="AuditContractComments" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="AuditEmployeeID" Type="int" />
+    <Property Name="AuditLastReviewed" Type="datetime" Nullable="false" />
+    <Property Name="AuditStatus" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblContractContent">
+    <Key>
+      <PropertyRef Name="UID" />
+    </Key>
+    <Property Name="UID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractID" Type="int" />
+    <Property Name="EMPID" Type="int" />
+    <Property Name="ContractContent" Type="varchar(max)" />
+    <Property Name="DateTime" Type="datetime" />
+    <Property Name="Version" Type="int" />
+  </EntityType>
+  <EntityType Name="tblContractLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogContractUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblContractMaster">
+    <Key>
+      <PropertyRef Name="ContractID" />
+    </Key>
+    <Property Name="ContractID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractType" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractSubCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UploadExistingFile" Type="varbinary(max)" />
+    <Property Name="UploadExistingContractFileName" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadExistingContractFileType" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadSignOffContractFile" Type="varbinary(max)" />
+    <Property Name="UploadSignOffContractFileName" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadSignOffContractFileType" Type="varchar" MaxLength="2000" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Initiator" Type="int" />
+    <Property Name="InitiatorComments" Type="varchar" MaxLength="2000" />
+    <Property Name="InitiatorStatus" Type="varchar" MaxLength="200" />
+    <Property Name="InitiatorDraft" Type="varchar(max)" />
+    <Property Name="ContractDraft" Type="varchar(max)" />
+    <Property Name="TemplateType" Type="varchar" MaxLength="200" />
+    <Property Name="Status" Type="varchar" MaxLength="200" />
+    <Property Name="OriginalContractID" Type="int" />
+    <Property Name="ContractModificationType" Type="varchar" MaxLength="200" />
+    <Property Name="SupportingDoc1" Type="varbinary(max)" />
+    <Property Name="SupportingDoc1FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc1FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc2" Type="varbinary(max)" />
+    <Property Name="SupportingDoc2FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc2FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc3" Type="varbinary(max)" />
+    <Property Name="SupportingDoc3FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc3FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc4" Type="varbinary(max)" />
+    <Property Name="SupportingDoc4FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc4FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc5" Type="varbinary(max)" />
+    <Property Name="SupportingDoc5FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc5FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="DateofInitiated" Type="datetime" />
+    <Property Name="Variables" Type="varchar" MaxLength="200" />
+    <Property Name="LastReviewed" Type="datetime" />
+    <Property Name="Approver1ID" Type="int" Nullable="false" />
+    <Property Name="Approver1Draft" Type="varchar(max)" />
+    <Property Name="Approver1Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver1Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver1ReceivedOn" Type="datetime" />
+    <Property Name="Approver1ApprovedOn" Type="datetime" />
+    <Property Name="Approver2ID" Type="int" />
+    <Property Name="Approver2Draft" Type="varchar(max)" />
+    <Property Name="Approver2Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver2Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver2ReceivedOn" Type="datetime" />
+    <Property Name="Approver2ApprovedOn" Type="datetime" />
+    <Property Name="Approver3ID" Type="int" />
+    <Property Name="Approver3Draft" Type="varchar(max)" />
+    <Property Name="Approver3Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver3Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver3ReceivedOn" Type="datetime" />
+    <Property Name="Approver3ApprovedOn" Type="datetime" />
+    <Property Name="Approver4ID" Type="int" />
+    <Property Name="Approver4Draft" Type="varchar(max)" />
+    <Property Name="Approver4Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver4Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver4ReceivedOn" Type="datetime" />
+    <Property Name="Approver4ApprovedOn" Type="datetime" />
+    <Property Name="Approver5ID" Type="int" />
+    <Property Name="Approver5Draft" Type="varchar(max)" />
+    <Property Name="Approver5Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver5Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver5ReceivedOn" Type="datetime" />
+    <Property Name="Approver5ApprovedOn" Type="datetime" />
+    <Property Name="Approver6ID" Type="int" />
+    <Property Name="Approver6Draft" Type="varchar(max)" />
+    <Property Name="Approver6Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver6Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver6ReceivedOn" Type="datetime" />
+    <Property Name="Approver6ApprovedOn" Type="datetime" />
+    <Property Name="Approver7ID" Type="int" />
+    <Property Name="Approver7Draft" Type="varchar(max)" />
+    <Property Name="Approver7Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver7Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver7ReceivedOn" Type="datetime" />
+    <Property Name="Approver7ApprovedOn" Type="datetime" />
+    <Property Name="Approver8ID" Type="int" />
+    <Property Name="Approver8Draft" Type="varchar(max)" />
+    <Property Name="Approver8Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver8Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver8ReceivedOn" Type="datetime" />
+    <Property Name="Approver8ApprovedOn" Type="datetime" />
+    <Property Name="Approver9ID" Type="int" />
+    <Property Name="Approver9Draft" Type="varchar(max)" />
+    <Property Name="Approver9Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver9Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver9ReceivedOn" Type="datetime" />
+    <Property Name="Approver9ApprovedOn" Type="datetime" />
+    <Property Name="Approver10ID" Type="int" />
+    <Property Name="Approver10Draft" Type="varchar(max)" />
+    <Property Name="Approver10Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver10Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver10ReceivedOn" Type="datetime" />
+    <Property Name="Approver10ApprovedOn" Type="datetime" />
+    <Property Name="PendingFrom" Type="varchar" MaxLength="200" />
+    <Property Name="NextApprover" Type="varchar" MaxLength="200" />
+    <Property Name="DefaultVariables" Type="varchar" MaxLength="200" />
+    <Property Name="RejectedBy" Type="varchar" MaxLength="200" />
+    <Property Name="ModifiedSupportingDoc1" Type="varbinary(max)" />
+    <Property Name="ModifiedSupportingDoc1FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="ModifiedSupportingDoc1FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="InEffectFrom" Type="varchar" MaxLength="200" />
+    <Property Name="InEffectTo" Type="varchar" MaxLength="200" />
+    <Property Name="ReviewerID" Type="int" />
+    <Property Name="PhysicalCopyLocation" Type="varchar" MaxLength="2000" />
+    <Property Name="ReviewedOn" Type="datetime" />
+    <Property Name="ReviewedComments" Type="varchar(max)" />
+    <Property Name="Template" Type="varchar(max)" />
+    <Property Name="OriginalTemplateID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblContractModification">
+    <Key>
+      <PropertyRef Name="ContractID" />
+    </Key>
+    <Property Name="ContractID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractType" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContractSubCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UploadExistingFile" Type="varbinary(max)" />
+    <Property Name="UploadExistingContractFileName" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadExistingContractFileType" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadSignOffContractFile" Type="varbinary(max)" />
+    <Property Name="UploadSignOffContractFileName" Type="varchar" MaxLength="2000" />
+    <Property Name="UploadSignOffContractFileType" Type="varchar" MaxLength="2000" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Initiator" Type="int" />
+    <Property Name="InitiatorComments" Type="varchar" MaxLength="2000" />
+    <Property Name="InitiatorStatus" Type="varchar" MaxLength="200" />
+    <Property Name="InitiatorDraft" Type="varchar(max)" />
+    <Property Name="ContractDraft" Type="varchar(max)" />
+    <Property Name="TemplateType" Type="varchar" MaxLength="200" />
+    <Property Name="Status" Type="varchar" MaxLength="200" />
+    <Property Name="OriginalContractID" Type="int" />
+    <Property Name="ContractModificationType" Type="varchar" MaxLength="200" />
+    <Property Name="SupportingDoc1" Type="varbinary(max)" />
+    <Property Name="SupportingDoc1FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc1FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc2" Type="varbinary(max)" />
+    <Property Name="SupportingDoc2FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc2FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc3" Type="varbinary(max)" />
+    <Property Name="SupportingDoc3FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc3FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc4" Type="varbinary(max)" />
+    <Property Name="SupportingDoc4FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc4FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc5" Type="varbinary(max)" />
+    <Property Name="SupportingDoc5FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="SupportingDoc5FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="DateofInitiated" Type="datetime" />
+    <Property Name="Variables" Type="varchar" MaxLength="200" />
+    <Property Name="LastReviewed" Type="datetime" />
+    <Property Name="Approver1ID" Type="int" Nullable="false" />
+    <Property Name="Approver1Draft" Type="varchar(max)" />
+    <Property Name="Approver1Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver1Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver1ReceivedOn" Type="datetime" />
+    <Property Name="Approver1ApprovedOn" Type="datetime" />
+    <Property Name="Approver2ID" Type="int" />
+    <Property Name="Approver2Draft" Type="varchar(max)" />
+    <Property Name="Approver2Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver2Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver2ReceivedOn" Type="datetime" />
+    <Property Name="Approver2ApprovedOn" Type="datetime" />
+    <Property Name="Approver3ID" Type="int" />
+    <Property Name="Approver3Draft" Type="varchar(max)" />
+    <Property Name="Approver3Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver3Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver3ReceivedOn" Type="datetime" />
+    <Property Name="Approver3ApprovedOn" Type="datetime" />
+    <Property Name="Approver4ID" Type="int" />
+    <Property Name="Approver4Draft" Type="varchar(max)" />
+    <Property Name="Approver4Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver4Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver4ReceivedOn" Type="datetime" />
+    <Property Name="Approver4ApprovedOn" Type="datetime" />
+    <Property Name="Approver5ID" Type="int" />
+    <Property Name="Approver5Draft" Type="varchar(max)" />
+    <Property Name="Approver5Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver5Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver5ReceivedOn" Type="datetime" />
+    <Property Name="Approver5ApprovedOn" Type="datetime" />
+    <Property Name="Approver6ID" Type="int" />
+    <Property Name="Approver6Draft" Type="varchar(max)" />
+    <Property Name="Approver6Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver6Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver6ReceivedOn" Type="datetime" />
+    <Property Name="Approver6ApprovedOn" Type="datetime" />
+    <Property Name="Approver7ID" Type="int" />
+    <Property Name="Approver7Draft" Type="varchar(max)" />
+    <Property Name="Approver7Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver7Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver7ReceivedOn" Type="datetime" />
+    <Property Name="Approver7ApprovedOn" Type="datetime" />
+    <Property Name="Approver8ID" Type="int" />
+    <Property Name="Approver8Draft" Type="varchar(max)" />
+    <Property Name="Approver8Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver8Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver8ReceivedOn" Type="datetime" />
+    <Property Name="Approver8ApprovedOn" Type="datetime" />
+    <Property Name="Approver9ID" Type="int" />
+    <Property Name="Approver9Draft" Type="varchar(max)" />
+    <Property Name="Approver9Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver9Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver9ReceivedOn" Type="datetime" />
+    <Property Name="Approver9ApprovedOn" Type="datetime" />
+    <Property Name="Approver10ID" Type="int" />
+    <Property Name="Approver10Draft" Type="varchar(max)" />
+    <Property Name="Approver10Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver10Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver10ReceivedOn" Type="datetime" />
+    <Property Name="Approver10ApprovedOn" Type="datetime" />
+    <Property Name="PendingFrom" Type="varchar" MaxLength="200" />
+    <Property Name="NextApprover" Type="varchar" MaxLength="200" />
+    <Property Name="DefaultVariables" Type="varchar" MaxLength="200" />
+    <Property Name="RejectedBy" Type="varchar" MaxLength="200" />
+    <Property Name="ModifiedSupportingDoc1" Type="varbinary(max)" />
+    <Property Name="ModifiedSupportingDoc1FileName" Type="varchar" MaxLength="2000" />
+    <Property Name="ModifiedSupportingDoc1FileType" Type="varchar" MaxLength="2000" />
+    <Property Name="InEffectFrom" Type="varchar" MaxLength="200" />
+    <Property Name="InEffectTo" Type="varchar" MaxLength="200" />
+    <Property Name="ReviewerID" Type="int" />
+    <Property Name="PhysicalCopyLocation" Type="varchar" MaxLength="2000" />
+    <Property Name="ReviewedOn" Type="datetime" />
+    <Property Name="ReviewedComments" Type="varchar(max)" />
+    <Property Name="Template" Type="varchar(max)" />
+    <Property Name="OriginalTemplateID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblContractModificationContent">
+    <Key>
+      <PropertyRef Name="UID" />
+    </Key>
+    <Property Name="UID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractID" Type="int" />
+    <Property Name="EMPID" Type="int" />
+    <Property Name="ContractContent" Type="varchar(max)" />
+    <Property Name="DateTime" Type="datetime" />
+    <Property Name="Version" Type="int" />
+  </EntityType>
+  <EntityType Name="tblSubCategory">
+    <Key>
+      <PropertyRef Name="SubCategoryID" />
+    </Key>
+    <Property Name="SubCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="SubCategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LastModified" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblSubCategoryLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogSubCategoryUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblTemplateAudit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AuditTemplateID" Type="int" Nullable="false" />
+    <Property Name="AuditTemplateComments" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="AuditEmployeeID" Type="int" />
+    <Property Name="AuditLastReviewed" Type="datetime" Nullable="false" />
+    <Property Name="AuditStatus" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblTemplateContent">
+    <Key>
+      <PropertyRef Name="UID" />
+    </Key>
+    <Property Name="UID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateID" Type="int" />
+    <Property Name="EMPID" Type="int" />
+    <Property Name="TemplateContent" Type="varchar(max)" />
+    <Property Name="DateTime" Type="datetime" />
+    <Property Name="Version" Type="int" />
+  </EntityType>
+  <EntityType Name="tblTemplateLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogTemplateUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblTemplateMaster">
+    <Key>
+      <PropertyRef Name="TemplateID" />
+    </Key>
+    <Property Name="TemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="200" />
+    <Property Name="SubCategory" Type="varchar" MaxLength="200" />
+    <Property Name="Initiator" Type="int" />
+    <Property Name="InitiatorStatus" Type="varchar" MaxLength="200" />
+    <Property Name="InitiatorComments" Type="varchar" MaxLength="2000" />
+    <Property Name="Template" Type="varchar(max)" />
+    <Property Name="Description" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="DateofInitiated" Type="datetime" />
+    <Property Name="LastReviewed" Type="datetime" />
+    <Property Name="Approver1ID" Type="int" />
+    <Property Name="Approver1Draft" Type="varchar(max)" />
+    <Property Name="Approver1Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver1Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver1ReceivedOn" Type="datetime" />
+    <Property Name="Approver1ApprovedOn" Type="datetime" />
+    <Property Name="Approver2ID" Type="int" />
+    <Property Name="Approver2Draft" Type="varchar(max)" />
+    <Property Name="Approver2Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver2Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver2ReceivedOn" Type="datetime" />
+    <Property Name="Approver2ApprovedOn" Type="datetime" />
+    <Property Name="Approver3ID" Type="int" />
+    <Property Name="Approver3Draft" Type="varchar(max)" />
+    <Property Name="Approver3Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver3Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver3ReceivedOn" Type="datetime" />
+    <Property Name="Approver3ApprovedOn" Type="datetime" />
+    <Property Name="Approver4ID" Type="int" />
+    <Property Name="Approver4Draft" Type="varchar(max)" />
+    <Property Name="Approver4Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver4Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver4ReceivedOn" Type="datetime" />
+    <Property Name="Approver4ApprovedOn" Type="datetime" />
+    <Property Name="Approver5ID" Type="int" />
+    <Property Name="Approver5Draft" Type="varchar(max)" />
+    <Property Name="Approver5Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver5Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver5ReceivedOn" Type="datetime" />
+    <Property Name="Approver5ApprovedOn" Type="datetime" />
+    <Property Name="Approver6ID" Type="int" />
+    <Property Name="Approver6Draft" Type="varchar(max)" />
+    <Property Name="Approver6Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver6Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver6ReceivedOn" Type="datetime" />
+    <Property Name="Approver6ApprovedOn" Type="datetime" />
+    <Property Name="Approver7ID" Type="int" />
+    <Property Name="Approver7Draft" Type="varchar(max)" />
+    <Property Name="Approver7Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver7Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver7ReceivedOn" Type="datetime" />
+    <Property Name="Approver7ApprovedOn" Type="datetime" />
+    <Property Name="Approver8ID" Type="int" />
+    <Property Name="Approver8Draft" Type="varchar(max)" />
+    <Property Name="Approver8Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver8Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver8ReceivedOn" Type="datetime" />
+    <Property Name="Approver8ApprovedOn" Type="datetime" />
+    <Property Name="Approver9ID" Type="int" />
+    <Property Name="Approver9Draft" Type="varchar(max)" />
+    <Property Name="Approver9Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver9Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver9ReceivedOn" Type="datetime" />
+    <Property Name="Approver9ApprovedOn" Type="datetime" />
+    <Property Name="Approver10ID" Type="int" />
+    <Property Name="Approver10Draft" Type="varchar(max)" />
+    <Property Name="Approver10Comments" Type="varchar" MaxLength="2000" />
+    <Property Name="Approver10Status" Type="varchar" MaxLength="200" />
+    <Property Name="Approver10ReceivedOn" Type="datetime" />
+    <Property Name="Approver10ApprovedOn" Type="datetime" />
+    <Property Name="PendingFrom" Type="varchar" MaxLength="200" />
+    <Property Name="NextApprover" Type="varchar" MaxLength="200" />
+    <Property Name="RejectedBy" Type="varchar" MaxLength="200" />
+    <Property Name="Status" Type="varchar" MaxLength="200" />
+    <Property Name="InitiatorTemplate" Type="varchar(max)" />
+    <Property Name="ReviewerID" Type="int" />
+    <Property Name="PhysicalCopyLocation" Type="varchar" MaxLength="2000" />
+    <Property Name="ReviewedOn" Type="datetime" />
+    <Property Name="ReviewedComments" Type="varchar" MaxLength="2000" />
+    <Property Name="OriginalTemplateID" Type="int" />
+    <Property Name="TemplateModificationType" Type="varchar" MaxLength="2000" />
+    <Property Name="Enable" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblUserLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogUserUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUserLogin">
+    <Key>
+      <PropertyRef Name="LoginID" />
+    </Key>
+    <Property Name="LoginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblUserMaster">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserEmployeeID" Type="int" Nullable="false" />
+    <Property Name="UserEmployeeName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserEmployeeEmail" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserEmployeeDesignation" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserSubCategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserRoleInitiator" Type="bit" Nullable="false" />
+    <Property Name="UserRoleApprover" Type="bit" Nullable="false" />
+    <Property Name="UserRoleLegal" Type="bit" Nullable="false" />
+    <Property Name="UserRoleFinance" Type="bit" Nullable="false" />
+    <Property Name="UserRoleAdmin" Type="bit" Nullable="false" />
+    <Property Name="UserRoleReviewer" Type="bit" Nullable="false" />
+    <Property Name="UserStatus" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserHodEmployeeID" Type="int" Nullable="false" />
+    <Property Name="UserHodEmployeeName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="UserHodEmployeeEmailAddress" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblVariableData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="200" />
+    <Property Name="TypeID" Type="int" />
+    <Property Name="Variable" Type="varchar" MaxLength="200" />
+    <Property Name="Value" Type="varchar" MaxLength="2000" />
+    <Property Name="Version" Type="varchar" MaxLength="200" />
+    <Property Name="VariableFrom" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblVariables">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Variables" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="VariableType" Type="varchar" MaxLength="200" />
+    <Property Name="VariableValues" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tblVendorLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogVendorUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblVendorMaster">
+    <Key>
+      <PropertyRef Name="VendorVendorID" />
+    </Key>
+    <Property Name="VendorVendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorCorporateIdentificationNumber" Type="varchar" MaxLength="200" />
+    <Property Name="VendorVendorName" Type="varchar" MaxLength="200" />
+    <Property Name="VendorTypeofEntity" Type="varchar" MaxLength="200" />
+    <Property Name="VendorAuthorisedSignatory" Type="varchar" MaxLength="200" />
+    <Property Name="VendorRegisteredAddress" Type="varchar" MaxLength="8000" />
+    <Property Name="VendorBranchOffice1" Type="varchar" MaxLength="8000" />
+    <Property Name="VendorBranchOffice2" Type="varchar" MaxLength="8000" />
+    <Property Name="VendorBranchOffice3" Type="varchar" MaxLength="8000" />
+    <Property Name="VendorBranchOffice4" Type="varchar" MaxLength="8000" />
+    <Property Name="VendorBranchOffice5" Type="varchar" MaxLength="8000" />
+    <Property Name="CorporateAddress" Type="varchar" MaxLength="8000" />
+    <Property Name="NameoftheProprietor" Type="varchar" MaxLength="200" />
+    <Property Name="PAN" Type="varchar" MaxLength="200" />
+    <Property Name="AdhaarCardNo" Type="varchar" MaxLength="200" />
+    <Property Name="LLPIN" Type="varchar" MaxLength="200" />
+    <Property Name="Partner1Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner1Age" Type="int" />
+    <Property Name="Partner1FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner1Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner2Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner2Age" Type="int" />
+    <Property Name="Partner2FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner2Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner3Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner3Age" Type="int" />
+    <Property Name="Partner3FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner3Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner4Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner4Age" Type="int" />
+    <Property Name="Partner4FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner4Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner5Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner5Age" Type="int" />
+    <Property Name="Partner5FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner5Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner6Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner6Age" Type="int" />
+    <Property Name="Partner6FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner6Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner7Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner7Age" Type="int" />
+    <Property Name="Partner7FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner7Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner8Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner8Age" Type="int" />
+    <Property Name="Partner8FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner8Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner9Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner9Age" Type="int" />
+    <Property Name="Partner9FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner9Address" Type="varchar" MaxLength="8000" />
+    <Property Name="Partner10Name" Type="varchar" MaxLength="200" />
+    <Property Name="Partner10Age" Type="int" />
+    <Property Name="Partner10FatherName" Type="varchar" MaxLength="200" />
+    <Property Name="Partner10Address" Type="varchar" MaxLength="8000" />
+  </EntityType>
+  <EntityType Name="tblVendorTemplate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorCompany" Type="varchar(max)" />
+    <Property Name="VendorPartnershipFirm" Type="varchar(max)" />
+    <Property Name="VendorSoleProprietorship" Type="varchar(max)" />
+    <Property Name="VendorLLPF" Type="varchar(max)" />
+    <Property Name="VendorOthers" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tblVendorTemplateLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogVendorTemplateUID" Type="int" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="LogActivity" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ChangedFrom" Type="varchar(max)" Nullable="false" />
+    <Property Name="ChangedTo" Type="varchar(max)" Nullable="false" />
+    <Property Name="DateandTime" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblClauseAudit_tblClauseMaster">
+    <End Role="tblClauseMaster" Type="Self.tblClauseMaster" Multiplicity="1" />
+    <End Role="tblClauseAudit" Type="Self.tblClauseAudit" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tblClauseMaster">
+        <PropertyRef Name="ClauseClauseID" />
+      </Principal>
+      <Dependent Role="tblClauseAudit">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblContractAudit_tblContractAudit">
+    <End Role="tblContractMaster" Type="Self.tblContractMaster" Multiplicity="1" />
+    <End Role="tblContractAudit" Type="Self.tblContractAudit" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tblContractMaster">
+        <PropertyRef Name="ContractID" />
+      </Principal>
+      <Dependent Role="tblContractAudit">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_tblTemplateMaster_tblCategory' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_tblTemplateMaster_tblCategory" />-->
+  <EntityContainer Name="ContractManagementSystemDBModelStoreContainer">
+    <EntitySet Name="tblAlertLog" EntityType="Self.tblAlertLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAlertSystem" EntityType="Self.tblAlertSystem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApprovalEscalation" EntityType="Self.tblApprovalEscalation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApprovalLog" EntityType="Self.tblApprovalLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApprovalMaster" EntityType="Self.tblApprovalMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCategoryLog" EntityType="Self.tblCategoryLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClauseAudit" EntityType="Self.tblClauseAudit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClauseLog" EntityType="Self.tblClauseLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClauseMaster" EntityType="Self.tblClauseMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblConfiguration" EntityType="Self.tblConfiguration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractAudit" EntityType="Self.tblContractAudit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractContent" EntityType="Self.tblContractContent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractLog" EntityType="Self.tblContractLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractMaster" EntityType="Self.tblContractMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractModification" EntityType="Self.tblContractModification" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblContractModificationContent" EntityType="Self.tblContractModificationContent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSubCategory" EntityType="Self.tblSubCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSubCategoryLog" EntityType="Self.tblSubCategoryLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTemplateAudit" EntityType="Self.tblTemplateAudit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTemplateContent" EntityType="Self.tblTemplateContent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTemplateLog" EntityType="Self.tblTemplateLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTemplateMaster" EntityType="Self.tblTemplateMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserLog" EntityType="Self.tblUserLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserLogin" EntityType="Self.tblUserLogin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserMaster" EntityType="Self.tblUserMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVariableData" EntityType="Self.tblVariableData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVariables" EntityType="Self.tblVariables" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVendorLog" EntityType="Self.tblVendorLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVendorMaster" EntityType="Self.tblVendorMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVendorTemplate" EntityType="Self.tblVendorTemplate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVendorTemplateLog" EntityType="Self.tblVendorTemplateLog" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tblClauseAudit_tblClauseMaster" Association="Self.FK_tblClauseAudit_tblClauseMaster">
+      <End Role="tblClauseMaster" EntitySet="tblClauseMaster" />
+      <End Role="tblClauseAudit" EntitySet="tblClauseAudit" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblContractAudit_tblContractAudit" Association="Self.FK_tblContractAudit_tblContractAudit">
+      <End Role="tblContractMaster" EntitySet="tblContractMaster" />
+      <End Role="tblContractAudit" EntitySet="tblContractAudit" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

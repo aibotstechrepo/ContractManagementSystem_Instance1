@@ -1,0 +1,3043 @@
+﻿@model ContractManagementSystem.Models.CommonModel
+
+@{
+    ViewBag.Title = "search";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string getRelativeDateTime(DateTime date)
+    {
+        TimeSpan ts = DateTime.Now - date;
+        if (ts.TotalMinutes < 1)//seconds ago
+            return "just now";
+        if (ts.TotalHours < 1)//min ago
+            return (int)ts.TotalMinutes == 1 ? "1 Minute ago" : (int)ts.TotalMinutes + " Minutes ago";
+        if (ts.TotalDays < 1)//hours ago
+            return (int)ts.TotalHours == 1 ? "1 Hour ago" : (int)ts.TotalHours + " Hours ago";
+        if (ts.TotalDays < 7)//days ago
+            return (int)ts.TotalDays == 1 ? "1 Day ago" : (int)ts.TotalDays + " Days ago";
+        if (ts.TotalDays < 30.4368)//weeks ago
+            return (int)(ts.TotalDays / 7) == 1 ? "1 Week ago" : (int)(ts.TotalDays / 7) + " Weeks ago";
+        if (ts.TotalDays < 365.242)//months ago
+            return (int)(ts.TotalDays / 30.4368) == 1 ? "1 Month ago" : (int)(ts.TotalDays / 30.4368) + " Months ago";
+        //years ago
+        return (int)(ts.TotalDays / 365.242) == 1 ? "1 Year ago" : (int)(ts.TotalDays / 365.242) + " Years ago";
+    }
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserLoggedID = CurrentUserID();
+}
+<style>
+
+    .tabbable-responsive {
+        display: block;
+        min-width: 100%;
+        overflow-x: auto;
+        margin: 0px -20px -13px -20px;
+    }
+
+    .tabbable {
+        min-width: 100%;
+    }
+
+    .nav-tabs {
+        white-space: nowrap;
+        display: inline-block;
+        min-width: 100%;
+        padding: 0px 21px;
+    }
+
+    .nav-item {
+        display: inline-block;
+    }
+
+        .nav-item .active {
+            font-weight: bold;
+        }
+
+    .nav-link {
+        display: inline-block;
+    }
+</style>
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header align-items-center" style="padding: 0.75rem 1.25rem;">
+
+                            <div class="d-flex" style="padding-bottom:10px;">
+                                <div class="title">
+                                    <h2><b>Search & Report</b></h2>
+                                </div>
+                            </div>
+                            <div class="tabbable-responsive">
+                                <div class="tabbable">
+                                    <ul class="nav nav-tabs tabbutton" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab" aria-controls="first" aria-selected="true">Contract</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">Template</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">Vendor</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="fourth-tab" data-toggle="tab" href="#fourth" role="tab" aria-controls="fourth" aria-selected="false">User</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="fifth-tab" data-toggle="tab" href="#fifth" role="tab" aria-controls="fifth" aria-selected="false">Clause</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="sixth-tab" data-toggle="tab" href="#sixth" role="tab" aria-controls="sixth" aria-selected="false">Cluster & Function</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="first-tab">
+                                    <ul class="nav nav-pills nav-primary justify-content-center" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-ContractBasic-tab" data-toggle="pill" href="#pills-ContractBasic" role="tab" aria-controls="pills-ContractBasic" aria-selected="true">Basic</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-ContractAdvanced-tab" data-toggle="pill" href="#pills-ContractAdvanced" role="tab" aria-controls="pills-ContractAdvanced" aria-selected="false">Advanced</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="tab-content justify-content-center" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-ContractBasic" role="tabpanel" aria-labelledby="pills-ContractBasic-tab">
+                                            <br />
+                                            <form>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Contract ID</label>
+                                                            <input type="text" maxlength="180" title="characters and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="BasicContractUID" placeholder="Contract UID">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Contract Type</label>
+                                                            <select class="form-control form-control" id="BasicContractType" style="padding-top:3px;padding-bottom:3px;" onchange="ContractTypeBasic(this.value)">
+
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Contract Name</label>
+                                                            <input type="text" maxlength="180" class="form-control" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" id="BasicContractName" placeholder="Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px; align-items: center;">
+                                                            <div id="Contracttypebasicbtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Cluster</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="BasicContractCluster" onchange="ContractClusterBasic(this.value)">
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px;  align-items: center;">
+                                                            <div id="ContractClusterBasicBtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Function</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="BasicContractFunction" onchange="ContractFunctionBasic(this.value)">
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px;  align-items: center;">
+                                                            <div id="ContractFunctionBasicBtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Description</label>
+                                                            <textarea maxlength="180" class="form-control text_area" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="BasicContractDescription"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button type="button" style="font-size:17px;" class="btn btn-primary" onclick="ContractBasicSearch();"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                        <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Contract');"><b>Download</b></button>
+                                                        <button type="button" style="font-size:17px;" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="pills-ContractAdvanced" role="tabpanel" aria-labelledby="pills-ContractAdvanced-tab">
+                                            <br />
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Contract ID</label>
+                                                            <input type="text" maxlength="180" class="form-control" title="characters and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="AdvancedContractUID" placeholder="Contract UID">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Contract Type</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="AdvancedContractType" onchange="ContractTypeAdvanced(this.value)">
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Contract Name</label>
+                                                            <input type="text" maxlength="180" class="form-control" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" id="AdvancedContractName" placeholder="Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px; align-items: center;">
+                                                            <div id="Contracttypeadvancedbtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Cluster</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="AdvancedContractCluster" onchange="ContractClusterAdvanced(this.value)">
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px;  align-items: center;">
+                                                            <div id="Contractclusteradvancedbtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Function</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="AdvancedContractFunction" onchange="ContractFunctionAdvanced(this.value)">
+                                                                <option value="" selected disabled>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px;  align-items: center;">
+                                                            <div id="Contractfunctionadvancedbtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Vendor Name</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="AdvancedContractVendor" onchange="ContractVendorAdvanced(this.value)">
+                                                                <option selected disabled>-- Select --</option>
+                                                                @*<option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>*@
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 60px; margin-top:14px;  align-items: center;">
+                                                            <div id="Contractvendoradvancedbtn">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Execution Date</label>
+                                                            <div class="row">
+                                                                <div class="col-6 col-lg-6">
+                                                                    <label>From</label>
+                                                                    <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+                                                                        <input type="text" maxlength="50" id="executiondatecontract" class="form-control datetimepicker-input" data-target="#datetimepicker7" />
+                                                                        <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                                                                            <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-lg-6">
+                                                                    <label>To</label>
+                                                                    <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                                                                        <input type="text" maxlength="50" id="executiondatecontractto" class="form-control datetimepicker-input" data-target="#datetimepicker8" />
+                                                                        <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                                                                            <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Description</label>
+                                                            <textarea maxlength="180" class="form-control text_area" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="AdvancedContractDescription"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-12 text-right">
+                                                        <div class="form-group">
+                                                            <button style="font-size:17px;" type="button" class="btn btn-primary" onclick="ContractAdvancedSearch();"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                            <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Contract');"><b>Download</b></button>
+                                                            <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="table-responsive">
+
+                                                    <table id="tblContractSearch" class="display table table-striped table-hover table-bordered" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><center>View</center></th>
+                                                                <th><center>Contract ID</center></th>
+                                                                <th><center>Contract Name</center></th>
+                                                                <th><center>Contract Type</center></th>
+                                                                <th><center>Cluster</center></th>
+                                                                <th><center>Function</center></th>
+                                                                <th><center>Status</center></th>
+
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="tblContractSearchList">
+
+                                                            @foreach (var item in Model.Contract)
+                                                            {
+                                                                int Found = -1;
+                                                                try
+                                                                {
+                                                                    DateTime ExpieryDate = Convert.ToDateTime(item.InEffectTo);
+                                                                    Found = DateTime.Compare(DateTime.Now, ExpieryDate);
+                                                                }
+                                                                catch { }
+                                                                if (((item.Status == "Draft") && ((item.Initiator + "") == CurrentUserLoggedID)) || (item.Status == "Approved") && (((item.Initiator + "") == CurrentUserLoggedID) || ((item.Approver1ID + "") == CurrentUserLoggedID) || ((item.Approver2ID + "") == CurrentUserLoggedID) || ((item.Approver3ID + "") == CurrentUserLoggedID) || ((item.Approver4ID + "") == CurrentUserLoggedID) || ((item.Approver5ID + "") == CurrentUserLoggedID) || ((item.Approver6ID + "") == CurrentUserLoggedID) || ((item.Approver7ID + "") == CurrentUserLoggedID) || ((item.Approver8ID + "") == CurrentUserLoggedID) || ((item.Approver9ID + "") == CurrentUserLoggedID) || ((item.Approver10ID + "") == CurrentUserLoggedID)) || ((item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID))) || ((item.Status == "Rejected") && (item.NextApprover == CurrentUserLoggedID)) || ((item.Status == "In Effect") && (((item.Initiator + "") == CurrentUserLoggedID) || ((item.Approver1ID + "") == CurrentUserLoggedID) || ((item.Approver2ID + "") == CurrentUserLoggedID) || ((item.Approver3ID + "") == CurrentUserLoggedID) || ((item.Approver4ID + "") == CurrentUserLoggedID) || ((item.Approver5ID + "") == CurrentUserLoggedID) || ((item.Approver6ID + "") == CurrentUserLoggedID) || ((item.Approver7ID + "") == CurrentUserLoggedID) || ((item.Approver8ID + "") == CurrentUserLoggedID) || ((item.Approver9ID + "") == CurrentUserLoggedID) || ((item.Approver10ID + "") == CurrentUserLoggedID) || User.IsInRole("reviewer"))) || ((((item.Status == "Expired") || (item.Status == "In Effect")) && (Found < 0)) && (((item.Initiator + "") == CurrentUserLoggedID) || ((item.Approver1ID + "") == CurrentUserLoggedID) || ((item.Approver2ID + "") == CurrentUserLoggedID) || ((item.Approver3ID + "") == CurrentUserLoggedID) || ((item.Approver4ID + "") == CurrentUserLoggedID) || ((item.Approver5ID + "") == CurrentUserLoggedID) || ((item.Approver6ID + "") == CurrentUserLoggedID) || ((item.Approver7ID + "") == CurrentUserLoggedID) || ((item.Approver8ID + "") == CurrentUserLoggedID) || ((item.Approver9ID + "") == CurrentUserLoggedID) || ((item.Approver10ID + "") == CurrentUserLoggedID) || User.IsInRole("reviewer"))))
+                                                                {
+                                                                    <tr>
+                                                                        <td class="redirectionallink">
+                                                                            <center>
+                                                                                <a href="@Url.Action("Details", "Contract", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                            </center>
+                                                                        </td>
+                                                                        <td class="ContractID">@item.ContractID</td>
+                                                                        <td>@item.ContractName</td>
+                                                                        <td>@item.ContractType</td>
+                                                                        <td>@item.ContractCategory</td>
+                                                                        <td>@item.ContractSubCategory</td>
+                                                                        <td>
+                                                                            @{ if (item.Status == "Draft")
+                                                                                {
+                                                                                    <span class='badge Legal shadow draft'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Draft</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "Pending Approval")
+                                                                                {
+                                                                                    <span class='badge Legal shadow  Pennding_Approvals'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Pending Approvals</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "Rejected")
+                                                                                {
+                                                                                    <span class='badge Legal shadow Rework'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Reject / Rework</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "Approve")
+                                                                                {
+                                                                                    <span class='badge Legal shadow Ineffect'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Approve</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "In Effect")
+                                                                                {
+                                                                                    <span class='badge Legal shadow Ineffect'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Executed</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "Approved")
+                                                                                {
+                                                                                    <span class='badge Legal shadow draft'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Approved</span>
+                                                                                    </span>
+                                                                                }
+                                                                                if (item.Status == "Expired")
+                                                                                {
+                                                                                    <span class='badge Legal shadow Expired'>
+                                                                                        <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                        <span>Expired</span>
+                                                                                    </span>
+                                                                                }
+                                                                            }
+                                                                        </td>
+
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                                    <br />
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="password">Template Name</label>
+                                                    <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control" id="BasicTemplateName" placeholder="Template Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="defaultSelect">Template Type</label>
+                                                    <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="BasicTemplateType" onchange="TemplateTypeBasic(this.value)">
+                                                        <option value="" disabled selected>--Select--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+
+                                                <div class="form-group addbtnarea" style="border: 2px dashed ;min-height: 200px; align-items: center;">
+
+                                                    <div id="Templatetypebasicbtn">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <button type="button" class="btn btn-primary" onclick="TemplateBasicSearch();" style="font-size:17px;"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Template');"><b>Download</b></button>
+                                                <button type="button" onclick="window.location.reload();" class="btn btn-secondary" style="font-size:17px;"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                           
+                                            <div class="table-responsive">
+
+                                                <table id="tblTemplateSearch" class="display table table-striped table-hover table-bordered" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><center>View</center></th>
+                                                            <th><center>Template ID</center></th>
+                                                            <th><center>Template Name</center></th>
+                                                            <th><center>Template Type</center></th>
+                                                            <th><center>Status</center></th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="tblTemplateSearchList">
+
+                                                        @foreach (var item in Model.Template)
+                                                        {
+                                                            if (((item.Status == "Draft") && ((item.Initiator + "") == CurrentUserLoggedID)) || (item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)) || ((item.Status == "Rejected") && (item.NextApprover == CurrentUserLoggedID)) || (item.Status == "In Effect"))
+                                                            {
+                                                                <tr>
+                                                                    <td class="redirectionallink">
+                                                                        <center>
+                                                                            <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td class="TemplateID">@item.TemplateID</td>
+                                                                    <td>@item.Name</td>
+                                                                    <td>@item.Type</td>
+                                                                    <td>
+                                                                        @{ if (item.Status == "Draft")
+                                                                            {
+                                                                                <span class='badge Legal shadow draft'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Draft</span>
+                                                                                </span>
+                                                                            }
+                                                                            if (item.Status == "Pending Approval")
+                                                                            {
+                                                                                <span class='badge Legal shadow  Pennding_Approvals'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Pending Approvals</span>
+                                                                                </span>
+                                                                            }
+                                                                            if (item.Status == "Rejected")
+                                                                            {
+                                                                                <span class='badge Legal shadow Rework'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Reject / Rework</span>
+                                                                                </span>
+                                                                            }
+                                                                            if (item.Status == "Approve")
+                                                                            {
+                                                                                <span class='badge Legal shadow Ineffect'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Approve</span>
+                                                                                </span>
+                                                                            }
+                                                                            if (item.Status == "In Effect")
+                                                                            {
+                                                                                <span class='badge Legal shadow Ineffect'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Approved</span>
+                                                                                </span>
+                                                                            }
+                                                                            if (item.Status == "Approved")
+                                                                            {
+                                                                                <span class='badge Legal shadow draft'>
+                                                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                    <span>Approved</span>
+                                                                                </span>
+                                                                            }
+
+                                                                        }
+                                                                    </td>
+                                                                    @* <td>@item.Description</td>*@
+
+
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+                                    <ul class="nav nav-pills nav-primary justify-content-center" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-VendorBasic-tab" data-toggle="pill" href="#pills-VendorBasic" role="tab" aria-controls="pills-VendorBasic" aria-selected="true">Basic</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-VendorAdvanced-tab" data-toggle="pill" href="#pills-VendorAdvanced" role="tab" aria-controls="pills-VendorAdvanced" aria-selected="false">Advanced</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="tab-content justify-content-center" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-VendorBasic" role="tabpanel" aria-labelledby="pills-VendorBasic-tab">
+                                            <br />
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Type of Entity</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="vendorbasicentity" onchange="VendorEntityBasic(this.value)">
+                                                                <option>Company</option>
+                                                                <option>Partnership Firm</option>
+                                                                <option>Sole Proprietorship</option>
+                                                                <option>Limited Liability Partnership Firm</option>
+                                                                <option>Others</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label id="Vendor_Name_ID">Name Of the Company</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="BasicVendorName" placeholder="Vendor Name">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofCompany">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Corporate Identification Number(CIN)</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="BasicVendorCIN" placeholder="Corporate Identification Number(CIN)">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofSole" style="display:none;">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="password">PAN number</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="BasicVendorPAN" placeholder="PAN number">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofLimited" style="display:none;">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="password">LLP IN</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="BasicVendorLLPIN" placeholder="LLP IN">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofPartnership" style="display:none;">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Authorised Signatory</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="BasicVendorAuthorisedSignatory" placeholder="Authorised Signatory">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button style="font-size:17px;" type="button" onclick="VendorBasicSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                        <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Vendor');"><b>Download</b></button>
+                                                        <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-VendorAdvanced" role="tabpanel" aria-labelledby="pills-VendorAdvanced-tab">
+                                            <br />
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Type of Entity</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="vendoradvanceentity" onchange="VendorEntityAdvance(this.value)">
+                                                                <option>Company</option>
+                                                                <option>Partnership Firm</option>
+                                                                <option>Sole Proprietorship</option>
+                                                                <option>Limited Liability Partnership Firm</option>
+                                                                <option>Others</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label id="Vendor_Name_ID2">Name Of the Company</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceVendorName" placeholder="Vendor Name">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofCompany2">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Corporate Identification Number(CIN)</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="AdvanceVendorCIN" placeholder="Corporate Identification Number(CIN)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Authorised Signatory</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceAuthorisedSignatory" placeholder="Authorised Signatory">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofCompany2">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Registered Address</label>
+                                                            <textarea maxlength="1800" rows="1" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorRegisteredAddress_Company" placeholder="Registered Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Corporate Address</label>
+                                                            <textarea maxlength="180" rows="1" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorCorporateAddress_Company" placeholder="Corporate Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row IDofSole2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">PAN number</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="AdvanceVendorPAN" placeholder="PAN number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Adhaar Card No</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="AdvanceVendorAdhaar" placeholder="Adhaar Card No">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofSole2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label id="Vendor_Name_ID2">Name of the Proprietorship</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceVendorName_Sole" placeholder="Name of the Proprietorship">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Address of the Proprietorship Concern</label>
+                                                            <textarea maxlength="180" rows="1" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorAddress_Sole" placeholder="Address of the Proprietorship Concern"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row IDofLimited2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">LLP IN</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" class="form-control" id="AdvanceVendorLLPIN" placeholder="LLP IN">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Registered Address of the LLP</label>
+                                                            <input type="text" maxlength="1800" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control" id="AdvanceVendorAddressLLPIN" placeholder="Registered Address of the LLP">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row IDofPartnership2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Authorised Signatory</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceVendorAuthorisedSignatory" placeholder="Authorised Signatory">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Registered Address</label>
+                                                            <textarea rows="1" maxlength="1800" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorRegisteredAddress" placeholder="Registered Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row IDofPartnership2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Name of the First Partner</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceVendorName1P" placeholder="Name of the First Partner">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Age of First Partner</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control" id="AdvanceVendorAge1P" placeholder="Age of First Partner">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row IDofPartnership2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Father’s / Husband’s Name of the First Partner</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" id="AdvanceVendorFather1P" placeholder="Father’s / Husband’s Name of the First Partner">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Address of the First Partner</label>
+                                                            <textarea rows="1" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorAddress1P" placeholder="Address of the First Partner"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row IDofOthers2" style="display:none;">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Address</label>
+                                                            <textarea rows="1" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" class="form-control text_area" id="AdvanceVendorAddress" placeholder="Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button style="font-size:17px;" type="button" onclick="VendorAdvancedSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                        <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Vendor');"><b>Download</b></button>
+                                                        <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="table-responsive">
+                                                    <table id="tblVendorSearch" class="display table table-striped table-hover table-bordered" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><center>View</center></th>
+                                                                <th><center>Vendor ID</center></th>
+                                                                <th><center>Type of Entity</center></th>
+                                                                <th><center>Vendor Name</center></th>
+                                                                <th><center>Registered Address</center></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="tblVendorSearchList">
+                                                            @foreach (var item in Model.Vendor)
+                                                            {
+                                                                <tr>
+                                                                    <td class="redirectionallink">
+                                                                        <center>
+                                                                            <a href="@Url.Action("Details", "Vendor", new { id = item.VendorVendorID})">
+                                                                                <i class="fa fa-eye fa-1x" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td class="VendorID">@item.VendorVendorID</td>
+                                                                    <td>@item.VendorTypeofEntity</td>
+                                                                    <td>@item.VendorVendorName</td>
+                                                                    <td>@item.VendorRegisteredAddress</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
+                                    <ul class="nav nav-pills nav-primary justify-content-center" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-UserBasic-tab" data-toggle="pill" href="#pills-UserBasic" role="tab" aria-controls="pills-UserBasic" aria-selected="true">Basic</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-UserAdvanced-tab" data-toggle="pill" href="#pills-UserAdvanced" role="tab" aria-controls="pills-UserAdvanced" aria-selected="false">Advanced</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="tab-content justify-content-center" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-UserBasic" role="tabpanel" aria-labelledby="pills-UserBasic-tab">
+                                            <br />
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="password">Employee ID</label>
+                                                            <input type="text" maxlength="180" title="characters and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="UserBasicEmployeeID" placeholder="Employee ID">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Employee Name</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control" id="UserBasicEmployeeName" placeholder="Name">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Email Address</label>
+                                                            <input type="email" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" class="form-control" id="UserBasicEmployeeEmail" placeholder="Email Address">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Role</label>
+                                                            <select class="form-control" id="userrolebasic" style="padding-top:3px;padding-bottom:3px;" onchange="UserBasicRole(this.value);">
+                                                                <option selected>--Select--</option>
+                                                                <option value="Initiator">Initiator</option>
+                                                                <option value="Approver">Approver</option>
+                                                                <option value="Legal">Legal</option>
+                                                                <option value="Finance">Finance</option>
+                                                                <option value="Admin">Admin</option>
+                                                                <option value="Reviewer">Reviewer</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ;min-height: 50px; align-items: center;padding-top:10px;">
+
+                                                                <div id="userrolebasicbtn">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Status</label>
+                                                            <select class="form-control form-control" style="padding-top:3px;padding-bottom:3px;" id="userstatusbasic" onchange="UserBasicStatus(this.value)">
+                                                                <option selected>--Select--</option>
+                                                                <option value="Active">Active</option>
+                                                                <option value="Inactive">Inactive</option>
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ; min-height: 50px;padding-top:10px;">
+                                                                <div id="userstatusbasicbtn">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button style="font-size:17px;" type="button" onclick="UserSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                        <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('User');"><b>Download</b></button>
+                                                        <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-UserAdvanced" role="tabpanel" aria-labelledby="pills-UserAdvanced-tab">
+                                            <br />
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label for="password">Employee ID</label>
+                                                            <input type="text" maxlength="180" title="characters and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="UserAdvanceEmployeeID" placeholder="Enter ID">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Employee Name</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control" id="UserAdvanceEmployeeName" placeholder="Enter Name">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Email Address</label>
+                                                            <input type="email" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" class="form-control" id="UserAdvanceEmployeeEmail" placeholder="Enter Email address">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label for="defaultSelect">Cluster</label>
+                                                                    <select class="form-control form-control" id="usercategory">
+                                                                        @*<option value="" disabled selected>--select--</option>*@
+                                                                        <option value="" disabled selected>--Select--</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label for="defaultSelect">Function</label>
+                                                                    <select class="form-control form-control" id="usersubcategory" onchange="AddusersubcategoryAdvanced(this.value)">
+                                                                        <option value="" disabled selected>--select--</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ;min-height: 50px;padding-top:10px;">
+
+                                                                <div id="AddUserCatbtn">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Designation</label>
+                                                            <select class="form-control form-control" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" id="userdesignation" onchange="UserDesignation(this.value)">
+                                                                <option value="" disabled selected>--select--</option>
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ;min-height: 50px;padding-top:10px;">
+
+                                                                <div id="userdesigbtn">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Role</label>
+                                                            <select class="form-control form-control" id="userrole" onchange="UserAdvancedRole(this.value)">
+                                                                <option selected>--Select--</option>
+                                                                <option value="Initiator">Initiator</option>
+                                                                <option value="Approver">Approver</option>
+                                                                <option value="Legal">Legal</option>
+                                                                <option value="Finance">Finance</option>
+                                                                <option value="Admin">Admin</option>
+                                                                <option value="Reviewer">Reviewer</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ;min-height: 50px;align-items: center; padding-top:10px;">
+
+                                                                <div id="userroleadv">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="defaultSelect">Status</label>
+                                                            <select class="form-control form-control" id="userstatus" onchange="UserAdvancedStatus(this.value)">
+                                                                <option selected>--Select--</option>
+
+                                                                <option value="Active">Active</option>
+                                                                <option value="Inactive">Inactive</option>
+
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group addbtnareas" style="border: 2px dashed ;min-height: 50px; padding-top:10px;">
+                                                                <div id="userstatusadv">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <button style="font-size:17px;" type="button" onclick="UserAdvancedSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                        <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('User');"><b>Download</b></button>
+                                                        <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                
+                                                <div class="table-responsive">
+                                                    <table id="tblUserSearch" class="display table table-striped table-hover table-bordered" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><center>View</center></th>
+                                                                <th><center>Employee ID</center></th>
+                                                                <th><center>Name</center></th>
+                                                                <th><center>Email address</center></th>
+                                                                <th><center>Cluster</center></th>
+                                                                <th><center>Function</center></th>
+                                                                <th><center>Role</center></th>
+                                                                <th><center>Status</center></th>
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody id="tblUsersSearchList">
+                                                            @foreach (var item in Model.Users)
+                                                            {
+                                                                <tr>
+                                                                    <td class="redirectionallink">
+                                                                        <center>
+                                                                            <a href="@Url.Action("Details", "Users", new { id = item.UserID})"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td class="UserEmployeeID">@item.UserEmployeeID</td>
+                                                                    <td>@item.UserEmployeeName</td>
+                                                                    <td>@item.UserEmployeeEmail</td>
+                                                                    <td>@item.UserCategory</td>
+                                                                    <td>@item.UserSubCategory</td>
+                                                                    <td>
+
+                                                                        @{if (item.UserRoleInitiator == true)
+                                                                            {
+                                                                                <span class='badge Initiator_icon shadow'>
+                                                                                    <i class="la flaticon-pencil" aria-hidden="true"></i>
+                                                                                    &nbsp; &nbsp;Initiator
+                                                                                </span>
+                                                                            }
+                                                                            if (item.UserRoleLegal == true)
+                                                                            {
+                                                                                <span class='badge Legal_icon shadow'><i class="icon-graduation"></i>&nbsp; &nbsp; Legal  </span>
+                                                                            }
+                                                                            if (item.UserRoleApprover == true)
+                                                                            {
+                                                                                <span class='badge Approver_icon shadow'><i class="la flaticon-success"></i>&nbsp; &nbsp;Approver </span>
+                                                                            }
+                                                                            if (item.UserRoleFinance == true)
+                                                                            {
+                                                                                <span class='badge Master_icon shadow'><i class="la flaticon-coins"></i>&nbsp; &nbsp;Finance </span>
+                                                                            }
+                                                                            if (item.UserRoleAdmin == true)
+                                                                            {
+                                                                                <span class='badge Admin_icon shadow'><i class="la flaticon-user-1"></i>&nbsp; &nbsp;Admin</span>
+                                                                            }
+                                                                            if (item.UserRoleReviewer == true)
+                                                                            {
+                                                                                <span class='badge Reviewer_icon shadow'><i class="la flaticon-profile-1"></i>&nbsp; &nbsp;Reviewer</span>
+                                                                            }
+                                                                        }
+
+                                                                    </td>
+
+                                                                    <td>@item.UserStatus</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="fifth" role="tabpanel" aria-labelledby="fifth-tab">
+                                    <form>
+                                        <div clss="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="password">Clause Title</label>
+                                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control" id="ClauseTitle" placeholder="Title">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Clause Description</label>
+                                                            <input type="text" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" class="form-control" id="ClauseDescription" placeholder="Description">
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <button style="font-size:17px;" type="button" onclick="ClauseSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Clause');"><b>Download</b></button>
+                                                <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            
+                                            <div class="table-responsive">
+                                                <table id="tblClauseSearch" class="display table table-striped table-hover table-bordered" style="width: 100%;">
+
+                                                    <thead>
+
+                                                        <tr>
+                                                            <th><center>View</center></th>
+                                                            <th><center>Clause ID</center></th>
+                                                            <th><center>Clause Title</center></th>
+                                                            <th><center>Clause Description</center></th>
+                                                        </tr>
+
+                                                    <tbody id="tblClauseSearchList">
+
+                                                        @foreach (var item in Model.Clause)
+                                                        {
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    <center>
+                                                                        <a href="@Url.Action("Details", "Clause", new { id = item.ClauseClauseID})"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td class="ClauseID">@item.ClauseClauseID</td>
+                                                                <td>@item.ClauseClauseTitle</td>
+                                                                <td>@item.ClauseClauseDescription</td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="sixth" role="tabpanel" aria-labelledby="sixth-tab">
+
+
+
+                                    <form>
+                                        <div class="row">
+                                            <br><br>
+                                            <div class="col-12">
+                                                <div class="row justify-content-center">
+                                                    <div class="form-group form-inline">
+                                                        <input class="form-radio-input" type="radio" name="optionsRadios" style="margin-top:0rem;" onclick="CategoryFilter1('category')" value="">&nbsp;
+                                                        <label>Cluster</label>&nbsp; &nbsp; &nbsp; &nbsp;
+                                                        <input class="form-radio-input" type="radio" name="optionsRadios" style="margin-top:0rem;" onclick="CategoryFilter1('subcategory')" value="">&nbsp;
+                                                        <label>Function</label>&nbsp; &nbsp; &nbsp; &nbsp;
+                                                        <label form="defaultSelect">Filter</label>&nbsp; &nbsp;
+                                                        <select class="form-control form-control" id="searchcategorylist" onchange="AppendButton(this.value)" style="width:120px;">
+                                                            <option value="" disabled selected>--select--</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="col-1"></div>
+                                            <div class="col-10">
+                                                <div class="form-group addbtnarea" style="border:2px dashed; min-height:50px; padding-top:10px;">
+                                                    <div id="AppendBtn">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1"></div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <button style="font-size:17px;" type="button" onclick="ClusterSearch();" class="btn btn-primary"><i class="flaticon-search-2" aria-hidden="true"></i><b>&nbsp;&nbsp;Search</b></button>
+                                                <button style="font-size:17px;" type="button" class="btn btn-success" onclick="Testing('Category');"><b>Download</b></button>
+                                                <button style="font-size:17px;" type="button" onclick="window.location.reload();" class="btn btn-secondary"><i class="flaticon-error" aria-hidden="true"></i><b>&nbsp;&nbsp;Clear</b></button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <hr />
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12">
+                                            
+                                            <div class="table-responsive">
+                                                <table id="tblCategorySearch" class="display table table-striped table-hover table-bordered" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><center>View</center></th>
+                                                            <th><center>ID</center></th>
+                                                            <th><center>Cluster</center></th>
+                                                            <th><center>Function</center></th>
+                                                        </tr>
+
+                                                    </thead>
+
+                                                    <tbody id="tblCategorySearchList">
+                                                        @foreach (var item in Model.SubCategory)
+                                                        {
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    @*<center>
+                                                                            <a href="~/DivisionMaster/Repository" id="@item.SubCategoryID" onclick="LoadSubCategory(this.id);" data-toggle="modal" data-target="#ViewModel1">
+                                                                                <i class="fa fa-eye fa-1x" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </center>*@
+                                                                    <center>
+                                                                        <a href="~/DivisionMaster/Function" title="Back to Repository"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td class="SubCategoryID">@item.SubCategoryID</td>
+                                                                <td>@item.CategoryName</td>
+                                                                <td>@item.SubCategoryName</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+
+
+<script>
+    $('#categorycsv').on('click', function () {
+        $("#tblCategorySearch").tableHTMLExport({ type: 'csv', filename: 'Cluster & Function.csv' });
+    })
+    $('#categorypdf').on('click', function () {
+        $("#tblCategorySearch").tableHTMLExport({ type: 'pdf', filename: 'Cluster & Function.pdf' });
+    })
+    $('#clausecsv').on('click', function () {
+        $("#tblClauseSearch").tableHTMLExport({ type: 'csv', filename: 'ClauseMaster.csv' });
+    })
+    $('#clausepdf').on('click', function () {
+        $("#tblClauseSearch").tableHTMLExport({ type: 'pdf', filename: 'ClauseMaster.pdf' });
+    })
+    $('#usercsv').on('click', function () {
+        $("#tblUserSearch").tableHTMLExport({ type: 'csv', filename: 'UsersMaster.csv' });
+    })
+    $('#userpdf').on('click', function () {
+        $("#tblUserSearch").tableHTMLExport({ type: 'pdf', filename: 'UsersMaster.pdf' });
+    })
+    $('#vendorcsv').on('click', function () {
+        $("#tblVendorSearch").tableHTMLExport({ type: 'csv', filename: 'VendorMaster.csv' });
+    })
+    $('#vendorpdf').on('click', function () {
+        $("#tblVendorSearch").tableHTMLExport({ type: 'pdf', filename: 'VendorMaster.pdf' });
+    })
+    $('#contractcsv').on('click', function () {
+        $("#tblContractSearch").tableHTMLExport({ type: 'csv', filename: 'ContractMaster.csv' });
+    })
+    $('#contractpdf').on('click', function () {
+        $("#tblContractSearch").tableHTMLExport({ type: 'pdf', filename: 'ContractMaster.pdf' });
+    })
+    $('#templatecsv').on('click', function () {
+        $("#tblTemplateSearch").tableHTMLExport({ type: 'csv', filename: 'TemplateMaster.csv' });
+    })
+    $('#templatepdf').on('click', function () {
+        $("#tblTemplateSearch").tableHTMLExport({ type: 'pdf', filename: 'TemplateMaster.pdf' });
+    })
+</script>
+
+
+<script>
+
+    function CategoryFilter1(CategoryOption) {
+        // alert("");
+        if (CategoryOption == "category") {
+            //$('#defaultSelect').html("<option>---Select---</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option>");
+
+            $.ajax({
+                type: "POST",
+                url: "/Search/getCategoryList",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //  alert("Hello: " + response);
+                    var x = document.getElementById("searchcategorylist");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+                    option.text = "-- Select --";
+
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        option.setAttribute('Value', value);
+                        x.add(option);
+                    });
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        else if (CategoryOption == "subcategory") {
+            //$('#defaultSelect').html("<option>---Select---</option><option value='3'>3</option><option value='4'>4</option><option value='6'>6</option>");
+            $.ajax({
+                type: "POST",
+                url: "/Search/getSubCategoryList",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("searchcategorylist");
+
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+
+                    option.text = "-- Select --";
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        option.setAttribute('Value', value);
+                        x.add(option);
+                    });
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    }
+
+    function AppendButton(i) {
+        var TempInnerHTML = $('#AppendBtn').html();
+        $('#AppendBtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs cluster_filter" id="Btn_' + i + '" onclick=AddValueToSelect(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#searchcategorylist option[value='" + i + "']").remove();
+    }
+    function AddValueToSelect(i) {
+        var tempID = i.replace("Btn_", "");
+        document.getElementById(i).remove();
+        $("#searchcategorylist").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function AddClauetype(i) {
+        var TempInnerHTML = $('#AddTitlBtn1').html();
+        $('#AddTitlBtn1').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs clause_type" id="TitleBtn_' + i + '" onclick=AddClausetypeValueToTitle(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#clausetype option[value='" + i + "']").remove();
+
+    }
+    function AddClausetypeValueToTitle(i) {
+        var tempID = i.replace("TitleBtn_", "");
+        document.getElementById(i).remove();
+        $("#clausetype").append('<option value="' + tempID + '">' + tempID + '</option>');
+
+    }
+
+    function AddusercategoryAdvanced(i) {
+        var TempInnerHTML = $('#AddUserCatbtn').html();
+        $('#AddUserCatbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs UserAdvance_Function" id="TitleBtn_2' + i + '" onclick=AddusercategoryAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#usercategory option[value='" + i + "']").remove();
+    }
+    function AddusercategoryAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_2", "");
+        document.getElementById(i).remove();
+        $("#usercategory").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function AddusersubcategoryAdvanced(i) {
+        var TempInnerHTML = $('#AddUserCatbtn').html();
+        $('#AddUserCatbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs" id="TitleBtn_3' + i + '" onclick=AddusersubcategoryAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#usersubcategory option[value='" + i + "']").remove();
+    }
+    function AddusersubcategoryAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_3", "");
+        document.getElementById(i).remove();
+        $("#usersubcategory").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function UserAdvancedRole(i) {
+        var TempInnerHTML = $('#userroleadv').html();
+        $('#userroleadv').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs UserAdvance_role" id="TitleBtn_4' + i + '" onclick=UserAdvancedRoleValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#userrole option[value='" + i + "']").remove();
+        var index = 0;
+        $('#userrole > option').eq(index).attr('selected', 'selected');
+    }
+    function UserAdvancedRoleValue(i) {
+        var tempID = i.replace("TitleBtn_4", "");
+        document.getElementById(i).remove();
+        $("#userrole").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function UserAdvancedStatus(i) {
+        var TempInnerHTML = $('#userstatusadv').html();
+        $('#userstatusadv').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs UserAdvance_status" id="TitleBtn_5' + i + '" onclick=UserAdvancedStatusValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#userstatus option[value='" + i + "']").remove();
+        var index = 0;
+        $('#userstatus > option').eq(index).attr('selected', 'selected');
+    }
+    function UserAdvancedStatusValue(i) {
+        var tempID = i.replace("TitleBtn_5", "");
+        document.getElementById(i).remove();
+        $("#userstatus").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function UserDesignation(i) {
+        var TempInnerHTML = $('#userdesigbtn').html();
+        $('#userdesigbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs UserAdvance_designation" id="TitleBtn_6' + i + '" onclick=UserDesignationValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#userdesignation option[value='" + i + "']").remove();
+    }
+    function UserDesignationValue(i) {
+        var tempID = i.replace("TitleBtn_6", "");
+        document.getElementById(i).remove();
+        $("#userdesignation").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function UserBasicRole(i) {
+        //  alert(i);
+        var TempInnerHTML = $('#userrolebasicbtn').html();
+        $('#userrolebasicbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs BasicUser_Role" id="TitleBtn_7' + i + '" onclick=UserBasicRoleValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#userrolebasic option[value='" + i + "']").remove();
+        var index = 0;
+        $('#userrolebasic > option').eq(index).attr('selected', 'selected');
+
+    }
+    function UserBasicRoleValue(i) {
+        var tempID = i.replace("TitleBtn_7", "");
+        document.getElementById(i).remove();
+        $("#userrolebasic").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function UserBasicStatus(i) {
+        var TempInnerHTML = $('#userstatusbasicbtn').html();
+        $('#userstatusbasicbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs BasicUser_Status" id="TitleBtn_8' + i + '" onclick=UserBasicStatusValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#userstatusbasic option[value='" + i + "']").remove();
+        var index = 0;
+        $('#userstatusbasic > option').eq(index).attr('selected', 'selected');
+    }
+    function UserBasicStatusValue(i) {
+        var tempID = i.replace("TitleBtn_8", "");
+        document.getElementById(i).remove();
+        $("#userstatusbasic").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    //function VendorEntityAdv(i) {
+    //    var TempInnerHTML = $('#vendoradvbtn').html();
+    //    $('#vendoradvbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs AdvanceVendor_entity" id="TitleBtn_9' + i + '" onclick=VendorEntityAdvValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+    //    $("#vendoradventity option[value='" + i + "']").remove();
+    //}
+    //function VendorEntityAdvValue(i) {
+    //    var tempID = i.replace("TitleBtn_9", "");
+    //    document.getElementById(i).remove();
+    //    $("#vendoradventity").append('<option value="' + tempID + '">' + tempID + '</option>');
+    //}
+
+    //function VendorEntityBasic(i) {
+    //    var TempInnerHTML = $('#vendorbasicbtn').html();
+    //    $('#vendorbasicbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs BasicVendor_Entity" id="TitleBtn_01' + i + '" onclick=VendorEntityBasicValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+    //    $("#vendorbasicentity option[value='" + i + "']").remove();
+    //}
+    //function VendorEntityBasicValue(i) {
+    //    var tempID = i.replace("TitleBtn_01", "");
+    //    document.getElementById(i).remove();
+    //    $("#vendorbasicentity").append('<option value="' + tempID + '">' + tempID + '</option>');
+    //}
+    function VendorEntityBasic(option) {
+        if (option == "Company") {
+            $("#Vendor_Name_ID").html('Name of the Company');
+            $(".IDofCompany").show();
+            $(".IDofSole").hide();
+            $(".IDofLimited").hide();
+            $(".IDofPartnership").hide();
+        }
+        else if (option == "Partnership Firm") {
+            $("#Vendor_Name_ID").html('Name of the Partnership Firm');
+            $(".IDofCompany").hide();
+            $(".IDofSole").hide();
+            $(".IDofLimited").hide();
+            $(".IDofPartnership").show();
+
+        }
+        else if (option == "Sole Proprietorship") {
+            $("#Vendor_Name_ID").html('Name of the Proprietorship Concern');
+            $(".IDofCompany").hide();
+            $(".IDofSole").show();
+            $(".IDofLimited").hide();
+            $(".IDofPartnership").hide();
+
+        }
+        else if (option == "Limited Liability Partnership Firm") {
+            $("#Vendor_Name_ID").html('Name of the Limited Liability Partnership');
+            $(".IDofCompany").hide();
+            $(".IDofSole").hide();
+            $(".IDofLimited").show();
+            $(".IDofPartnership").hide();
+
+        }
+        else if (option == "Others") {
+            $("#Vendor_Name_ID").html('Name');
+            $(".IDofCompany").hide();
+            $(".IDofSole").hide();
+            $(".IDofLimited").hide();
+            $(".IDofPartnership").hide();
+        }
+    }
+
+
+    function VendorEntityAdvance(option) {
+        if (option == "Company") {
+            $("#Vendor_Name_ID2").html('Name of the Company');
+            $(".IDofCompany2").show();
+            $(".IDofSole2").hide();
+            $(".IDofLimited2").hide();
+            $(".IDofPartnership2").hide();
+            $(".IDofOthers2").hide();
+        }
+        else if (option == "Partnership Firm") {
+            $("#Vendor_Name_ID2").html('Name of the Partnership Firm');
+            $(".IDofCompany2").hide();
+            $(".IDofSole2").hide();
+            $(".IDofLimited2").hide();
+            $(".IDofPartnership2").show();
+            $(".IDofOthers2").hide();
+
+        }
+        else if (option == "Sole Proprietorship") {
+            $("#Vendor_Name_ID2").html('Name of the Proprietorship Concern');
+            $(".IDofCompany2").hide();
+            $(".IDofSole2").show();
+            $(".IDofLimited2").hide();
+            $(".IDofPartnership2").hide();
+            $(".IDofOthers2").hide();
+
+        }
+        else if (option == "Limited Liability Partnership Firm") {
+            $("#Vendor_Name_ID2").html('Name of the Limited Liability Partnership');
+            $(".IDofCompany2").hide();
+            $(".IDofSole2").hide();
+            $(".IDofLimited2").show();
+            $(".IDofPartnership2").hide();
+            $(".IDofOthers2").hide();
+
+        }
+        else if (option == "Others") {
+            $("#Vendor_Name_ID2").html('Name');
+            $(".IDofOthers2").show();
+            $(".IDofCompany2").hide();
+            $(".IDofSole2").hide();
+            $(".IDofLimited2").hide();
+            $(".IDofPartnership2").hide();
+        }
+    }
+
+    function ContractTypeBasic(i) {
+        var TempInnerHTML = $('#Contracttypebasicbtn').html();
+        $('#Contracttypebasicbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Basiccontract_type" id="TitleBtn_02' + i + '" onclick=ContractTypeBasicValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#BasicContractType option[value='" + i + "']").remove();
+    }
+    function ContractTypeBasicValue(i) {
+        var tempID = i.replace("TitleBtn_02", "");
+        document.getElementById(i).remove();
+        $("#BasicContractType").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function ContractClusterBasic(i) {
+        var TempInnerHTML = $('#ContractClusterBasicBtn').html();
+        $('#ContractClusterBasicBtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Basiccontract_cluster" id="TitleBtn_03' + i + '" onclick=ContractClusterBasicValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#BasicContractCluster option[value='" + i + "']").remove();
+    }
+    function ContractClusterBasicValue(i) {
+        var tempID = i.replace("TitleBtn_03", "");
+        document.getElementById(i).remove();
+        $("#BasicContractCluster").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function ContractFunctionBasic(i) {
+        var TempInnerHTML = $('#ContractFunctionBasicBtn').html();
+        $('#ContractFunctionBasicBtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Basiccontract_function" id="TitleBtn_04' + i + '" onclick=ContractFunctionBasicValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#BasicContractFunction option[value='" + i + "']").remove();
+    }
+    function ContractFunctionBasicValue(i) {
+        var tempID = i.replace("TitleBtn_04", "");
+        document.getElementById(i).remove();
+        $("#BasicContractFunction").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+
+    function ContractTypeAdvanced(i) {
+        var TempInnerHTML = $('#Contracttypeadvancedbtn').html();
+        $('#Contracttypeadvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedcontract_type" id="TitleBtn_05' + i + '" onclick=ContractTypeAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#AdvancedContractType option[value='" + i + "']").remove();
+    }
+    function ContractTypeAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_05", "");
+        document.getElementById(i).remove();
+        $("#AdvancedContractType").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function ContractClusterAdvanced(i) {
+        var TempInnerHTML = $('#Contractclusteradvancedbtn').html();
+        $('#Contractclusteradvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedcontract_cluster" id="TitleBtn_06' + i + '" onclick=ContractClusterAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#AdvancedContractCluster option[value='" + i + "']").remove();
+    }
+    function ContractClusterAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_06", "");
+        document.getElementById(i).remove();
+        $("#AdvancedContractCluster").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function ContractFunctionAdvanced(i) {
+        var TempInnerHTML = $('#Contractfunctionadvancedbtn').html();
+        $('#Contractfunctionadvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedcontract_function" id="TitleBtn_07' + i + '" onclick=ContractFunctionAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#AdvancedContractFunction option[value='" + i + "']").remove();
+    }
+    function ContractFunctionAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_07", "");
+        document.getElementById(i).remove();
+        $("#AdvancedContractFunction").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function ContractVendorAdvanced(i) {
+        var TempInnerHTML = $('#Contractvendoradvancedbtn').html();
+        $('#Contractvendoradvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedcontract_vendor" id="TitleBtn_08' + i + '" onclick=ContractVendorAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#AdvancedContractVendor option[value='" + i + "']").remove();
+    }
+    function ContractVendorAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_08", "");
+        document.getElementById(i).remove();
+        $("#AdvancedContractVendor").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function TemplateTypeBasic(i) {
+        var TempInnerHTML = $('#Templatetypebasicbtn').html();
+        $('#Templatetypebasicbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Basictemplate_type" id="TitleBtn_09' + i + '" onclick=TemplateTypeBasicValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#BasicTemplateType option[value='" + i + "']").remove();
+    }
+    function TemplateTypeBasicValue(i) {
+        var tempID = i.replace("TitleBtn_09", "");
+        document.getElementById(i).remove();
+        $("#BasicTemplateType").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+    function TemplateTypeAdvanced(i) {
+        var TempInnerHTML = $('#Templatetypeadvancedbtn').html();
+        $('#Templatetypeadvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedtemplate_type" id="TitleBtn_010' + i + '" onclick=TemplateTypeAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+        $("#AdvancedTemplateType option[value='" + i + "']").remove();
+    }
+    function TemplateTypeAdvancedValue(i) {
+        var tempID = i.replace("TitleBtn_010", "");
+        document.getElementById(i).remove();
+        $("#AdvancedTemplateType").append('<option value="' + tempID + '">' + tempID + '</option>');
+    }
+
+
+    //function TemplateClusterAdvanced(i) {
+    //    var TempInnerHTML = $('#Templateclusteradvancedbtn').html();
+    //    $('#Templateclusteradvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedtemplate_cluster" id="TitleBtn_011' + i + '" onclick=TemplateClusterAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+    //    $("#AdvancedTemplateCluster option[value='" + i + "']").remove();
+    //}
+    //function TemplateClusterAdvancedValue(i) {
+    //    var tempID = i.replace("TitleBtn_011", "");
+    //    document.getElementById(i).remove();
+    //    $("#AdvancedTemplateCluster").append('<option value="' + tempID + '">' + tempID + '</option>');
+    //}
+
+    //function TemplateFunctionAdvanced(i) {
+    //    var TempInnerHTML = $('#Templatefunctionadvancedbtn').html();
+    //    $('#Templatefunctionadvancedbtn').html(TempInnerHTML + '<button class="btn btn-primary btn-border btn-round btn-xs Advancedtemplate_function" id="TitleBtn_012' + i + '" onclick=ContractFunctionAdvancedValue(this.id)>' + i + '&ensp;&ensp;<i class="fas fa-times"></i></button>&emsp;');
+    //    $("#AdvancedTemplateFunction option[value='" + i + "']").remove();
+    //}
+    //function TemplateFunctionAdvancedValue(i) {
+    //    var tempID = i.replace("TitleBtn_012", "");
+    //    document.getElementById(i).remove();
+    //    $("#AdvancedTemplateFunction").append('<option value="' + tempID + '">' + tempID + '</option>');
+    //}
+</script>
+
+
+
+<script>
+    // function userdesignation() {
+
+    //$('#userdesignation').click(function () {
+    $(function () {
+        //alert("hello")
+        $.ajax({
+            type: "POST",
+            url: "/Search/getUserDesignation",
+            data: '{name: "' + $("#txtName").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                //alert("Hello: " + response);
+                var x = document.getElementById("userdesignation");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+    });
+</script>
+
+<script>
+    //var tempCatRefresh = 0;
+    // $('#usercategory').click(function () {
+    $(function () {
+        //if (tempCatRefresh == 0) {
+        //    tempCatRefresh = tempCatRefresh + 1;
+        //    tempCatRefresh = tempCatRefresh + 1
+        $.ajax({
+            type: "POST",
+            url: "/Search/getUserCategory",
+            data: '{name: "' + $("#txtName").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                //alert("Hello: " + response);
+                var x = document.getElementById("usercategory");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                //option.text = "-- Select Category --";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+    $("#usercategory").change(function () {
+        var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/Search/getUserSubCategory',
+            type: 'POST',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+
+                $('#usersubcategory')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("usersubcategory");
+
+                var option = document.createElement("option");
+                option.text = "-- Select --";
+                //option.disabled = true;
+
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            }
+        });
+    });
+
+
+
+
+</script>
+
+
+
+<script>
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/getContractVendorList",
+            data: '{name: "' + $("#txtName").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("AdvancedContractVendor");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            }
+        });
+        //}
+    });
+</script>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var table1 = $('#tblClauseSearch').DataTable({
+            "columnDefs": [
+                { "width": "15%", "targets": 0 },
+                { "width": "15%", "targets": 1 },
+                { "width": "40%", "targets": 2 },
+                { "width": "30%", "targets": 3 },
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.clause').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table1.columns(rel).search(this.value).draw();
+        });
+        //$('#ClauseTitle').on('keyup change', function () {
+        //   table1.columns(1).search(this.value).draw();
+        //});
+        //$('#ClauseDescription').on('keyup change', function () {
+        //   table1.columns(2).search(this.value).draw();
+        //});
+        //// $('#ClauseDescription').on('keyup change', function () {
+        ////   table1.columns(3).search(this.value).draw();
+        ////});
+        // $('#ClauseText').on('keyup change', function () {
+        //   table1.columns(4).search(this.value).draw();
+        //});
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        var table2 = $('#tblUserSearch').DataTable({
+            "columnDefs": [
+                { "width": "70%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
+                { "width": "5%", "targets": 2 },
+                { "width": "5%", "targets": 3 },
+                { "width": "5%", "targets": 4 },
+                { "width": "5%", "targets": 5 },
+                { "width": "5%", "targets": 6 },
+                { "width": "5%", "targets": 7 }
+
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.User').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            // alert(rel);
+            table2.columns(rel).search($.trim(this.value), false, true, true).draw();
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table3 = $('#tblVendorSearch').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "25%", "targets": 2 },
+                { "width": "30%", "targets": 3 },
+                { "width": "30%", "targets": 4 },
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.vendor').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table3.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table4 = $('#tblCategorySearch').DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "40%", "targets": 2 },
+                { "width": "40%", "targets": 3 },
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.category').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table4.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table5 = $('#tblContractSearch').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+                { "width": "15%", "targets": 3 },
+                { "width": "15%", "targets": 4 },
+                { "width": "15%", "targets": 5 },
+                { "width": "10%", "targets": 6 }
+
+
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.contract').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table5.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table6 = $('#tblTemplateSearch').DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 0 },
+                { "width": "20%", "targets": 1 },
+                { "width": "35%", "targets": 2 },
+                { "width": "20%", "targets": 3 },
+                { "width": "15%", "targets": 4 },
+
+            ],
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 100,
+            "order": [
+                [0, "desc"]]
+
+        });
+
+        $('input.search.template').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table6.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    function ClauseSearch() {
+        //alert("hello");
+        var clausetitle = $("#ClauseTitle").val();
+        var clausedescription = $("#ClauseDescription").val();
+
+        //alert(clausetype);
+        var tblClause = "";
+        var Dateformat = "";
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblClause",
+            data: { clausetitle: clausetitle, clausedescription: clausedescription},
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                    if (value.ClauseClauseDescription == null) {
+                        var Description = "";
+                    }
+                    else {
+                        var Description = value.ClauseClauseDescription;
+                    }
+
+                    tblClause = tblClause + '<tr><td><center><a href="/Clause/Details/' + value.ClauseClauseID + '"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="ClauseID">' + value.ClauseClauseID + '</td><td>' + value.ClauseClauseTitle + '</td><td>' + Description + '</td></tr>';
+                });
+                $("#tblClauseSearchList").html(tblClause);
+                //alert(response.ClauseClauseTitle);
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+
+    function UserSearch() {
+        // alert("hello");
+        var basicuserid = $("#UserBasicEmployeeID").val();
+        var basicusername = $("#UserBasicEmployeeName").val();
+        var basicuseremail = $("#UserBasicEmployeeEmail").val();
+        var basicuserrole = $(".BasicUser_Role").text();
+        var basicuserstatus = $(".BasicUser_Status").text();
+
+        var tblBasicUser = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblUserBasic",
+            data: { basicuserid: basicuserid, basicusername: basicusername, basicuseremail: basicuseremail, basicuserrole: basicuserrole, basicuserstatus: basicuserstatus },
+
+
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                   var UserRole = "";
+                        if (value.UserRoleAdmin == true) {
+                            UserRole = UserRole + "Admin ,";
+                        }
+                        if (value.UserRoleInitiator == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Initiator ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Initiator ,";
+                            }
+                        }
+                        if (value.UserRoleApprover == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Approver ,";
+                            }
+                        }
+                        if (value.UserRoleFinance == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Finance Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Finance Approver ,";
+                            }
+                        }
+
+                        if (value.UserRoleLegal == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Legal Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Legal Approver ,";
+                            }
+                        }
+                    tblBasicUser = tblBasicUser + '<tr><td><center><a href="/Users/Details/'+ value.UserID +'"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="UserEmployeeID">' + value.UserEmployeeID + '</td><td>' + value.UserEmployeeName + '</td><td>' + value.UserEmployeeEmail + '</td><td>' + value.UserCategory + '</td><td>' + value.UserSubCategory + '</td><td>' + UserRole + '</td><td>' + value.UserStatus + '</td></tr>';
+                });
+                $("#tblUsersSearchList").html(tblBasicUser);
+                //alert(response.ClauseClauseTitle);
+            },
+            failure: function (response) {
+                alert(response);
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function UserAdvancedSearch() {
+        //  alert("hello");
+        var advanceuserid = $("#UserAdvanceEmployeeID").val();
+        var advanceusername = $("#UserAdvanceEmployeeName").val();
+        var advanceuseremail = $("#UserAdvanceEmployeeEmail").val();
+        var advancecategory = $("#usercategory").val();
+        var advanceusersubcategory = $(".UserAdvance_Function").text();
+        var advanceuserdesignation = $(".UserAdvance_designation").text();
+        var advanceuserrole = $(".UserAdvance_role").text();
+        var advanceuserstatus = $(".UserAdvance_status").text();
+        var tblAdvanceUser = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblUserAdvance",
+            data: { advanceuserid: advanceuserid, advanceusername: advanceusername, advanceuseremail: advanceuseremail, advancecategory: advancecategory, advanceusersubcategory: advanceusersubcategory, advanceuserdesignation: advanceuserdesignation, advanceuserrole: advanceuserrole, advanceuserstatus: advanceuserstatus },
+
+
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                    var UserRole = "";
+                        if (value.UserRoleAdmin == true) {
+                            UserRole = UserRole + "Admin ,";
+                        }
+                        if (value.UserRoleInitiator == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Initiator ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Initiator ,";
+                            }
+                        }
+                        if (value.UserRoleApprover == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Approver ,";
+                            }
+                        }
+                        if (value.UserRoleFinance == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Finance Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Finance Approver ,";
+                            }
+                        }
+
+                        if (value.UserRoleLegal == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Legal Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Legal Approver ,";
+                            }
+                        }
+                    tblAdvanceUser = tblAdvanceUser + '<tr><td><center><a href="/Users/Details/'+ value.UserID +'"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="UserEmployeeID">' + value.UserEmployeeID + '</td><td>' + value.UserEmployeeName + '</td><td>' + value.UserEmployeeEmail + '</td><td>' + value.UserCategory + '</td><td>' + value.UserSubCategory + '</td><td>' + UserRole + '</td><td>' + value.UserStatus + '</td></tr>';
+                 });
+                $("#tblUsersSearchList").html(tblAdvanceUser);
+                //alert(response.ClauseClauseTitle);
+            },
+            failure: function (response) {
+                alert(response);
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+
+    function VendorBasicSearch() {
+        // alert("hello");
+        var basicvendorname = $("#BasicVendorName").val();
+        var basicvendorvendorcin = $("#BasicVendorCIN").val();
+        var basicvendorentity = $("#vendorbasicentity").val();
+        var basicvendorpan = $("#BasicVendorPAN").val();
+        var basicvendorLLPIN = $("#BasicVendorLLPIN").val();
+        var basicvendorAuthSign = $("#BasicVendorAuthorisedSignatory").val();
+
+        var tblBasicVendor = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblVendorBasic",
+            data: {
+                basicvendorname: basicvendorname, basicvendorvendorcin: basicvendorvendorcin, basicvendorentity: basicvendorentity
+            ,basicvendorpan:basicvendorpan, basicvendorLLPIN:basicvendorLLPIN, basicvendorAuthSign:basicvendorAuthSign},
+
+
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                     tblBasicVendor = tblBasicVendor + '<tr><td><center><a href="/Vendor/Details/'+ value.VendorVendorID +'"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="VendorID">' + value.VendorVendorID + '</td><td>' + value.VendorTypeofEntity + '</td><td>' + value.VendorVendorName + '</td><td>' + value.VendorRegisteredAddress + '</td></tr>';
+                });
+                $("#tblVendorSearchList").html(tblBasicVendor);
+
+            },
+            failure: function (response) {
+                alert(response);
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function VendorAdvancedSearch() {
+        // alert("hello");
+        var advancevendorentity = $("#vendoradvanceentity").val();
+        var advancevendorname = $("#AdvanceVendorName").val();
+
+        var advancevendorcin = $("#AdvanceVendorCIN").val();
+        var AdvanceAuthorisedSignatory = $("#AdvanceAuthorisedSignatory").val();
+
+        var advancevendorpan = $("#AdvanceVendorPAN").val();
+        var AdvanceVendorAdhaar = $("#AdvanceVendorAdhaar").val();
+
+        var advancevendorLLPIN = $("#AdvanceVendorLLPIN").val();
+         var AdvanceVendorAddressLLPIN = $("#AdvanceVendorAddressLLPIN").val();
+
+        var advancevendorAuthSign = $("#AdvanceVendorAuthorisedSignatory").val();
+        var AdvanceVendorRegisteredAddress = $("#AdvanceVendorRegisteredAddress").val();
+
+        var AdvanceVendorAddress = $("#AdvanceVendorAddress").val();
+
+        var AdvanceVendorRegisteredAddress_Company = $("#AdvanceVendorRegisteredAddress_Company").val();
+        var AdvanceVendorCorporateAddress_Company = $("#AdvanceVendorCorporateAddress_Company").val();
+        var AdvanceVendorName_Sole = $("#AdvanceVendorName_Sole").val();
+        var AdvanceVendorAddress_Sole = $("#AdvanceVendorAddress_Sole").val();
+        var AdvanceVendorName1P = $("#AdvanceVendorName1P").val();
+        var AdvanceVendorAge1P = $("#AdvanceVendorAge1P").val();
+        var AdvanceVendorFather1P = $("#AdvanceVendorFather1P").val();
+        var AdvanceVendorAddress1P = $("#AdvanceVendorAddress1P").val();
+
+
+        var tblAdvanceVendor = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblVendorAdvanced",
+            data: {
+                advancevendorname: advancevendorname, advancevendorcin: advancevendorcin, AdvanceAuthorisedSignatory: AdvanceAuthorisedSignatory, advancevendorpan: advancevendorpan, advancevendorentity: advancevendorentity,
+                AdvanceVendorAdhaar: AdvanceVendorAdhaar, advancevendorLLPIN: advancevendorLLPIN, AdvanceVendorAddressLLPIN: AdvanceVendorAddressLLPIN, advancevendorAuthSign: advancevendorAuthSign, AdvanceVendorRegisteredAddress: AdvanceVendorRegisteredAddress,
+                AdvanceVendorAddress: AdvanceVendorAddress, AdvanceVendorRegisteredAddress_Company: AdvanceVendorRegisteredAddress_Company, AdvanceVendorCorporateAddress_Company: AdvanceVendorCorporateAddress_Company,
+                AdvanceVendorName_Sole: AdvanceVendorName_Sole, AdvanceVendorAddress_Sole: AdvanceVendorAddress_Sole, AdvanceVendorName1P: AdvanceVendorName1P, AdvanceVendorAge1P:AdvanceVendorAge1P, AdvanceVendorFather1P: AdvanceVendorFather1P,
+            AdvanceVendorAddress1P:AdvanceVendorAddress1P },
+
+
+            success: function (response) {
+                // alert(response.VendorVendorName)
+                $.each(response, function (index, value) {
+
+                    tblAdvanceVendor = tblAdvanceVendor + '<tr><td><center><a href="/Vendor/Details/'+ value.VendorVendorID +'"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="VendorID">' + value.VendorVendorID + '</td><td>' + value.VendorTypeofEntity + '</td><td>' + value.VendorVendorName + '</td><td>' + value.VendorRegisteredAddress + '</td></tr>';
+                });
+                $("#tblVendorSearchList").html(tblAdvanceVendor);
+                //alert(response.ClauseClauseTitle);
+            },
+
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function ClusterSearch() {
+        //alert("hello");
+        var cluster = $(".cluster_filter").text();
+
+        //var subcategory = $(".cluster_filter").text();
+        // alert(cluster);
+        var tblCluster = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/gettblClusterFunction",
+            data: { cluster: cluster },
+
+
+            success: function (response) {
+                // alert(response//);
+                // alert(response.CategoryName);
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                    tblCluster = tblCluster + '<tr><td><center><a href="/DivisionMaster/Function"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="SubCategoryID">' + value.SubCategoryID + '</td><td>' + value.CategoryName + '</td><td>' + value.SubCategoryName + '</td></tr>';
+                });
+                $("#tblCategorySearchList").html(tblCluster);
+
+            }
+        });
+         $.ajax({
+            type: "POST",
+            url: "/Search/gettblFunctionCluster",
+             data: { cluster: cluster },
+
+
+            success: function (response) {
+                // alert(response//);
+                // alert(response.CategoryName);
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                    tblCluster = tblCluster + '<tr><td><center><a href="/DivisionMaster/Function"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="SubCategoryID">' + value.SubCategoryID + '</td><td>' + value.CategoryName + '</td><td>' + value.SubCategoryName + '</td></tr>';
+                });
+                $("#tblCategorySearchList").html(tblCluster);
+
+            }
+        });
+    }
+
+
+
+    function ContractBasicSearch() {
+        //alert("hello");
+        var contractname = $("#BasicContractName").val();
+        var contracttype = $(".Basiccontract_type").text();
+        var contractUID = $("#BasicContractUID").val();
+        var contractcluster = $(".Basiccontract_cluster").text();
+        var contractfunction = $(".Basiccontract_function").text();
+        var contractdescription = $("#BasicContractDescription").val();
+
+
+        var tblContract = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GettblContractBasic",
+            data: { contractname: contractname, contracttype: contracttype, contractUID: contractUID, contractcluster: contractcluster, contractfunction: contractfunction, contractdescription: contractdescription },
+
+
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                     var Status = value.Status;
+                    if (Status == "In Effect") {
+                        Status = "Executed";
+                    }
+                    var CurrentUserLoggedID = "@CurrentUserID()";
+                    if (((value.Status == "Draft") && ((value.Initiator + "") == CurrentUserLoggedID)) || (value.Status == "Approved") && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID)) || ((value.Status == "Pending Approval") && ((value.Initiator == CurrentUserLoggedID) || (value.NextApprover == CurrentUserLoggedID))) || ((value.Status == "Rejected") && (value.NextApprover == CurrentUserLoggedID)) || ((value.Status == "In Effect") && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID))) || ((((value.Status == "Expired") || (value.Status == "In Effect"))) && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID)))) {
+                        tblContract = tblContract + '<tr><td><center><a href="/Contract/Details/' + value.ContractID + '"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="ContractID">' + value.ContractID + '</td><td>' + value.ContractName + '</td><td>' + value.ContractType + '</td><td>' + value.ContractCategory + '</td><td>' + value.ContractSubCategory + '</td><td>' + Status + '</td></tr>';
+                    }
+                    });
+                $("#tblContractSearchList").html(tblContract);
+                //alert(response.ClauseClauseTitle);
+
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+    function ContractAdvancedSearch() {
+        //alert("hello");
+        var contractname = $("#AdvancedContractName").val();
+        var contracttype = $(".Advancedcontract_type").text();
+        var contractUID = $("#AdvancedContractUID").val();
+        var contractcluster = $(".Advancedcontract_cluster").text();
+        var contractfunction = $(".Advancedcontract_function").text();
+        var contractdescription = $("#AdvancedContractDescription").val();
+        var contractvendor = $(".Advancedcontract_vendor").text();
+        var DurationDate = $("#executiondatecontract").val();
+        var DurationDateTo = $("#executiondatecontractto").val();
+        //alert(DurationDate);
+
+        var tblContract = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GettblContractAdvanced",
+            data: { contractname: contractname, contracttype: contracttype, contractUID: contractUID, contractcluster: contractcluster, contractfunction: contractfunction, contractdescription: contractdescription, contractvendor: contractvendor, DurationDate: DurationDate, DurationDateTo: DurationDateTo },
+
+
+
+            success: function (response) {
+
+                    $.each(response, function (index, value) {
+                        // alert(value.ClauseClauseTitle)
+                        var Status = value.Status;
+                        if (Status == "In Effect") {
+                            Status = "Executed";
+                        }
+                         var CurrentUserLoggedID = "@CurrentUserID()";
+                        if (((value.Status == "Draft") && ((value.Initiator + "") == CurrentUserLoggedID)) || (value.Status == "Approved") && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID)) || ((value.Status == "Pending Approval") && ((value.Initiator == CurrentUserLoggedID) || (value.NextApprover == CurrentUserLoggedID))) || ((value.Status == "Rejected") && (value.NextApprover == CurrentUserLoggedID)) || ((value.Status == "In Effect") && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID))) || ((((value.Status == "Expired") || (value.Status == "In Effect"))) && (((value.Initiator + "") == CurrentUserLoggedID) || ((value.Approver1ID + "") == CurrentUserLoggedID) || ((value.Approver2ID + "") == CurrentUserLoggedID) || ((value.Approver3ID + "") == CurrentUserLoggedID) || ((value.Approver4ID + "") == CurrentUserLoggedID) || ((value.Approver5ID + "") == CurrentUserLoggedID) || ((value.Approver6ID + "") == CurrentUserLoggedID) || ((value.Approver7ID + "") == CurrentUserLoggedID) || ((value.Approver8ID + "") == CurrentUserLoggedID) || ((value.Approver9ID + "") == CurrentUserLoggedID) || ((value.Approver10ID + "") == CurrentUserLoggedID)))) {
+
+                            if (value.ContractID != "undefined") {
+                                tblContract = tblContract + '<tr><td><center><a href="/Contract/Details/' + value.ContractID + '"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="ContractID">' + value.ContractID + '</td><td>' + value.ContractName + '</td><td>' + value.ContractType + '</td><td>' + value.ContractCategory + '</td><td>' + value.ContractSubCategory + '</td><td>' + Status + '</td></tr>';
+                            }
+                        }
+                    });
+
+                    $("#tblContractSearchList").html(tblContract);
+                    //alert(response.ClauseClauseTitle);
+
+            }
+        });
+    }
+
+
+
+
+    function TemplateBasicSearch() {
+        //alert("hello");
+        var templatename = $("#BasicTemplateName").val();
+        var templatetype = $(".Basictemplate_type").text();
+
+
+        var tblTemplate = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GettblTemplateBasic",
+            data: { templatename: templatename, templatetype: templatetype },
+
+
+            success: function (response) {
+
+                $.each(response, function (index, value) {
+                    // alert(value.ClauseClauseTitle)
+                    var Status = value.Status;
+                    if (Status == "In Effect") {
+                        Status = "Approved";
+                    }
+                    var CurrentUserLoggedID = "@CurrentUserID()";
+                    if (((value.Status == "Draft") && ((value.Initiator + "") == CurrentUserLoggedID)) || (value.Status == "Pending Approval") && ((value.Initiator == CurrentUserLoggedID) || (value.NextApprover == CurrentUserLoggedID)) || ((value.Status == "Rejected") && (value.NextApprover == CurrentUserLoggedID)) || (value.Status == "In Effect")) {
+                        tblTemplate = tblTemplate + '<tr><td><center><a href="/Template/Details/' + value.TemplateID + '"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a></center></td><td class="TemplateID">' + value.TemplateID + '</td><td>' + value.Name + '</td><td>' + value.Type + '</td><td>' + Status + '</td></tr>';
+                    }
+                    });
+                $("#tblTemplateSearchList").html(tblTemplate);
+                //alert(response.ClauseClauseTitle);
+
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+
+
+</script>
+
+
+
+<script>
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractType",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("BasicContractType");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractCluster",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("BasicContractCluster");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractFunction",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("BasicContractFunction");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractType",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("AdvancedContractType");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractCluster",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("AdvancedContractCluster");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetContractFunction",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("AdvancedContractFunction");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+
+    $(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Search/GetTemplateType",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert("Hello: " + response);
+                var x = document.getElementById("BasicTemplateType");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+                option.text = "-- select --";
+
+                x.add(option);
+
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    option.setAttribute('Value', value);
+                    x.add(option);
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        //}
+    });
+
+
+
+    //$(function () {
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Search/GetTemplateCluster",
+    //        data: '{name: "' + $("#txtName").val() + '" }',
+
+    //        success: function (response) {
+    //            // alert("Hello: " + response);
+    //            var x = document.getElementById("AdvancedTemplateCluster");
+    //            x.innerHTML = "";
+    //            var option = document.createElement("option");
+    //            option.text = "-- select --";
+    //             option.disabled = true;
+
+    //            x.add(option);
+
+    //            $.each(response, function (index, value) {
+    //                var option = document.createElement("option");
+    //                option.text = value;
+    //                option.setAttribute('Value', value);
+    //                x.add(option);
+    //            });
+    //        },
+    //        failure: function (response) {
+    //            alert(response);
+    //        },
+    //        error: function (response) {
+    //            alert(response.responseText);
+    //        }
+    //    });
+    //    //}
+    //});
+
+    //$(function () {
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Search/GetTemplateFunction",
+    //        data: '{name: "' + $("#txtName").val() + '" }',
+
+    //        success: function (response) {
+    //            // alert("Hello: " + response);
+    //            var x = document.getElementById("AdvancedTemplateFunction");
+    //            x.innerHTML = "";
+    //            var option = document.createElement("option");
+    //            option.text = "-- select --";
+    //             option.disabled = true;
+
+    //            x.add(option);
+
+    //            $.each(response, function (index, value) {
+    //                var option = document.createElement("option");
+    //                option.text = value;
+    //                option.setAttribute('Value', value);
+    //                x.add(option);
+    //            });
+    //        },
+    //        failure: function (response) {
+    //            alert(response);
+    //        },
+    //        error: function (response) {
+    //            alert(response.responseText);
+    //        }
+    //    });
+    //    //}
+    //});
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker7').datetimepicker({
+            format: 'L',
+            format: 'DD/MM/YYYY'
+        });
+    });
+    $(function () {
+        $('#datetimepicker8').datetimepicker({
+            format: 'L',
+            format: 'DD/MM/YYYY'
+        });
+    });
+    $(function () {
+        $('#datetimepicker9').datetimepicker({
+            format: 'L',
+            format: 'DD/MM/YYYY'
+        });
+    });
+    $(function () {
+        $('#datetimepicker10').datetimepicker({
+            format: 'L',
+            format: 'DD/MM/YYYY'
+        });
+    });
+</script>
+
+
+<script>
+    function Testing(Select) {
+
+        if (Select == "Contract") {
+            var ContractID = [];
+            var ID = document.getElementsByClassName("ContractID");
+            for (var i = 0; i < ID.length; i++) {
+                ContractID.push(ID[i].innerHTML);
+            }
+            //alert(ContractID);
+            if (ContractID.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/ContractList",
+                    data: { ContractID: ContractID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("ContractList", "Search")';
+                    },
+                });
+            }
+        }
+        if (Select == "Template") {
+            var TemplateID = [];
+
+            var ID = document.getElementsByClassName("TemplateID");
+            for (var i = 0; i < ID.length; i++) {
+                TemplateID.push(ID[i].innerHTML);
+            }
+            if (TemplateID.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/TemplateList",
+                    data: { TemplateID: TemplateID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("TemplateList", "Search")';
+
+
+                    },
+                });
+            }
+        }
+        if (Select == "Vendor") {
+            var VendorID = [];
+            var ID = document.getElementsByClassName("VendorID");
+            for (var i = 0; i < ID.length; i++) {
+                VendorID.push(ID[i].innerHTML);
+            }
+            if (VendorID.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/VendorList",
+                    data: { VendorID: VendorID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("VendorList", "Search")';
+                    },
+                });
+            }
+        }
+        if (Select == "User") {
+             var UserEmployeeID = [];
+            var ID = document.getElementsByClassName("UserEmployeeID");
+            for (var i = 0; i < ID.length; i++) {
+                UserEmployeeID.push(ID[i].innerHTML);
+            }
+            if (UserEmployeeID.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/UserList",
+                    data: { UserEmployeeID: UserEmployeeID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("UserList", "Search")';
+                    },
+                });
+            }
+        }
+        if (Select == "Category") {
+             var SubCategoryID = [];
+        var ID = document.getElementsByClassName("SubCategoryID");
+        for (var i = 0; i < ID.length; i++) {
+            SubCategoryID.push(ID[i].innerHTML);
+            }
+            //alert(SubCategoryID);
+            if (SubCategoryID.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/SubCategoryList",
+                    data: { SubCategoryID: SubCategoryID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("SubCategoryList", "Search")';
+                    },
+                });
+            }
+        }
+
+        if (Select == "Clause") {
+             var ClauseID = [];
+        var ID = document.getElementsByClassName("ClauseID");
+        for (var i = 0; i < ID.length; i++) {
+            ClauseID.push(ID[i].innerHTML);
+            }
+            if (ClauseID.length > 0) {
+                //alert(SubCategoryID);
+                $.ajax({
+                    type: "POST",
+                    url: "/Search/ClauseList",
+                    data: { ClauseID: ClauseID },
+
+                    success: function (response) {
+                        window.location = '@Url.Action("ClauseList", "Search")';
+                    },
+                });
+            }
+        }
+        //alert(TemplateStatus);
+
+    }
+</script>

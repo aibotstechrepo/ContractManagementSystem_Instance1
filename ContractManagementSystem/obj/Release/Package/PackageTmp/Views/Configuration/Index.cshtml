@@ -1,0 +1,1351 @@
+﻿@model ContractManagementSystem.Models.tblAlertSystem
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+<style>
+
+    .tabbable-responsive {
+        display: block;
+        min-width: 100%;
+        overflow-x: auto;
+        margin: 0px -20px -13px -20px;
+    }
+
+    .tabbable {
+        min-width: 100%;
+    }
+
+    .nav-tabs {
+        white-space: nowrap;
+        display: inline-block;
+        min-width: 100%;
+        padding: 0px 21px;
+    }
+
+    .nav-item {
+        display: inline-block;
+    }
+
+    .nav-link {
+        display: inline-block;
+    }
+
+    .nav-item .active {
+        font-weight: bold;
+    }
+</style>
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+
+            @*@using (Html.BeginForm("SaveAlertRecord", "Configuration", FormMethod.Post))
+                {*@
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header align-items-center" style="padding: 0.75rem 1.25rem;">
+
+                            <div class="d-flex" style="padding-bottom:10px;">
+                                <div class="title">
+                                    <h2><b>Configurations</b></h2>
+                                </div>
+                                <div class="ml-auto">
+                                    <button type="button" class="btn btn-sm btn-light" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                    <button type="button" class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp;&nbsp;History</button>
+
+                                </div>
+                            </div>
+                            <div class="tabbable-responsive">
+                                <div class="tabbable">
+                                    <ul class="nav nav-tabs tabbutton" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" onclick="OnTabsChange(1);" id="first-tab" data-toggle="tab" href="#first" role="tab" aria-controls="first" aria-selected="true">Contract Alerts</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" onclick="OnTabsChange(2);" id="second-tab" data-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">Approval Alerts</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" onclick="OnTabsChange(3);" id="third-tab" data-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">Review Alerts</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" onclick="PageSetUp();" id="fourth-tab" data-toggle="tab" href="#fourth" role="tab" aria-controls="fourth" aria-selected="false">Page Setup</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body alertpanel">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="first-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel">
+                                                <div class="form-group">
+                                                    <h2><b>Contract expiry timeline Alerts</b></h2>
+                                                    <hr />
+
+                                                    <p><b><i>Before # day / week / month of contract expiry</i></b></p>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-sm-4 text-right">
+                                                                <div class="form-group">
+                                                                    <p><b>1st Reminder</b><span class="asteriskicon"> *</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" min="1" value="" max="99" maxlength="2" onchange="Remainder1();" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control Tab1" required id="contractExpiryReminder5Date" name="ContractExpiryReminder5Date" readonly />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control Tab1" required style="padding:0; text-align-last:center;" onchange="Remainder1();" id="contractExpiryReminder5Duration" name="ContractExpiryReminder5Duration" disabled>
+                                                                    <option>Day</option>
+                                                                    <option>Week</option>
+                                                                    <option>Month</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            <div class="col-sm-4 text-right">
+                                                                <div class="form-group">
+                                                                    <p><b>2nd Reminder</b><span class="asteriskicon"> *</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" min="1" value="" max="99" maxlength="2" onchange="Remainder2();" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control Tab1" required id="contractExpiryReminder4Date" name="ContractExpiryReminder4Date" readonly />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control Tab1" required style="padding:0; text-align-last:center;" onchange="Remainder2();" id="contractExpiryReminder4Duration" name="ContractExpiryReminder4Duration" disabled>
+
+                                                                    <option>Day</option>
+                                                                    <option>Week</option>
+                                                                    <option>Month</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-sm-4 text-right">
+                                                                <div class="form-group">
+                                                                    <p><b>3rd Reminder</b><span class="asteriskicon"> *</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" min="1" value="" max="99" maxlength="2" onchange="Remainder3();" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control Tab1" required onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" pattern="[0-9]+" id="contractExpiryReminder3Date" name="ContractExpiryReminder3Date" readonly />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control Tab1" required style="padding:0; text-align-last:center;" onchange="Remainder3();" id="contractExpiryReminder3Duration" name="ContractExpiryReminder3Duration" disabled>
+                                                                    <option>Day</option>
+                                                                    <option>Week</option>
+                                                                    <option>Month</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-sm-4 text-right">
+                                                                <div class="form-group">
+                                                                    <p><b>4th Reminder</b><span class="asteriskicon"> *</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" min="1" value="" max="99" maxlength="2" onchange="Remainder4();" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control Tab1" required onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" pattern="[0-9]+" id="contractExpiryReminder2Date" name="ContractExpiryReminder2Date" readonly />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control Tab1" required style="padding:0; text-align-last:center;" onchange="Remainder4();" id="contractExpiryReminder2Duration" name="ContractExpiryReminder2Duration" disabled>
+                                                                    <option>Day</option>
+                                                                    <option>Week</option>
+                                                                    <option>Month</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-sm-4 text-right">
+                                                                <div class="form-group">
+                                                                    <p><b>5th Reminder</b><span class="asteriskicon"> *</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" min="1" value="" max="99" maxlength="2" onchange="Remainder5();" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control Tab1" required pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="contractExpiryReminder1Date" name="ContractExpiryReminder1Date" readonly />
+                                                                <input type="hidden" id="hiddenalertID" />
+                                                                <input type="hidden" id="TabChangeValue" />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control Tab1" required style="padding:0; text-align-last:center;" id="contractExpiryReminder1Duration" onchange="Remainder5();" name="ContractExpiryReminder1Duration" disabled>
+                                                                    <option>Day</option>
+                                                                    <option>Week</option>
+                                                                    <option>Month</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="panel">
+                                                <div class="form-group">
+                                                    <h2><b>Contract approval timeline</b></h2>
+                                                    <hr />
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-right">
+                                                        <div class="form-group">
+                                                            <p><b>Approver</b><span class="asteriskicon"> *</span></p>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="contractHod" name="ContractHod" required readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="form-group">
+                                                            <p>Days to each Approvers</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-right">
+                                                        <div class="form-group">
+                                                            <p><b>Finance</b><span class="asteriskicon"> *</span></p>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="contractFinance" name="ContractFinance" required readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="form-group">
+                                                            <p>Days to each Approvers</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-right">
+                                                        <div class="form-group">
+                                                            <p><b>Legal</b><span class="asteriskicon"> *</span></p>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="contractLegal" name="ContractLegal" required readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="form-group">
+                                                            <p>Days to each Approvers</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="panel">
+                                                <div class="form-group">
+                                                    <h2><b>Template approval timeline</b></h2>
+                                                    <hr />
+                                                </div>
+                                                @*<div class="row">
+                    <div class="col-lg-3 text-right">
+                        <div class="form-group">
+                            <p><b>Approver</b><span class="asteriskicon"> *</span></p>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="templateHod" name="TemplateHod" required readonly />
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <p>Days to each Approvers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 text-right">
+                        <div class="form-group">
+                            <p><b>Finance</b><span class="asteriskicon"> *</span></p>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="templateFinance" name="TemplateFinance" required readonly />
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <p>Days to each Approvers</p>
+                        </div>
+                    </div>
+                </div>*@
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-right">
+                                                        <div class="form-group">
+                                                            <p><b>Legal</b><span class="asteriskicon"> *</span></p>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="templateLegal" name="TemplateLegal" required readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="form-group">
+                                                            <p>Days to each Approvers</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+                                    <div class="row">
+                                        @*<div class="col-lg-6">
+                                                <div class="panel">
+                                                    <div class="form-group">
+                                                        <h2><b>Escalation</b></h2>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-4 text-right">
+                                                            <div class="form-group">
+                                                                <p><b>Approver :</b><span class="asteriskicon"> *</span></p>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <input pattern="[0-9]+" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type="number" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="esclationHod" name="EsclationHod" value="@Model.EsclationHod" required readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="form-group">
+                                                                <p>Days to each Approvers</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-lg-4 text-right">
+                                                            <div class="form-group">
+                                                                <p><b>Finance :</b><span class="asteriskicon"> *</span></p>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="esclationFinance" name="EsclationFinance" value="@Model.EsclationFinance" required readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="form-group">
+                                                                <p>Days to each Approvers</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-lg-4 text-right">
+                                                            <div class="form-group">
+                                                                <p><b>Legal :</b><span class="asteriskicon"> *</span></p>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="esclationLegal" name="EsclationLegal" value="@Model.EsclationLegal" required readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="form-group">
+                                                                <p>Days to each Approvers</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        <div class="col-sm-12">
+                                            <div class="panel">
+                                                <div class="form-group">
+                                                    <h2><b>Review Alerts</b></h2>
+                                                    <hr />
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+
+                                                        <div class="row">
+                                                            <div class="col-sm-3 text-right">
+                                                                <div class="form-group">
+                                                                    <label>Template :<span class="asteriskicon"> *</span></label>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-0 text-right">
+                                                                <div class="form-group">
+                                                                    <p>Every</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="auditTemplateDate" name="AuditTemplateDate" required readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <select class="form-control" style="padding:0; text-align-last:center;" id="auditTemplateDuration" name="AuditTemplateDuration" required disabled>
+
+                                                                        <option>Month</option>
+                                                                        <option>Year</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3 text-right">
+                                                                <div class="form-group">
+                                                                    <label>Contract :<span class="asteriskicon"> *</span></label>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-0 text-right">
+                                                                <div class="form-group">
+                                                                    <p>Every</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="auditContractDate" name="AuditContractDate" required readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <select class="form-control" style="padding:0; text-align-last:center;" id="auditContractDuration" name="AuditContractDuration" required disabled>
+                                                                        <option>Month</option>
+                                                                        <option>Year</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3 text-right">
+                                                                <div class="form-group">
+                                                                    <label>Clause   :<span class="asteriskicon"> *</span></label>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-0 text-right">
+                                                                <div class="form-group">
+                                                                    <p>Every</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <input type="number" min="1" max="99" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" pattern="[0-9]+" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" id="auditClauseDate" name="AuditClauseDate" required readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <select class="form-control" style="padding:0; text-align-last:center;" id="auditClauseDuration" name="AuditClauseDuration" required disabled>
+
+                                                                        <option>Month</option>
+                                                                        <option>Year</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
+                                    <div class="row form-inline">
+                                        <div class="col-lg-6">
+                                            <div class="form-group justify-content-center">
+                                                @*<div class="row align-items-center">*@
+                                                @*<div class="col-sm-4">*@
+                                                <label>Paper Type</label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                @*</div>*@
+                                                @*<div class="col-sm-6">*@
+                                                <select class="form-control PageSetUp_Values" style="width:180px; padding:0; text-align-last:center;" onchange="PaperSizeOnchange();" id="PaperType">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option>A4 Digital Stamp</option>
+                                                    <option>Legal</option>
+                                                    <option>Rubber Stamped Legal</option>
+                                                </select>
+                                                @*</div>*@
+                                                @*</div>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group justify-content-center">
+                                                @*<div class="row align-items-center">*@
+                                                @*<div class="col-sm-4">*@
+                                                <label>Standard Paper Size</label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                @*</div>
+                                                    <div class="col-sm-6">*@
+                                                <select class="form-control PageSetUp_Values" style="width:180px; padding:0; text-align-last:center;" onchange="PaperSizeOnchange();" id="PaperSize">
+                                                    <option value="" selected>-- Select --</option>
+                                                    <option>A4</option>
+                                                    <option>Legal</option>
+                                                    <option>Executive</option>
+                                                </select>
+                                                @*</div>*@
+                                                @*</div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Margin in inches</label>
+                                                <div class="row">
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-sm-4 text-right">
+                                                                    <label>Top</label>
+                                                                </div>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number" id="MarginTop" step="0.1" readonly onkeyup="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control PageSetUp_Values" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-sm-4 text-right">
+                                                                    <label>Left</label>
+                                                                </div>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number" id="MarginLeft" step="0.1" readonly onkeyup="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control PageSetUp_Values" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-sm-4 text-right">
+                                                                    <label>Bottom</label>
+                                                                </div>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number" id="MarginBottom" step="0.1" readonly onkeyup="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control PageSetUp_Values" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-sm-4 text-right">
+                                                                    <label>Right</label>
+                                                                </div>
+                                                                <div class="col-sm-8">
+                                                                    <input type="number" id="MarginRight" step="0.1" readonly onkeyup="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control PageSetUp_Values" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right card_footer_button">
+                            <button type="button" onclick="SubmitPageSetUp();" class="btn btn-success" id="Page_Button" disabled style="display:none; font-size:17px; width:180px;"><b>Save Changes</b></button>
+                            <button type="button" onclick="SubmitContractExpiryAlerts();" class="btn btn-success" id="validate" disabled style="font-size:17px; width:180px;"><b>Save Changes</b></button>
+                            <button type="button" onclick="SubmitApprovalAlerts();" class="btn btn-success" id="ApprovalAlerts" disabled style="display:none; font-size:17px; width:180px;"><b>Save Changes</b></button>
+                            <button type="button" onclick="SubmitReviewAlerts();" class="btn btn-success" id="ReviewAlerts" disabled style="display:none; font-size:17px; width:180px;"><b>Save Changes</b></button>
+                            <button type="button" class="btn btn-danger" id="cancel" onclick="DiscardChanges();" disabled style="font-size:17px; width:180px;"><b>Discard Changes</b></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*}*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+            <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-error fa-3x " aria-hidden="true"></i></a>
+        </div>*@
+
+    <div class="modal-dialog" style="max-width: 80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Configuration Modified History</b></label>
+                <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close">Close</button>
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblAlertLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<hr />
+
+                    <div class="card-action text-right card_footer_button">
+                        <input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+
+                    </div>*@
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function SubmitContractExpiryAlerts() {
+
+        var Tab = $("#TabChangeValue").val();
+        var ID = $("#hiddenalertID").val();
+        var Rem1Date = $("#contractExpiryReminder1Date").val();
+        var Rem2Date = $("#contractExpiryReminder2Date").val();
+        var Rem3Date = $("#contractExpiryReminder3Date").val();
+        var Rem4Date = $("#contractExpiryReminder4Date").val();
+        var Rem5Date = $("#contractExpiryReminder5Date").val();
+        var Rem1Duration = $("#contractExpiryReminder1Duration").val();
+        var Rem2Duration = $("#contractExpiryReminder2Duration").val();
+        var Rem3Duration = $("#contractExpiryReminder3Duration").val();
+        var Rem4Duration = $("#contractExpiryReminder4Duration").val();
+        var Rem5Duration = $("#contractExpiryReminder5Duration").val();
+
+        if (Rem1Date.length > 0 && Rem2Date.length > 0 && Rem3Date.length > 0 && Rem4Date.length > 0 && Rem5Date.length > 0 && Rem1Duration != null && Rem2Duration != null && Rem3Duration != null && Rem4Duration != null && Rem5Duration != null) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Configuration/SaveContractExpiryAlert",
+                data: {
+                    ID: ID, Rem1Date: Rem1Date, Rem2Date: Rem2Date, Rem3Date: Rem3Date, Rem4Date: Rem4Date, Rem5Date: Rem5Date,
+                    Rem1Duration: Rem1Duration, Rem2Duration: Rem2Duration, Rem3Duration: Rem3Duration, Rem4Duration: Rem4Duration, Rem5Duration: Rem5Duration
+                },
+
+                success: function (response) {
+                    if (response == "success") {
+                        swal("Saved Successfully", {
+                            icon: "success",
+                        }).then(function (result) {
+                            if (result) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            swal("All fields are required !", {
+                icon: "warning",
+            });
+        }
+
+    }
+
+    function SubmitApprovalAlerts() {
+        var ID = $("#hiddenalertID").val();
+        var TemLegal = $("#templateLegal").val();
+        //var TemHod = $("#templateHod").val();
+        //var TemFinance = $("#templateFinance").val();
+        var ContractHod = $("#contractHod").val();
+        var ContractLegal = $("#contractLegal").val();
+        var ContractFinance = $("#contractFinance").val();
+        if (TemLegal.length > 0 && ContractHod.length > 0 && ContractLegal.length > 0 && ContractFinance.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Configuration/SaveApprovalAlerts",
+                data: {
+                    ID: ID, TemLegal: TemLegal, ContractHod: ContractHod, ContractLegal: ContractLegal, ContractFinance: ContractFinance
+                },
+
+                success: function (response) {
+                    if (response == "success") {
+                        swal("Saved Successfully", {
+                            icon: "success",
+                        }).then(function (result) {
+                            if (result) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            swal("All fields are required !", {
+                icon: "warning",
+            });
+        }
+    }
+
+    function SubmitReviewAlerts() {
+        var ID = $("#hiddenalertID").val();
+        var TempDate = $("#auditTemplateDate").val();
+        var ConDate = $("#auditContractDate").val();
+        var ClaDate = $("#auditClauseDate").val();
+        var TempDuration = $("#auditTemplateDuration").val();
+        var ClaDuration = $("#auditClauseDuration").val();
+        var ConDuration = $("#auditContractDuration").val();
+        if (TempDate.length > 0 && ConDate.length > 0 && TempDuration.length > 0 && ClaDuration.length > 0 && ConDuration.length > 0 && ClaDate.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Configuration/SaveReviewAlerts",
+                data: {
+                    ID: ID, TempDate: TempDate, ConDate: ConDate, ClaDate: ClaDate, TempDuration: TempDuration, ConDuration: ConDuration, ClaDuration: ClaDuration
+                },
+
+                success: function (response) {
+                    if (response == "success") {
+                        swal("Saved Successfully", {
+                            icon: "success",
+                        }).then(function (result) {
+                            if (result) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            swal("All fields are required !", {
+                icon: "warning",
+            });
+        }
+    }
+</script>
+
+<script>
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                    //className: 'btn btn-success'
+                }
+            }
+        }).then(function (result) {
+
+            if (result == true) {
+                $('input').removeAttr('readonly');
+                $('textarea').removeAttr('readonly');
+                $('select').removeAttr('disabled');
+
+                document.getElementById("editalert").disabled = true;
+                $("#ApprovalAlerts").removeAttr('disabled');
+                $("#ReviewAlerts").removeAttr('disabled');
+                $("#validate").removeAttr('disabled');
+                $("#cancel").removeAttr('disabled');
+                $("#Page_Button").removeAttr('disabled');
+                $('.tabbutton a').addClass("disabled");
+                $(".tabbutton a:not(.active)").css({ "background-color": "#ede7e7", "color": "black" });
+
+            }
+            else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    });
+</script>
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Configuration/Index';
+
+            }
+        });
+    }
+</script>
+<script>
+    $(function () {
+        // alert("hello");
+
+        var ID = $("#hiddenalertID").val();
+        var tblLog = "";
+        $.ajax({
+            type: 'POST',
+            url: '/Configuration/getLogDetail',
+            data: { ID: ID },
+
+
+            success: function (response) {
+
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '</center></td><td style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblAlertLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+
+
+<script>
+    function PageSetUp() {
+        $("#Page_Button").show();
+        $("#validate").hide();
+        $("#ApprovalAlerts").hide();
+        $("#ReviewAlerts").hide();
+    }
+    //function OnTabsChange() {
+    //    $("#Page_Button").hide();
+    //    $("#validate").show();
+    //}
+
+    function OnTabsChange(Tab) {
+        if (Tab == 1) {
+            $("#TabChangeValue").val("Tab1");
+
+            $("#Page_Button").hide();
+            $("#Page_Button2").hide();
+            $("#validate").show();
+            $("#ApprovalAlerts").hide();
+            $("#ReviewAlerts").hide();
+        }
+        else if (Tab == 2) {
+            $("#TabChangeValue").val("Tab2");
+
+            $("#Page_Button").hide();
+            $("#Page_Button2").hide();
+            $("#ApprovalAlerts").show();
+            $("#ReviewAlerts").hide();
+            $("#validate").hide();
+        }
+        else if (Tab == 3) {
+            $("#TabChangeValue").val("Tab3");
+
+            $("#Page_Button").hide();
+            $("#Page_Button2").hide();
+            $("#validate").hide();
+            $("#ApprovalAlerts").hide();
+            $("#ReviewAlerts").show();
+        }
+    }
+</script>
+<script>
+    function SubmitPageSetUp() {
+        var PaperTypeValue = $("#PaperType").val();
+        var PaperSizeValue = $("#PaperSize").val();
+        var TopValue = $("#MarginTop").val();
+        var LeftValue = $("#MarginLeft").val();
+        var BottomValue = $("#MarginBottom").val();
+        var RightValue = $("#MarginRight").val();
+
+        if (PaperTypeValue.length > 0 && PaperSizeValue.length > 0 && TopValue.length > 0 && LeftValue.length > 0 && BottomValue.length > 0 && RightValue.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Configuration/SubmitPageSetUp",
+                traditional: true,
+
+                data: {
+                    PaperTypeValue: PaperTypeValue, PaperSizeValue: PaperSizeValue, TopValue: TopValue, LeftValue: LeftValue, BottomValue: BottomValue, RightValue: RightValue
+                },
+                success: function (response) {
+                    if (response == "success") {
+                        swal("Saved Successfully", {
+                            icon: "success",
+                        }).then(function (result) {
+                            if (result) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                },
+
+            });
+        } else {
+            swal("All fields are required !", {
+                icon: "warning",
+            });
+        }
+    }
+
+
+
+     function PaperSizeOnchange() {
+        var PaperType = $("#PaperType").val();
+        var PaperSize = $("#PaperSize").val();
+
+        if (PaperType.length > 0 && PaperSize.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Configuration/GetConfigurationTable",
+                traditional: true,
+
+                data: { PaperType: PaperType, PaperSize: PaperSize },
+
+                success: function (response) {
+                    if (response[6] == "success") {
+                        //    $("#PaperType").val(response[0]);
+                        //    $("#PaperSize").val(response[1]);
+                        $("#MarginTop").val(response[2]);
+                        $("#MarginLeft").val(response[3]);
+                        $("#MarginBottom").val(response[4]);
+                        $("#MarginRight").val(response[5]);
+                    }
+                    else {
+                        $("#MarginTop").val("1");
+                        $("#MarginLeft").val("1");
+                        $("#MarginBottom").val("1");
+                        $("#MarginRight").val("1");
+                    }
+                }
+
+            });
+        }
+    }
+</script>
+
+<script>
+    function Remainder1() {
+        //alert("called");
+        var Rem1Date = $("#contractExpiryReminder5Date").val();
+        var Rem1Duration = $("#contractExpiryReminder5Duration").val();
+
+        var Rem2Date = $("#contractExpiryReminder4Date").val();
+        var Rem2Duration = $("#contractExpiryReminder4Duration").val();
+
+
+
+        if (Rem1Duration == "Month") {
+            Rem1Date = Rem1Date * 30;
+        }
+        if (Rem1Duration == "Week") {
+            Rem1Date = Rem1Date * 7;
+        }
+        if (Rem1Duration == "Day") {
+            Rem1Date = Rem1Date;
+        }
+        if (Rem2Duration == "Month") {
+            Rem2Date = Rem2Date * 30;
+        }
+        if (Rem2Duration == "Week") {
+            Rem2Date = Rem2Date * 7;
+        }
+        if (Rem2Duration == "Day") {
+            Rem2Date = Rem2Date;
+        }
+
+        if ((parseInt(Rem1Date) <= parseInt(Rem2Date))) {
+            $("#contractExpiryReminder5Date").val("");
+            swal("1st Reminder should be greater than 2nd Reminder", {
+                icon: "warning",
+            });
+        }
+    }
+
+    function Remainder2() {
+        var Rem1Date = $("#contractExpiryReminder5Date").val();
+        var Rem1Duration = $("#contractExpiryReminder5Duration").val();
+
+        var Rem2Date = $("#contractExpiryReminder4Date").val();
+        var Rem2Duration = $("#contractExpiryReminder4Duration").val();
+
+         var Rem3Date = $("#contractExpiryReminder3Date").val();
+        var Rem3Duration = $("#contractExpiryReminder3Duration").val();
+
+
+        if (Rem1Duration == "Month") {
+            Rem1Date = Rem1Date * 30;
+
+        }
+        if (Rem1Duration == "Week") {
+            Rem1Date = Rem1Date * 7;
+
+        }
+        if (Rem1Duration == "Day") {
+            Rem1Date = Rem1Date;
+
+        }
+        if (Rem2Duration == "Month") {
+            Rem2Date = Rem2Date * 30;
+
+        }
+        if (Rem2Duration == "Week") {
+            Rem2Date = Rem2Date * 7;
+
+        }
+        if (Rem2Duration == "Day") {
+            Rem2Date = Rem2Date;
+        }
+        if (Rem3Duration == "Month") {
+            Rem3Date = Rem3Date * 30;
+
+        }
+        if (Rem3Duration == "Week") {
+            Rem3Date = Rem3Date * 7;
+
+        }
+        if (Rem3Duration == "Day") {
+            Rem3Date = Rem3Date;
+        }
+
+
+        if (Rem3Date != "") {
+            //alert(Rem3Date);
+            if ((parseInt(Rem1Date) <= parseInt(Rem2Date)) || (parseInt(Rem2Date) <= parseInt(Rem3Date))) {
+
+                $("#contractExpiryReminder4Date").val("");
+                swal("2nd Reminder should be lesser than 1st Reminder and greater than 3rd Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+            if ((parseInt(Rem1Date) <= parseInt(Rem2Date))) {
+
+                $("#contractExpiryReminder4Date").val("");
+                swal("2nd Reminder should be lesser than 1st Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+    }
+
+    function Remainder3() {
+        //alert("called");
+        var Rem2Date = $("#contractExpiryReminder4Date").val();
+        var Rem2Duration = $("#contractExpiryReminder4Duration").val();
+
+        var Rem3Date = $("#contractExpiryReminder3Date").val();
+        var Rem3Duration = $("#contractExpiryReminder3Duration").val();
+
+        var Rem4Date = $("#contractExpiryReminder2Date").val();
+        var Rem4Duration = $("#contractExpiryReminder2Duration").val();
+
+
+        if (Rem2Duration == "Month") {
+            Rem2Date = Rem2Date * 30;
+        }
+        if (Rem2Duration == "Week") {
+            Rem2Date = Rem2Date * 7;
+        }
+        if (Rem2Duration == "Day") {
+            Rem2Date = Rem2Date;
+        }
+        if (Rem3Duration == "Month") {
+            Rem3Date = Rem3Date * 30;
+        }
+        if (Rem3Duration == "Week") {
+            Rem3Date = Rem3Date * 7;
+        }
+        if (Rem3Duration == "Day") {
+            Rem3Date = Rem3Date;
+        }
+        if (Rem4Duration == "Month") {
+            Rem4Date = Rem4Date * 30;
+        }
+        if (Rem4Duration == "Week") {
+            Rem4Date = Rem4Date * 7;
+        }
+        if (Rem4Duration == "Day") {
+            Rem4Date = Rem4Date;
+        }
+
+        if (Rem4Date != "") {
+            //alert(Rem3Date);
+            if ((parseInt(Rem2Date) <= parseInt(Rem3Date)) || (parseInt(Rem3Date) <= parseInt(Rem4Date))) {
+
+                $("#contractExpiryReminder3Date").val("");
+                swal("3rd Reminder should be lesser than 2nd Reminder and greater than 4th Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+            if ((parseInt(Rem2Date) <= parseInt(Rem3Date))) {
+                $("#contractExpiryReminder3Date").val("");
+                swal("3rd Reminder should be lesser than 2nd Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+    }
+
+    function Remainder4() {
+        //alert("called");
+        var Rem3Date = $("#contractExpiryReminder3Date").val();
+        var Rem3Duration = $("#contractExpiryReminder3Duration").val();
+
+        var Rem4Date = $("#contractExpiryReminder2Date").val();
+        var Rem4Duration = $("#contractExpiryReminder2Duration").val();
+
+        var Rem5Date = $("#contractExpiryReminder1Date").val();
+        var Rem5Duration = $("#contractExpiryReminder1Duration").val();
+
+
+        if (Rem3Duration == "Month") {
+            Rem3Date = Rem3Date * 30;
+        }
+        if (Rem3Duration == "Week") {
+            Rem3Date = Rem3Date * 7;
+        }
+        if (Rem3Duration == "Day") {
+            Rem3Date = Rem3Date;
+        }
+        if (Rem4Duration == "Month") {
+            Rem4Date = Rem4Date * 30;
+        }
+        if (Rem4Duration == "Week") {
+            Rem4Date = Rem4Date * 7;
+        }
+        if (Rem4Duration == "Day") {
+            Rem4Date = Rem4Date;
+        }
+         if (Rem5Duration == "Month") {
+            Rem5Date = Rem5Date * 30;
+        }
+        if (Rem5Duration == "Week") {
+            Rem5Date = Rem5Date * 7;
+        }
+        if (Rem5Duration == "Day") {
+            Rem5Date = Rem5Date;
+        }
+
+        if (Rem5Date != "") {
+            //alert(Rem3Date);
+            if ((parseInt(Rem3Date) <= parseInt(Rem4Date)) || (parseInt(Rem4Date) <= parseInt(Rem5Date))) {
+
+                $("#contractExpiryReminder2Date").val("");
+                swal("4th Reminder should be lesser than 3rd Reminder and greater than 5th Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+            if ((parseInt(Rem3Date) <= parseInt(Rem4Date))) {
+                $("#contractExpiryReminder2Date").val("");
+                swal("4th Reminder should be lesser than 3rd Reminder", {
+                    icon: "warning",
+                });
+            }
+        }
+    }
+
+    function Remainder5() {
+        //alert("called");
+        var Rem4Date = $("#contractExpiryReminder2Date").val();
+        var Rem4Duration = $("#contractExpiryReminder2Duration").val();
+
+        var Rem5Date = $("#contractExpiryReminder1Date").val();
+        var Rem5Duration = $("#contractExpiryReminder1Duration").val();
+
+
+        if (Rem4Duration == "Month") {
+            Rem4Date = Rem4Date * 30;
+        }
+        if (Rem4Duration == "Week") {
+            Rem4Date = Rem4Date * 7;
+        }
+        if (Rem4Duration == "Day") {
+            Rem4Date = Rem4Date;
+        }
+        if (Rem5Duration == "Month") {
+            Rem5Date = Rem5Date * 30;
+        }
+        if (Rem5Duration == "Week") {
+            Rem5Date = Rem5Date * 7;
+        }
+        if (Rem5Duration == "Day") {
+            Rem5Date = Rem5Date;
+        }
+
+        if ((parseInt(Rem5Date) >= parseInt(Rem4Date))) {
+            $("#contractExpiryReminder1Date").val("");
+            swal("5th Reminder should be lesser than 4th Reminder", {
+                icon: "warning",
+            });
+        }
+    }
+</script>
+
+<script>
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Configuration/GetAlertSystemDetails",
+            data: '{name: "' + $("#txtName").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                $("#TabChangeValue").val("Tab1");
+
+                $.each($(response), function (index, value) {
+
+                    $("#hiddenalertID").val(value.AlertID);
+                    $("#contractExpiryReminder1Date").val(value.ContractExpiryReminder1Date);
+                    $("#contractExpiryReminder2Date").val(value.ContractExpiryReminder2Date);
+                    $("#contractExpiryReminder3Date").val(value.ContractExpiryReminder3Date);
+                    $("#contractExpiryReminder4Date").val(value.ContractExpiryReminder4Date);
+                    $("#contractExpiryReminder5Date").val(value.ContractExpiryReminder5Date);
+                    $("#contractExpiryReminder1Duration").val(value.ContractExpiryReminder1Duration);
+                    $("#contractExpiryReminder2Duration").val(value.ContractExpiryReminder2Duration);
+                    $("#contractExpiryReminder3Duration").val(value.ContractExpiryReminder3Duration);
+                    $("#contractExpiryReminder4Duration").val(value.ContractExpiryReminder4Duration);
+                    $("#contractExpiryReminder5Duration").val(value.ContractExpiryReminder5Duration);
+                    $("#templateLegal").val(value.TemplateLegal);
+                    //$("#templateFinance").val(value.TemplateFinance);
+                    //$("#templateHod").val(value.TemplateHod);
+                    $("#contractHod").val(value.ContractHod);
+                    $("#contractLegal").val(value.ContractLegal);
+                    $("#contractFinance").val(value.ContractFinance);
+                    $("#auditTemplateDate").val(value.AuditTemplateDate);
+                    $("#auditContractDate").val(value.AuditContractDate);
+                    $("#auditClauseDate").val(value.AuditClauseDate);
+                    $("#auditTemplateDuration").val(value.AuditTemplateDuration);
+                    $("#auditContractDuration").val(value.AuditContractDuration);
+                    $("#auditClauseDuration").val(value.AuditClauseDuration);
+                });
+            }
+        });
+    });
+</script>

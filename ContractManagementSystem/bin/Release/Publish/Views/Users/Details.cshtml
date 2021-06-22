@@ -1,0 +1,1273 @@
+﻿@model ContractManagementSystem.Models.tblUserMaster
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+     string CurrentUserName()
+        {
+            string userName = string.Empty;
+
+            if (HttpContext.Current.Request.IsAuthenticated)
+            {
+                userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+            }
+
+            return userName;
+
+        }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">User Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Users/Repository">User Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        User Details
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">
+                                    <b>User Details</b>
+                                </div>
+                                @if (User.IsInRole("Admin"))
+                                {
+                            <div class="card-tools form-inline">
+                                <button onclick="Back();" class="btn btn-sm btn-light" title="Back to Repository" id="BackButton"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</button>
+                                <button class="btn btn-sm btn-light " title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                @using (Html.BeginForm("DeleteConfirmed", "Users", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" id="hiddenID" value="@Model.UserID" name="UserID" />
+                                    <input type="hidden" id="UserID" name="CurrentUserID" class="form-control" value="@CurrentUserID()" />
+                                    <button type="button" class="btn btn-sm btn-light" id="deletealert" title="Delete"><i class="flaticon-interface-5" aria-hidden="true"></i> &nbsp;Delete</button>
+                                }
+                                <button class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+                            </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+
+                            @using (Html.BeginForm("UserEdit", "Users", FormMethod.Post))
+                            {
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Employee ID">Employee ID<span class="asteriskicon"> *</span></label>
+                                            <input type="hidden" class="form-control" name="UserID" value="@Model.UserID" placeholder="Enter Employee ID" readonly>
+                                            <input type="text" pattern="[0-9]+" maxlength="8" class="form-control" id="useremployeeeid" oninvalid="InvalidID(this);" oninput="InvalidID(this);" name="UserEmployeeID" value="@Model.UserEmployeeID" placeholder="Enter Employee ID" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Employee Name">Full Name<span class="asteriskicon"> *</span></label>
+                                            <input type="text" pattern="[A-Za-z\s]+" maxlength="180" class="form-control" id="useremployeename" oninvalid="InvalidName(this);" oninput="InvalidName(this);" name="UserEmployeeName" value="@Model.UserEmployeeName" placeholder="Enter Full Name" readonly required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="email">Email Address<span class="asteriskicon"> *</span></label>
+                                            <input type="email" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" class="form-control" id="useremailaddress" oninvalid="InvalidEmail(this);" oninput="InvalidEmail(this);" name="UserEmployeeEmail" value="@Model.UserEmployeeEmail" placeholder="Enter Email Address" readonly required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="designation">Designation<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" pattern="[A-Za-z\s]+" class="form-control" id="userdesignation" oninvalid="InvalidDesignation(this);" oninput="InvalidDesignation(this);" name="UserEmployeeDesignation" value="@Model.UserEmployeeDesignation" placeholder="Enter Designation" readonly required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Category">Cluster<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" id="user_category_names" oninvalid="InvalidCategory(this);" onchange="SelectSubCategory(this.value);" oninput="InvalidCategory(this);" name="UserCategory" disabled required style="padding-bottom:3px;padding-top:3px;">
+                                                <option>@Model.UserCategory</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Sub Category">Function<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" id="user_subcategory_names" oninvalid="InvalidSubCategory(this);" oninput="InvalidSubCategory(this);" name="UserSubCategory" disabled required style="padding-bottom:3px;padding-top:3px;">
+                                                <option>@Model.UserSubCategory</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Status">Status<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" name="UserStatus" id="userstatus" oninvalid="InvalidStatus(this);" oninput="InvalidStatus(this);" disabled required>
+                                                @*<option>
+                                                    @Model.UserStatus
+                                                </option>*@
+                                                <option>Active</option>
+                                                <option>Inactive</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager ID<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" class="form-control" id="UserHodEmployeeID" name="UserHodEmployeeID" onkeyup="this.value = this.value.replace(/[^0-9]/g, '')" oninvalid="InvalidHodEmployeeID(this);" oninput="InvalidHodEmployeeID(this);" value="@Model.UserHodEmployeeID" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager Name<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" class="form-control" oninvalid="InvalidHodEmployeeName(this);" onkeyup="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" oninput="InvalidHodEmployeeName(this);" id="UserHodEmployeeName" name="UserHodEmployeeName" value="@Model.UserHodEmployeeName" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager Email<span class="asteriskicon"> *</span></label>
+                                            <input type="email" maxlength="180" oninvalid="InvalidHodEmployeeEmail(this);" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" oninput="InvalidHodEmployeeEmail(this);" class="form-control" id="UserHodEmployeeEmailAddress" name="UserHodEmployeeEmailAddress" value="@Model.UserHodEmployeeEmailAddress" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <br />
+                                                <button type="button" class="btn btn-sm btn-light btn_create" data-toggle="modal" id="searchbtn" data-target="#searchmodal" disabled>Search User</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group browsers">
+                                            <label for="role">Role<span class="asteriskicon"> *</span></label>
+                                            <div class="row">
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Initiator</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleInitiator)
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleInitiator" onchange="CheckboxRequired();" name="UserRoleInitiator" checked="checked" disabled required>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleInitiator" onchange="CheckboxRequired();" name="UserRoleInitiator" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                @*</div>*@
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Approver</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleApprover)
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleApprover" onchange="CheckboxRequired();" name="UserRoleApprover" checked="checked" disabled required>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleApprover" onchange="CheckboxRequired();" name="UserRoleApprover" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Legal</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleLegal)
+                                                            {<input type="checkbox" value="@Model.UserRoleLegal" onchange="CheckboxRequired();" name="UserRoleLegal" checked="checked" disabled required>
+                                                            }
+                                                            else
+                                                            {<input type="checkbox" value="@Model.UserRoleLegal" onchange="CheckboxRequired();" name="UserRoleLegal" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Finance</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleFinance)
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleFinance" onchange="CheckboxRequired();" checked="checked" name="UserRoleFinance" disabled required>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleFinance" onchange="CheckboxRequired();" name="UserRoleFinance" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Admin</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleAdmin)
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleAdmin" onchange="CheckboxRequired();" checked="checked" name="UserRoleAdmin" disabled required>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleAdmin" onchange="CheckboxRequired();" name="UserRoleAdmin" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+
+                                                    </div>
+
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Reviewer</label>
+                                                    <div>
+                                                        <label class="switch">
+
+                                                            @if (Model.UserRoleReviewer)
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleReviewer" onchange="CheckboxRequired();" checked="checked" name="UserRoleReviewer" disabled required>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="checkbox" value="@Model.UserRoleReviewer" onchange="CheckboxRequired();" name="UserRoleReviewer" disabled required>
+                                                            }
+                                                            <span class="slider round"></span>
+                                                        </label>
+
+                                                    </div>
+
+                                                    @*</div>*@
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+
+                                                        <label><b id="CheckboxRequiredCode"></b></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-action text-right card_footer_button" id="saveanddiscardoption">
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>User Modified History</b></label>
+                <button type="button" class="btn btn-sm btn-light btn_close" data-dismiss="modal" title="Close" style="font-size:13px;">Close</button>
+
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @*<hr />*@
+
+                @*<div class="card-action text-right card_footer_button">*@
+                @*<input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">*@
+
+                @*</div>*@
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <button href="" data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close" style="color:white; font-size:13px;">Close</button>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button class="btn btn-sm btn-light btn_create" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th>Select User</th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class="modalload"><!-- Place at bottom of page --></div>
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+@*<script>
+        $(document).ready(function () {
+            $('#basic-datatables').DataTable({
+            });
+
+
+        });
+    </script>*@
+
+
+
+
+<script>
+    var Flag = 0
+    $(function () {
+        if (Flag == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Users/user_category_list",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert(response);
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("user_category_names");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+
+                    option.text = "-- Select --";
+                    option.value = "";
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        if (option.text == "@Model.UserCategory") {
+                            option.defaultSelected = true;
+                        }
+                        x.add(option);
+                    });
+                }
+            });
+            Flag += 1;
+
+        }
+
+    });
+
+
+    $(function () {
+        //alert(user_category_id)
+
+        var user_category_id = "@Model.UserCategory";
+        $.ajax({
+            url: '/Users/user_subcategory_list',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+
+                $('#user_subcategory_names')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("user_subcategory_names");
+
+                var option = document.createElement("option");
+                option.text = "-- Select --";
+                option.value = "";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    if (option.text == "@Model.UserSubCategory") {
+                            option.defaultSelected = true;
+                        }
+                    x.add(option);
+                });
+            },
+
+        });
+
+
+    });
+
+    function SelectSubCategory(user_category_id) {
+        $.ajax({
+            url: '/Users/user_subcategory_list',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+
+                $('#user_subcategory_names')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("user_subcategory_names");
+                var option = document.createElement("option");
+                option.text = "-- Select --";
+                option.value = "";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            },
+
+        });
+    }
+
+</script>
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+<script>
+  
+        $(function () {
+        var requiredCheckboxes = $('.browsers :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            requiredCheckboxes.removeAttr('required');
+        $("#CheckboxRequiredCode").html('');
+    }
+        else {
+            requiredCheckboxes.attr('required', 'required');
+        $("#CheckboxRequiredCode").html('At least one Role is required !');
+            $("#CheckboxRequiredCode").css({"color": "red" });
+    }
+});
+
+
+     function CheckboxRequired() {
+        var requiredCheckboxes = $('.browsers :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            requiredCheckboxes.removeAttr('required');
+        $("#CheckboxRequiredCode").html('');
+    }
+        else {
+            requiredCheckboxes.attr('required', 'required');
+        $("#CheckboxRequiredCode").html('At least one Role is required !');
+            $("#CheckboxRequiredCode").css({"color": "red" });
+    }
+}
+</script>
+
+<script>
+    function InvalidID(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity('Enter an EmployeeID');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+            //} else if (textbox.validity.typeMismatch) {
+            //    textbox.setCustomValidity
+            //        ('Please enter an email address which is valid!');
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Alphabets and Special Characters are not allowed');
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+
+        return true;
+    }
+    function InvalidName(textbox) {
+        //textbox.setCustomValidity('Plz enter on Alphabets');
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Name');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidEmail(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Email Address');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidDesignation(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Designation');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Cluster type');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidSubCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Function');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidStatus(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Status');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeID(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter HOD Employee ID');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeName(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter Hod Employee Name');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeEmail(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter Hod Email Address');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+</script>
+<script>
+    // Delete button alert design
+    $('#deletealert').click(function (e) {
+        var _form = $(this).closest("form");
+        e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Delete it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                _form.submit();
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                
+                $('input').removeAttr('readonly');
+                $('input').removeAttr('disabled');
+                $('textarea').removeAttr('readonly');
+                $('select').removeAttr('disabled');
+                $("#searchbtn").removeAttr('disabled');
+                $("#saveanddiscardoption").html('<button type="submit" @*onclick="updated();"*@ class="btn btn-success saverecord" style="font-size:17px;width:180px;"><b>Save Changes</b></button><button type="button" onclick="DiscardChanges();" class="btn btn-danger" style="font-size:17px;width:180px;"><b>Discard Changes</b></button>');
+                document.getElementById("editalert").disabled = true;
+                document.getElementById("deletealert").disabled = true;
+                document.getElementById("deletealert").disabled = true;
+                document.getElementById("BackButton").disabled = true;
+               // document.getElementById("searchmodal").disabled = false;
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    })
+</script>
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+@*<script>
+        function updated() {
+            //alert("called");
+            //e.preventDefault();
+           document.getElementById("formsubmit").submit();
+            swal("Updated", {
+                icon: "success",
+                buttons: {
+                            confirm: {
+                                visible: false
+                            }
+                        }
+            })
+                .then(function (result) {
+                    if (result == true) {
+
+                        window.location = "/Users/Repository";
+                    }
+                });
+
+        }
+    </script>*@
+
+
+
+
+
+<script>
+    $(function () {
+        // alert("hello");
+
+        var tblLog = "";
+        var ID = $("#hiddenID").val();
+        $.ajax({
+            type: "POST",
+            url: "/Users/getLogDetail",
+            data: { ID: ID },
+
+
+            success: function (response) {
+
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '</center></td><td style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                //  $("#tblLogList").append(tblLog);
+
+                $("#tblLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+
+
+@*<script>
+    $(function () {
+         var UserID = "@CurrentLoggedUserID - @CurrentLoggedUserName";
+
+        $("#useremployeeeid").focus(function () {
+            $(this).data('idval', $(this).val());
+        });
+        $("#useremployeeeid").change(function () {
+            var initialvalue = "EmployeeID : " + $(this).data('idval');
+            var details = "EmployeeID : " + $(this).val();
+            var ID = $("#hiddenID").val();
+             $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#useremployeename").focus(function () {
+            $(this).data('nameval', $(this).val());
+        });
+        $("#useremployeename").change(function () {
+            var initialvalue = "Name : " + $(this).data('nameval');
+            var details = "Name : " + $(this).val();
+            var ID = $("#hiddenID").val();
+            $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#useremailaddress").focus(function () {
+            $(this).data('emailval', $(this).val());
+        });
+        $("#useremailaddress").change(function () {
+            var initialvalue = "Email : " + $(this).data('emailval');
+            var details = "Email : " + $(this).val();
+            var ID = $("#hiddenID").val();
+              $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#userdesignation").focus(function () {
+            $(this).data('designationval', $(this).val());
+        });
+        $("#userdesignation").change(function () {
+            var initialvalue = "Designation : " + $(this).data('designationval');
+            var details = "Designation : " + $(this).val();
+            var ID = $("#hiddenID").val();
+             $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#user_category_names").focus(function () {
+            $(this).data('categoryval', $(this).val());
+        });
+        $("#user_category_names").change(function () {
+            var initialvalue = "Cluster : " + $(this).data('categoryval');
+            var details = "Cluster : " + $(this).val();
+            var ID = $("#hiddenID").val();
+             $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#user_subcategory_names").focus(function () {
+            $(this).data('subcategoryval', $(this).val());
+        });
+        $("#user_subcategory_names").change(function () {
+            var initialvalue = "Function : " + $(this).data('subcategoryval');
+            var details = "Function : " + $(this).val();
+            var ID = $("#hiddenID").val();
+           $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+        $("#userstatus").focus(function () {
+            $(this).data('statusval', $(this).val());
+        });
+        $("#userstatus").change(function () {
+
+            var initialvalue = "Status : " + $(this).data('statusval');
+            var details = "Status : " + $(this).val();
+            var ID = $("#hiddenID").val();
+            // alert(initialvalue);
+            //alert(details);
+
+            $.ajax({
+                type: "POST",
+                url: "/Users/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>*@
+
+
+<script>
+    function InitiatorCheck() {
+        document.getElementById("UserRoleInitiator").checked = true;
+    }
+</script>
+
+<script>
+    function UserID() {
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Users/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch: OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+
+                            var select = "";
+                             if ((value.UserEmployeeID != "@Model.UserEmployeeID") && (value.UserStatus == "Active")) {
+                                select = '<button class="btn btn-sm btn-primary" data-dismiss="modal" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                            }
+                            else {
+                                select = '<h5 style="color:red;" title="Same Employee cannot be choosed as an Reporting Manager / User is in InActive mode.">Restricted</h5>';
+                            }
+                            tblBasicUser = tblBasicUser + '<tr><td><center>' + select + '</center></td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td>' + value.UserCategory + '</td><td>' + value.UserSubCategory + '</td><td>' + value.UserEmployeeDesignation + '</td><td>' + UserRole + '</td></tr>';
+                            
+                            });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+
+        $('#UserHodEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#UserHodEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#UserHodEmployeeEmailAddress').val($('#' + EmployeeID + '_Email').html());
+
+    }
+</script>
+<script>
+    function Back() {
+        window.location = "/Users/Repository";
+    }
+</script>
+<script>
+    $(function () {
+        $("#userstatus").val("@Model.UserStatus");
+    });
+</script>
+
+<script>
+    $("#useremployeeeid").focusout(function () {
+        var EmployeeID = $("#useremployeeeid").val();
+        var UserTableID = "@Model.UserID";
+        if (EmployeeID.length > 0) {
+            $.ajax({
+                url: '/Users/employeeIDVerification2',
+                type: 'POST',
+                data: { EmployeeID: EmployeeID, UserTableID: UserTableID },
+
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response);
+
+                    if (response == EmployeeID) {
+
+                        swal({
+                            title: 'Updating the User',
+                            text: "Employee ID : " + EmployeeID + " already Exists !",
+                            icon: "warning",
+                        });
+
+                        $("#useremployeeeid").val("");
+                    }
+
+                }
+            });
+        }
+    });
+</script>

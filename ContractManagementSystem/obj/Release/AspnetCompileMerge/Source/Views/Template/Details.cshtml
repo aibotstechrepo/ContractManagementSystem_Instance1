@@ -1,0 +1,1389 @@
+﻿@model ContractManagementSystem.Models.tblTemplateMaster
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserLoggedID = CurrentUserID();
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Template ID :&nbsp;@Model.TemplateID</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Template/Repository">Template Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Details
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center form-inline">
+                                @*<div class="card-head-row">*@
+                                <div class="col-sm-7">
+                                    <h2>
+                                        <b id="ChangeNameOnEdit">@Model.Name Details</b> &nbsp;
+
+                                        @{ if (Model.Status == "Draft")
+                                            {
+                                                <span class='badge Legal shadow draft'>
+                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                    <span>Draft</span>
+                                                </span>
+                                            }
+                                            if (Model.Status == "Pending Approval")
+                                            {
+                                                <span class='badge Legal shadow  Pennding_Approvals'>
+                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                    <span>Pending Approvals</span>
+                                                </span>
+                                            }
+                                            if (Model.Status == "Rejected")
+                                            {
+                                                <span class='badge Legal shadow Rework'>
+                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                    <span>Rejected</span>
+                                                </span>
+                                            }
+                                            if (Model.Status == "In Effect")
+                                            {
+                                                <span class='badge Legal shadow Ineffect'>
+                                                    <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                    <span>Approved</span>
+                                                </span>
+                                            }
+                                            if (Model.TemplateModificationType == "Cloning")
+                                            {
+                                                <span class='badge Legal_icon shadow'>Cloned from : @Model.OriginalTemplateID</span>
+                                            }
+                                        }
+                                    </h2>
+                                </div>
+                                <div class="col-sm-5 text-right">
+                                    <button onclick="Back();" class="btn btn-sm btn-light" title="Back to Repository" id="BackButton"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</button>
+                                    @if (((Model.Status == "Draft") && ("" + Model.Initiator == CurrentUserLoggedID)) || (((Model.Status == "Pending Approval") || (Model.Status == "Rejected")) && ("" + Model.NextApprover == CurrentUserLoggedID)))
+                                    {
+                                        <button type="button" class="btn btn-sm btn-light" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                    }
+                                    @if (User.IsInRole("legal"))
+                                    {
+                                        if ((Model.Status == "In Effect"))
+                                        {
+                                            <button type="button" class="btn btn-sm btn-light" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+
+                                        }
+                                    }
+                                    @if ((Model.Status == "Draft") && ("" + Model.Initiator == CurrentUserLoggedID))
+                                    {
+                                        <button type="button" class="btn btn-sm btn-light" id="deletealert" title="Delete"><i class="flaticon-interface-5" aria-hidden="true"></i> &nbsp;Delete</button>
+                                    }
+                                    <input type="hidden" id="hiddenID" class="form-control" name="TemplateID" value="@Model.TemplateID" readonly />
+                                    <input type="hidden" id="UserID" class="form-control" name="UserID" value="@CurrentUserID()" />
+                                    <button class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+                                </div>
+                                @*</div>*@
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Cluster">Template Name<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="65" class="form-control input_text" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="Name" id="templatename" value="@Model.Name" placeholder="Enter Template Name" required="required" readonly />
+                                            <input type="hidden" class="form-control" id="templateid" name="TemplateID" value="@Model.TemplateID" readonly />
+                                            <input type="hidden" id="Initiator" value="@CurrentUserID()" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="entity">Type of Contract<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" class="form-control input_text" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="Type" id="type_of_entities" value="@Model.Type" list="type_of_entity" placeholder="Enter Contract Type" required disabled />
+                                            <datalist id="type_of_entity">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="description">Template Description</label>
+                                            <textarea class="form-control text_area" maxlength="1800" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" name="Description" id="templatedescription" placeholder="Enter Template Description" disabled>@Model.Description</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (User.IsInRole("legal"))
+                                {
+                                    if (Model.Status == "In Effect")
+                                {
+                                <div class="row">
+                                    <div class="col-sm-12" id="TemplateEnable">
+                                        <div class="form-group form-inline">
+                                            <label for="initiator">Enable</label>&nbsp; &nbsp;
+                                            <div>
+                                                <label class="switch">
+                                                    @if (Model.Enable == "Active")
+                                                    {
+                                                        <input type="checkbox" checked disabled id="EnableCheckbox">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" disabled id="EnableCheckbox">
+                                                    }
+                                                    <span class="slider round round1"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                }
+                                }
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header CardHeader_Approvers">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-6">
+                                                        <div class="card-title"><h5><b>Approver (s) <span class="asteriskicon"> *</span></b></h5></div>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <button type="button" style="color:blue;" class="btn btn-sm btn-light" data-toggle="modal" data-target="#searchmodal" disabled><i class="flaticon-search-2" aria-hidden="true"></i>&nbsp; Search User</button>
+                                                        <button type="button" style="color:red;" id="btnRemoveApprover" class="btn btn-sm btn-light" title="Remove Approvers from List" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Remove</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-right">
+
+                                                        <input type="hidden" id="ApproverEmployeeID" />
+                                                        <input type="hidden" id="ApproverEmployeeName" />
+
+                                                        <input type="hidden" id="ApproverEmployeeEmail" />
+                                                        <input type="hidden" id="ApproverEmployeeDesignation" />
+                                                        <input type="hidden" id="ApproverEmployeeRoles" />
+                                                        <input type="hidden" id="ApproverEmployeeSubCategory" />
+                                                        <input type="hidden" id="ApproverEmployeeCategory" />
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="table-responsive">
+                                                                    <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><center>Select to remove</center></th>
+                                                                                <th><center>Employee ID</center></th>
+                                                                                <th><center>Employee Name</center></th>
+                                                                                <th><center>Employee Email Address</center></th>
+                                                                                <th><center>Employee Designation</center></th>
+                                                                                <th><center>Employee Role (s)</center></th>
+                                                                                @if (Model.Status.ToLower() != "draft")
+                                                                                {
+                                                                                    <th><center>Approval Status</center></th>
+                                                                                }
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="aprrovallist">
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action text-right card_footer_button saverecord">
+                                    <div class="row form-inline">
+                                        <div class="col-sm-12 text-right">
+                                            <button type="button" id="Save" onclick="updated();" class="btn btn-success saverecord" style="display:none;font-size:17px;width:180px;"><b>Save Changes</b></button>&nbsp;
+                                            <button type="button" id="Discard" onclick="DiscardChanges();" class="btn btn-danger" style="display:none;font-size:17px;width:180px;"><b>Discard Changes</b></button>&nbsp;
+                                            <a class="btn btn-success btn_SaveClearDiscard" id="Next_Button" href="@Url.Action("DraftView", "Template", new { id = Model.TemplateID })">Next</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-error fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width: 80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Template Modified History</b></label>
+                <button type="button" class="btn btn-sm btn-light btn_close" title="Close" data-dismiss="modal" style="font-size:13px;">Close</button>
+
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblTemplateLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<hr />
+
+                    <div class="card-action text-right card_footer_button">
+                        <input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+
+                    </div>*@
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-error fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <button href="" data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close" style="color:white; font-size:13px;">Close</button>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button class="btn btn-sm btn-light btn_create" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="Approvers_Table" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th><center>Select User</center></th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+
+
+<script>
+
+   $('#deletealert').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Delete it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+               // _form.submit();
+                var TemplateID = $("#hiddenID").val();
+                var CurrentUserID = @CurrentUserID();
+                $.ajax({
+                    url: '/Template/DeleteTemplateFromDB',
+                    type: 'POST',
+                    data: { TemplateID: TemplateID, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response == "success") {
+                            swal("Successfully deleted the Template", {
+
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (value) {
+                                if (value == true) {
+                                    window.location = "/Template/Repository";
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in Deleting the record", {
+
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                });
+
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        //alert("helo");
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                $('.input_text').removeAttr('readonly');
+                $('.input_text').removeAttr('disabled');
+                //$('input[type=checkbox]').removeAttr('disabled');
+                $('textarea').removeAttr('readonly');
+                $('textarea').removeAttr('disabled');
+                $('select').removeAttr('disabled');
+                $('datalist').removeAttr('disabled');
+                $('button').removeAttr('disabled');
+                
+                $('#EnableCheckbox').removeAttr('disabled');
+                try {
+                    $('#Save').show();
+                } catch (error) { }
+                try {
+                    $('#Discard').show();
+                    $('#Next_Button').hide();
+                } catch (error) { }
+                try {
+                    document.getElementById("editalert").disabled = true;
+                    document.getElementById("deletealert").disabled = true;
+                     document.getElementById("BackButton").disabled = true;
+                } catch (error) { }
+
+                 if ("@Model.Status" == "Draft") {
+                    $('input[type=checkbox]').removeAttr('disabled');
+                } else {
+                    $(".EmployeeIdDetails").map(function () {
+                        var ApprovalStatus = $(this).parent().children().last().html().trim();
+                        //alert("asdf : " + ApprovalStatus);
+                        if (ApprovalStatus == "Review Pending") {
+                            //alert(ApprovalStatus);
+                            $(this).parent().children().first().children().removeAttr('disabled');
+                        }
+                    });
+                }
+
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    });
+</script>
+
+<script>
+    function Back() {
+        window.location = "/Template/Repository";
+    }
+</script>
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+<script>
+    function updated() {
+        var CurrentUserName = "@CurrentUserName()";
+        var TemplateName = $("#templatename").val();
+        var TemplateID = $("#hiddenID").val();
+        var TemplateType = $("#type_of_entities").val();
+        var TemplateDescription = $("#templatedescription").val();
+        var CurrentUserID = $("#Initiator").val();
+
+        var UID = [];
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            UID.push(Userlist[i].innerHTML);
+            //AppUsers.push(UID);
+        }
+        var requiredCheckboxes = $('#TemplateEnable :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            var Enable = "Active";
+        }
+        else {
+            var Enable = "InActive";
+        }
+       if ("@User.IsInRole("legal")" == "True") {
+            if ((TemplateName.length > 0) && (TemplateType.length > 0)) {
+
+                $.ajax({
+                    url: '/Template/UpdateTemplateInDB',
+                    type: 'POST',
+                    data: { Enable:Enable, UID: UID, TemplateName: TemplateName, TemplateID: TemplateID, TemplateType: TemplateType, TemplateDescription: TemplateDescription, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] = "success") {
+
+                            swal("Template details updated successfully", {
+                                icon: "success",
+                            }).then(function (result) {
+                                if (result) {
+                                    window.location = '/Template/Details/' + response[1];
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in updating the record", {
+                                icon: "error",
+
+                                //}).then((error) => {
+                                //    if (error) {
+
+                                //    }
+                            });
+                        }
+
+                    }
+                });
+            }
+            else {
+                swal("All fields are required", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+            if ((TemplateName.length > 0) && (TemplateType.length > 0) && (Userlist.length > 0)) {
+
+                $.ajax({
+                    url: '/Template/UpdateTemplateInDB',
+                    type: 'POST',
+                    data: { Enable:Enable, UID: UID, TemplateName: TemplateName, TemplateID: TemplateID, TemplateType: TemplateType, TemplateDescription: TemplateDescription, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] = "success") {
+
+                            swal("Template details updated Successfully", {
+                                icon: "success",
+                            }).then(function (result) {
+                                if (result) {
+                                    window.location = '/Template/Details/' + response[1];
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in updating the record", {
+                                icon: "error",
+
+                                //}).then((error) => {
+                                //    if (error) {
+
+                                //    }
+                            });
+                        }
+
+                    }
+                });
+            }
+            else {
+                swal("All fields are required", {
+                    icon: "warning",
+                });
+            }
+        }
+        
+
+    }
+</script>
+
+
+
+
+<script>
+    $(function () {
+        // alert("hello");
+
+        var tblLog = "";
+        //var ID = $("#hiddenID").val();
+        var ID = "@Model.TemplateID";
+        //alert(ID);
+        $.ajax({
+            type: "POST",
+            url: "/Template/getLogDetail",
+            data: { ID: ID },
+
+            dataType: 'json',
+            success: function (response) {
+
+                //alert(response.LogUserID);
+               $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '</center></td><td style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblTemplateLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+
+
+@*<script>
+    $(function () {
+        var UserID = "@CurrentLoggedUserID - @CurrentLoggedUserName";
+
+        $("#templatename").focus(function () {
+            $(this).data('nameval', $(this).val());
+        });
+        $("#templatename").change(function () {
+            var initialvalue = "Name : " + $(this).data('nameval');
+            var details = "Name : " + $(this).val();
+            var ID = $("#templateid").val();
+            $.ajax({
+                type: "POST",
+                url: "/Template/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+
+            });
+        });
+
+        $("#type_of_entities").focus(function () {
+            $(this).data('typeval', $(this).val());
+        });
+        $("#type_of_entities").change(function () {
+            var initialvalue = "Type : " + $(this).data('typeval');
+            var details = "Type : " + $(this).val();
+            var ID = $("#templateid").val();
+             $.ajax({
+                type: "POST",
+                url: "/Template/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                }
+            });
+        });
+
+        
+        $("#templatedescription").focus(function () {
+            $(this).data('desval', $(this).val());
+        });
+        $("#templatedescription").change(function () {
+            var initialvalue = "Description : " + $(this).data('desval');
+            var details = "Description : " + $(this).val();
+            var ID = $("#templateid").val();
+             $.ajax({
+                type: "POST",
+                url: "/Template/SaveLog",
+                data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+                success: function (response) {
+
+                    //alert(response.LogUserID);
+                    // alert(called);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+
+
+
+
+    });
+</script>*@
+
+@* *****************Changes done on 11/3/2020 at 10:15 pm ******************* *@
+<script>
+    $("#templatename").keyup(function () {
+        var TemplateName = $(this).val();
+        //  var TemplateID = $(this).val();
+
+        $("#ChangeNameOnEdit").html(TemplateName + " Details");
+    });
+</script>
+@* ************************************************************************** *@
+
+@**************************Integrated*****************************@
+<script>
+   
+    function AddedUser(EmpID) {
+        var AppUsers = [];
+
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            var UID = Userlist[i].innerHTML;
+            AppUsers.push(UID);
+            if (UID == EmpID) {
+                return false;
+            }
+        }
+        console.log(AppUsers);
+        return true;
+
+    }
+     function CheckLimit() {
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails").length;
+        if (Userlist < 10) {
+
+            $('.btn_add').attr('disabled', false);
+            return true;
+        }
+        $('.btn_add').attr('disabled', true);
+        return false;
+
+    }
+
+</script>
+<script>
+   
+    $("btnAddNewApprover").click(function () {
+        AddDetailsToTable();
+    });
+    $("#btnRemoveApprover").click(function () {
+        $("#ApproversTable tbody").find('input[name="record"]').each(function () {
+            if ($(this).is(":checked")) {
+                $(this).parents("tr").remove();
+            }
+            CheckLimit();
+        });
+
+    });
+</script>
+
+<script>
+    $(function () {
+        var currentuserid = "@CurrentUserID()";
+        var Approver1ID = "@Model.Approver1ID";
+        var Approver2ID = "@Model.Approver2ID";
+        var Approver3ID = "@Model.Approver3ID";
+        var Approver4ID = "@Model.Approver4ID";
+        var Approver5ID = "@Model.Approver5ID";
+        var Approver6ID = "@Model.Approver6ID";
+        var Approver7ID = "@Model.Approver7ID";
+        var Approver8ID = "@Model.Approver8ID";
+        var Approver9ID = "@Model.Approver9ID";
+        var Approver10ID = "@Model.Approver10ID";
+
+       //   var Approver1Counter = 0;
+      //  alert("Called on Load");
+        var ApproverTableData = "";
+
+              //alert("@Model.Approver1ID".length);
+             if (Approver1ID > 0) {
+                var EmployeeID = Approver1ID;
+                 $.ajax({
+                   url: '/Template/GetUserById',
+                    type: 'POST',
+                     data: { EmployeeID: EmployeeID },
+
+                     dataType: 'json',
+                     success: function (response) {
+                         // console.log(response);
+                          var Approvestatus = "";
+                          if ("@Model.Status" != "Draft") {
+                             var statusCheck = "@Model.Approver1Status";
+                             //if ($(statusCheck).length < 0) {
+                             if ("@string.IsNullOrWhiteSpace(@Model.Approver1Status)"=="True") {
+                                // alert("sdfgh @Model.Approver1Status");
+                                  Approvestatus = "<td> Review Pending  </td>";
+                             }
+                             else {
+                                 Approvestatus = Approvestatus + "<td> @Model.Approver1Status  </td>";
+                             }
+                             
+                         }
+                         if (currentuserid != EmployeeID) {
+                             ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver1ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                             //alert(ApproverTableData);
+                             $("#aprrovallist").html(ApproverTableData);
+                         }
+                         if (Approver2ID > 0) {
+              //  alert("2ND Approver");
+                            var EmployeeID = Approver2ID;
+                             $.ajax({
+                               url: '/Template/GetUserById',
+                                type: 'POST',
+                                 data: { EmployeeID: EmployeeID },
+
+                                dataType: 'json',
+                                success: function (response) {
+                                   // console.log(response);
+                                     var Approvestatus = "";
+                                          if ("@Model.Status" != "Draft") {
+                                             var statusCheck = "@Model.Approver2Status";
+                                             //if ($(statusCheck).length < 0) {
+                                             if ("@string.IsNullOrWhiteSpace(@Model.Approver2Status)"=="True") {
+                                                // alert("sdfgh @Model.Approver2Status");
+                                                  Approvestatus = "<td> Review Pending  </td>";
+                                             }
+                                             else {
+                                                 Approvestatus = Approvestatus + "<td> @Model.Approver2Status  </td>";
+                                             }
+                             
+                                    }
+                                    if (currentuserid != EmployeeID) {
+                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver2ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                        //alert(ApproverTableData);
+                                        $("#aprrovallist").html(ApproverTableData);
+                                    }
+                                     if (Approver3ID > 0) {
+                                        var EmployeeID = Approver3ID;
+                                         $.ajax({
+                                           url: '/Template/GetUserById',
+                                            type: 'POST',
+                                             data: { EmployeeID: EmployeeID },
+
+                                            dataType: 'json',
+                                            success: function (response) {
+                                               // console.log(response);
+                                                 var Approvestatus = "";
+                                                      if ("@Model.Status" != "Draft") {
+                                                         var statusCheck = "@Model.Approver3Status";
+                                                         //if ($(statusCheck).length < 0) {
+                                                         if ("@string.IsNullOrWhiteSpace(@Model.Approver3Status)"=="True") {
+                                                            // alert("sdfgh @Model.Approver3Status");
+                                                              Approvestatus = "<td> Review Pending  </td>";
+                                                         }
+                                                         else {
+                                                             Approvestatus = Approvestatus + "<td> @Model.Approver3Status  </td>";
+                                                         }
+                             
+                                                }
+                                                if (currentuserid != EmployeeID) {
+                                                    ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver3ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                    //alert(ApproverTableData);
+                                                    $("#aprrovallist").html(ApproverTableData);
+                                                }
+                                                if (Approver4ID > 0) {
+                                                    var EmployeeID = Approver4ID;
+                                                     $.ajax({
+                                                       url: '/Template/GetUserById',
+                                                        type: 'POST',
+                                                       data: { EmployeeID: EmployeeID },
+                                                        dataType: 'json',
+                                                        success: function (response) {
+                                                           // console.log(response);
+                                                             var Approvestatus = "";
+                                                                  if ("@Model.Status" != "Draft") {
+                                                                     var statusCheck = "@Model.Approver4Status";
+                                                                     //if ($(statusCheck).length < 0) {
+                                                                     if ("@string.IsNullOrWhiteSpace(@Model.Approver4Status)"=="True") {
+                                                                        // alert("sdfgh @Model.Approver4Status");
+                                                                          Approvestatus = "<td> Review Pending  </td>";
+                                                                     }
+                                                                     else {
+                                                                         Approvestatus = Approvestatus + "<td> @Model.Approver4Status  </td>";
+                                                                     }
+                             
+                                                            }
+                                                            if (currentuserid != EmployeeID) {
+                                                                ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver4ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                //alert(ApproverTableData);
+                                                                $("#aprrovallist").html(ApproverTableData);
+                                                            }
+                                                            if (Approver5ID > 0) {
+                                                                var EmployeeID = Approver5ID;
+                                                                 $.ajax({
+                                                                   url: '/Template/GetUserById',
+                                                                    type: 'POST',
+                                                                    data: { EmployeeID: EmployeeID },
+                                                                    dataType: 'json',
+                                                                    success: function (response) {
+                                                                       // console.log(response);
+                                                                         var Approvestatus = "";
+                                                                              if ("@Model.Status" != "Draft") {
+                                                                                 var statusCheck = "@Model.Approver5Status";
+                                                                                 //if ($(statusCheck).length < 0) {
+                                                                                 if ("@string.IsNullOrWhiteSpace(@Model.Approver5Status)"=="True") {
+                                                                                    // alert("sdfgh @Model.Approver5Status");
+                                                                                      Approvestatus = "<td> Review Pending  </td>";
+                                                                                 }
+                                                                                 else {
+                                                                                     Approvestatus = Approvestatus + "<td> @Model.Approver5Status  </td>";
+                                                                                 }
+                             
+                                                                        }
+                                                                        if (currentuserid != EmployeeID) {
+                                                                            ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver5ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                            //alert(ApproverTableData);
+                                                                            $("#aprrovallist").html(ApproverTableData);
+                                                                        }
+                                                                        if (Approver6ID > 0) {
+                                                                            var EmployeeID = Approver6ID;
+                                                                             $.ajax({
+                                                                               url: '/Template/GetUserById',
+                                                                                type: 'POST',
+                                                                                data: { EmployeeID: EmployeeID },
+                                                                                dataType: 'json',
+                                                                                success: function (response) {
+                                                                                   // console.log(response);
+                                                                                     var Approvestatus = "";
+                                                                                          if ("@Model.Status" != "Draft") {
+                                                                                             var statusCheck = "@Model.Approver6Status";
+                                                                                             //if ($(statusCheck).length < 0) {
+                                                                                             if ("@string.IsNullOrWhiteSpace(@Model.Approver6Status)"=="True") {
+                                                                                                // alert("sdfgh @Model.Approver6Status");
+                                                                                                  Approvestatus = "<td> Review Pending  </td>";
+                                                                                             }
+                                                                                             else {
+                                                                                                 Approvestatus = Approvestatus + "<td> @Model.Approver6Status  </td>";
+                                                                                             }
+                             
+                                                                                    }
+                                                                                    if (currentuserid != EmployeeID) {
+                                                                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver6ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                                        //alert(ApproverTableData);
+                                                                                        $("#aprrovallist").html(ApproverTableData);
+                                                                                    }
+                                                                                     if (Approver7ID > 0) {
+                                                                                            var EmployeeID = Approver7ID;
+                                                                                             $.ajax({
+                                                                                               url: '/Template/GetUserById',
+                                                                                                type: 'POST',
+                                                                                                data: { EmployeeID: EmployeeID },
+                                                                                                dataType: 'json',
+                                                                                                success: function (response) {
+                                                                                                   // console.log(response);
+                                                                                                     var Approvestatus = "";
+                                                                                                              if ("@Model.Status" != "Draft") {
+                                                                                                                 var statusCheck = "@Model.Approver7Status";
+                                                                                                                 //if ($(statusCheck).length < 0) {
+                                                                                                                 if ("@string.IsNullOrWhiteSpace(@Model.Approver7Status)"=="True") {
+                                                                                                                    // alert("sdfgh @Model.Approver7Status");
+                                                                                                                      Approvestatus = "<td> Review Pending  </td>";
+                                                                                                                 }
+                                                                                                                 else {
+                                                                                                                     Approvestatus = Approvestatus + "<td> @Model.Approver7Status  </td>";
+                                                                                                                 }
+                             
+                                                                                                    }
+                                                                                                    if (currentuserid != EmployeeID) {
+                                                                                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver7ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                                                        //alert(ApproverTableData);
+                                                                                                        $("#aprrovallist").html(ApproverTableData);
+                                                                                                    }
+                                                                                                    if (Approver8ID > 0) {
+                                                                                                        var EmployeeID = Approver8ID;
+                                                                                                         $.ajax({
+                                                                                                           url: '/Template/GetUserById',
+                                                                                                            type: 'POST',
+                                                                                                            data: { EmployeeID: EmployeeID },
+                                                                                                            dataType: 'json',
+                                                                                                            success: function (response) {
+                                                                                                               // console.log(response);
+                                                                                                                 var Approvestatus = "";
+                                                                                                                      if ("@Model.Status" != "Draft") {
+                                                                                                                         var statusCheck = "@Model.Approver8Status";
+                                                                                                                         //if ($(statusCheck).length < 0) {
+                                                                                                                         if ("@string.IsNullOrWhiteSpace(@Model.Approver8Status)"=="True") {
+                                                                                                                            // alert("sdfgh @Model.Approver8Status");
+                                                                                                                              Approvestatus = "<td> Review Pending  </td>";
+                                                                                                                         }
+                                                                                                                         else {
+                                                                                                                             Approvestatus = Approvestatus + "<td> @Model.Approver8Status  </td>";
+                                                                                                                         }
+                             
+                                                                                                                }
+                                                                                                                if (currentuserid != EmployeeID) {
+                                                                                                                    ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver8ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                                                                    //alert(ApproverTableData);
+                                                                                                                    $("#aprrovallist").html(ApproverTableData);
+                                                                                                                }
+                                                                                                                 if (Approver9ID > 0) {
+                                                                                                                    var EmployeeID = Approver9ID;
+                                                                                                                     $.ajax({
+                                                                                                                       url: '/Template/GetUserById',
+                                                                                                                        type: 'POST',
+                                                                                                                        data: { EmployeeID: EmployeeID },
+                                                                                                                        dataType: 'json',
+                                                                                                                        success: function (response) {
+                                                                                                                           // console.log(response);
+                                                                                                                             var Approvestatus = "";
+                                                                                                                                      if ("@Model.Status" != "Draft") {
+                                                                                                                                         var statusCheck = "@Model.Approver9Status";
+                                                                                                                                         //if ($(statusCheck).length < 0) {
+                                                                                                                                         if ("@string.IsNullOrWhiteSpace(@Model.Approver9Status)"=="True") {
+                                                                                                                                            // alert("sdfgh @Model.Approver9Status");
+                                                                                                                                              Approvestatus = "<td> Review Pending  </td>";
+                                                                                                                                         }
+                                                                                                                                         else {
+                                                                                                                                             Approvestatus = Approvestatus + "<td> @Model.Approver9Status  </td>";
+                                                                                                                                         }
+                             
+                                                                                                                            }
+                                                                                                                            if (currentuserid != EmployeeID) {
+                                                                                                                                ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver9ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                                                                                //alert(ApproverTableData);
+                                                                                                                                $("#aprrovallist").html(ApproverTableData);
+                                                                                                                            }
+                                                                                                                            if (Approver10ID > 0) {
+                                                                                                                                var EmployeeID = Approver10ID;
+                                                                                                                                 $.ajax({
+                                                                                                                                   url: '/Template/GetUserById',
+                                                                                                                                    type: 'POST',
+                                                                                                                                    data: { EmployeeID: EmployeeID },
+                                                                                                                                    dataType: 'json',
+                                                                                                                                     success: function (response) {
+                                                                                                                                         var Approvestatus = "";
+                                                                                                                                              if ("@Model.Status" != "Draft") {
+                                                                                                                                                 var statusCheck = "@Model.Approver10Status";
+                                                                                                                                                 //if ($(statusCheck).length < 0) {
+                                                                                                                                                 if ("@string.IsNullOrWhiteSpace(@Model.Approver10Status)"=="True") {
+                                                                                                                                                    // alert("sdfgh @Model.Approver10Status");
+                                                                                                                                                      Approvestatus = "<td> Review Pending  </td>";
+                                                                                                                                                 }
+                                                                                                                                                 else {
+                                                                                                                                                     Approvestatus = Approvestatus + "<td> @Model.Approver10Status  </td>";
+                                                                                                                                                 }
+                             
+                                                                                                                                         }
+                                                                                                                                         if (currentuserid != EmployeeID) {
+                                                                                                                                             // console.log(response);
+                                                                                                                                             ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver10ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td>" + Approvestatus + "</tr>";
+                                                                                                                                             //alert(ApproverTableData);
+                                                                                                                                             $("#aprrovallist").html(ApproverTableData);
+
+
+                                                                                                                                         }
+                                                                                                                                    }
+                                                                                                                                 });
+
+                                                                                                                            }
+
+                                                                                                                        }
+                                                                                                                     });
+
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                         });
+
+                                                                                                    }
+
+                                                                                                }
+                                                                                             });
+
+                                                                                            }
+
+                                                                                }
+                                                                             });
+
+                                                                        }
+
+                                                                    }
+                                                                 });
+
+                                                            }
+
+                                                        }
+                                                     });
+
+                                                }
+
+                                            }
+                                         });
+                                        }
+
+                                }
+                             });
+                           // $("#aprrovallist").html(ApproverTableData)
+                            }
+                       //  Approver1Counter = 1;
+                     }
+                 });
+
+            }
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Template/GetType_List",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                //alert(response)
+                str = "";
+                for (var i = 0; i < response.length; ++i) {
+                    //alert(response[i]);
+                    str += '<option value="' + response[i] + '" />'; // Storing options in variable
+                }
+
+                var my_list = document.getElementById("type_of_entity");
+                my_list.innerHTML = str;
+
+            },
+
+
+        });
+    });
+
+</script>
+<script>
+    function UserID() {
+        var currentUserId="@CurrentUserID()";
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Template/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch: OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+
+                            var select = "";
+
+                            var str2 = "Legal Approver";
+                           if ((value.UserStatus == "Active")) {
+                                if ((UserRole.indexOf(str2) != -1)) {
+                                     if ((value.UserEmployeeID != currentUserId))
+                                        {
+                                            select = '<button class="btn btn-sm btn-primary btn_add" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                         
+                                        }
+                                        else {
+                                         select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is current logged in user."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                        }
+                                }
+                                else {
+                                    select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is not an Legal Approver."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                }
+                               
+                            }
+                            else {
+                                select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is currently not active."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                            }
+
+                            tblBasicUser = tblBasicUser + '<tr><td>'+select+'</td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td id="' + value.UserEmployeeID + '_Cat">' + value.UserCategory + '</td><td id="' + value.UserEmployeeID + '_Sub">' + value.UserSubCategory + '</td><td id="' + value.UserEmployeeID + '_Desg">' + value.UserEmployeeDesignation + '</td><td id="' + value.UserEmployeeID + '_Role">' + UserRole + '</td></tr>';
+                        });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+        $('#ApproverEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#ApproverEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#ApproverEmployeeEmail').val($('#' + EmployeeID + '_Email').html());
+        $('#ApproverEmployeeRoles').val($('#' + EmployeeID + '_Role').html());
+        $('#ApproverEmployeeDesignation').val($('#' + EmployeeID + '_Desg').html());
+        $('#ApproverEmployeeCategory').val($('#' + EmployeeID + '_Cat').html());
+        $('#ApproverEmployeeSubCategory').val($('#' + EmployeeID + '_Sub').html());
+        var EmployeeID = $("#ApproverEmployeeID").val();
+        var EmployeeName = $("#ApproverEmployeeName").val();
+        var EmployeeEmail = $("#ApproverEmployeeEmail").val();
+        var EmployeeDesignation = $("#ApproverEmployeeDesignation").val();
+        var EmployeeRole = $("#ApproverEmployeeRoles").val();
+
+        if (EmployeeRole.indexOf('Approver') !== -1) {
+
+            if (CheckLimit()) {
+                var AlreadyAdded = AddedUser(EmployeeID);
+                if (AlreadyAdded) {
+
+
+                    var htmlData = "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + EmployeeID + "</td><td>" + EmployeeName + "</td><td>" + EmployeeEmail + "</td><td>" + EmployeeDesignation + "</td><td>" + EmployeeRole + "</td></tr>";
+                    $("#ApproversTable tbody").append(htmlData);
+                   // $("#searchmodal").modal('hide');
+                     $("#UsererrorCode").css({ "color": "green" });
+                    $("#UsererrorCode").html("User added to Approver list.");
+                    CheckLimit();
+
+                }
+                else {
+                    //alert("User already added");
+                    $("#searchmodal").show();
+                    $("#UsererrorCode").css({ "color": "red" });
+                    $("#UsererrorCode").html("User already added.");
+
+                }
+            }
+        }
+        else {
+            $("#searchmodal").modal('show');
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html(EmployeeName + ' is not approver');
+            //alert("Initator cannot be nominated as approver");
+        }
+    }
+</script>
+
+
+

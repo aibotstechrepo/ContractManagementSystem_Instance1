@@ -1,0 +1,1205 @@
+﻿@model ContractManagementSystem.Models.tblApprovalMaster
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Approval Workflow</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Approvals/Repository">Approval Workflow</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Workflow Details
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">
+                                    <b>Workflow Details</b>
+                                </div>
+                                <div class="card-tools form-inline">
+                                    <button onclick="Back();" class="btn btn-sm btn-light" title="Back to Repository" id="BackButton"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</button>
+                                    <button class="btn btn-sm btn-light" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+
+                                    <input type="hidden" value="@Model.ApprovalID" id="hiddenID" name="ApprovalID" />
+                                    <input type="hidden" id="UserID" class="form-control" name="UserID" value="@CurrentUserID()" />
+
+                                    @*}*@
+                                    <button class="btn btn-sm btn-light" id="deletealert" title="Delete"><i class="flaticon-interface-5" aria-hidden="true"></i> &nbsp;Delete</button>
+                                    <button class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            @*@using (Html.BeginForm("ApproverEdit", "Approvals", FormMethod.Post))
+                                {*@
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="Category">Workflow Type<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" disabled name="WorkflowType" id="workflowType" style="padding-bottom:3px;padding-top:3px;">
+                                                <option>Contract</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Cluster">Cluster<span class="asteriskicon"> *</span></label>
+
+                                            <select class="form-control" id="approvercategory" onchange="selectsubcategory(this.value);" disabled name="Category" required="required" style="padding-bottom:3px;padding-top:3px;">
+                                                <option>@Model.Category</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Finance">Function<span class="asteriskicon"> *</span></label>
+
+                                            <select class="form-control" id="approverfunction" onchange="ApprovalWorkflowExist();" name="SubCategory" disabled required="required" style="padding-bottom:3px;padding-top:3px;">
+                                                <option>@Model.SubCategory</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header CardHeader_Approvers">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-6">
+                                                        <div class="card-title"><h5><b>Approver (s) <span class="asteriskicon"> *</span></b></h5></div>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <button type="button" class="btn btn-sm btn-light" style="color:blue;" data-toggle="modal" data-target="#searchmodal" disabled> <i class="flaticon-search-2" aria-hidden="true"></i>&nbsp; Search User</button>
+                                                        <button type="button" id="btnRemoveApprover" style="color:red;" class="btn btn-sm btn-light" title="Remove Approvers from List" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Remove</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+
+                                                @if (!String.IsNullOrWhiteSpace(Model.ApprovalID.ToString()))
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-right">
+
+                                                            <input type="hidden" id="ApproverEmployeeID" />
+                                                            <input type="hidden" id="ApproverEmployeeName" />
+
+                                                            <input type="hidden" id="ApproverEmployeeEmail" />
+                                                            <input type="hidden" id="ApproverEmployeeDesignation" />
+                                                            <input type="hidden" id="ApproverEmployeeRoles" />
+                                                            <input type="hidden" id="ApproverEmployeeSubCategory" />
+                                                            <input type="hidden" id="ApproverEmployeeCategory" />
+
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="table-responsive">
+                                                                        <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th><center>Employee ID</center></th>
+                                                                                    <th><center>Employee Name</center></th>
+                                                                                    <th><center>Employee Email Address</center></th>
+                                                                                    <th><center>Employee Designation</center></th>
+                                                                                    <th><center>Employee Role (s)</center></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="aprrovallist">
+                                                                            </tbody>
+                                                                        </table>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action text-right card_footer_button" id="saveanddiscardoption">
+                                </div>
+
+                                @*}*@
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+            <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+        </div>*@
+
+    <div class="modal-dialog" style="max-width: 80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Approver Modified History</b></label>
+                <button type="button" class="btn btn-sm btn-light btn_close" title="Close" data-dismiss="modal" style="font-size:13px;">Close</button>
+
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-12  text-right">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblApprovalLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<hr />
+
+                    <div class="card-action text-right card_footer_button">
+                        <input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+            <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+        </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <a href="" data-dismiss="modal" class="modaldismissarrow btn btn-sm btn-light btn_close text-right" title="Close" style="color:white; font-size:13px;">Close</a>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="50" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button class="btn btn-sm btn-light btn_create" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="Approvers_Table" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th><center>Select User</center></th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="modalload"></div>
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    $(function () {
+        var ID = $("#hiddenID").val();
+        var tblLog = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Approvals/getLogDetail",
+            data: { ID: ID },
+
+
+            success: function (response) {
+
+                //.get().reverse()
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '<center></td><td  style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblApprovalLogList").html(tblLog);
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $(function () {
+        var currentuserid = "@CurrentUserID()";
+        var Approver1ID = "@Model.Approver1ID";
+        var Approver2ID = "@Model.Approver2ID";
+        var Approver3ID = "@Model.Approver3ID";
+        var Approver4ID = "@Model.Approver4ID";
+        var Approver5ID = "@Model.Approver5ID";
+        var Approver6ID = "@Model.Approver6ID";
+        var Approver7ID = "@Model.Approver7ID";
+        var Approver8ID = "@Model.Approver8ID";
+        var Approver9ID = "@Model.Approver9ID";
+        var Approver10ID = "@Model.Approver10ID";
+
+        var ApproverTableData = "";
+             if (Approver1ID > 0) {
+                var EmployeeID = Approver1ID;
+                 $.ajax({
+                   url: '/Approvals/GetUserById',
+                    type: 'POST',
+                     data: { EmployeeID: EmployeeID },
+
+                    dataType: 'json',
+                     success: function (response) {
+                         // console.log(response);
+                         if (currentuserid != EmployeeID) {
+                             ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver1ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                             //alert(ApproverTableData);
+                             $("#aprrovallist").html(ApproverTableData);
+                         }
+                         if (Approver2ID > 0) {
+                             //   alert("2ND Approver");
+                             var EmployeeID = Approver2ID;
+                             $.ajax({
+                                 url: '/Approvals/GetUserById',
+                                 type: 'POST',
+                                 data: { EmployeeID: EmployeeID },
+
+                                 dataType: 'json',
+                                 success: function (response) {
+                                     // console.log(response);
+                                     if (currentuserid != EmployeeID) {
+                                         ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver2ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                         //alert(ApproverTableData);
+                                         $("#aprrovallist").html(ApproverTableData);
+                                     }
+
+                                     if (Approver3ID > 0) {
+                                         var EmployeeID = Approver3ID;
+                                         $.ajax({
+                                             url: '/Approvals/GetUserById',
+                                             type: 'POST',
+                                             data: { EmployeeID: EmployeeID },
+                                             dataType: 'json',
+                                             success: function (response) {
+                                                 // console.log(response);
+                                                 if (currentuserid != EmployeeID) {
+                                                     ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver3ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                     //alert(ApproverTableData);
+                                                     $("#aprrovallist").html(ApproverTableData);
+                                                 }
+                                                 if (Approver4ID > 0) {
+                                                     var EmployeeID = Approver4ID;
+                                                     $.ajax({
+                                                         url: '/Approvals/GetUserById',
+                                                         type: 'POST',
+                                                         data: { EmployeeID: EmployeeID },
+                                                         dataType: 'json',
+                                                         success: function (response) {
+                                                             // console.log(response);
+                                                             if (currentuserid != EmployeeID) {
+                                                                 ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver4ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                 //alert(ApproverTableData);
+                                                                 $("#aprrovallist").html(ApproverTableData);
+                                                             }
+                                                             if (Approver5ID > 0) {
+                                                                 var EmployeeID = Approver5ID;
+                                                                 $.ajax({
+                                                                     url: '/Approvals/GetUserById',
+                                                                     type: 'POST',
+                                                                     data: { EmployeeID: EmployeeID },
+                                                                     dataType: 'json',
+                                                                     success: function (response) {
+                                                                         // console.log(response);
+                                                                         if (currentuserid != EmployeeID) {
+                                                                             ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver5ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                             //alert(ApproverTableData);
+                                                                             $("#aprrovallist").html(ApproverTableData);
+                                                                         }
+                                                                         if (Approver6ID > 0) {
+                                                                             var EmployeeID = Approver6ID;
+                                                                             $.ajax({
+                                                                                 url: '/Approvals/GetUserById',
+                                                                                 type: 'POST',
+                                                                                 data: { EmployeeID: EmployeeID },
+                                                                                 dataType: 'json',
+                                                                                 success: function (response) {
+                                                                                     // console.log(response);
+                                                                                     if (currentuserid != EmployeeID) {
+                                                                                         ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver6ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                         //alert(ApproverTableData);
+                                                                                         $("#aprrovallist").html(ApproverTableData);
+                                                                                     }
+                                                                                     if (Approver7ID > 0) {
+                                                                                         var EmployeeID = Approver7ID;
+                                                                                         $.ajax({
+                                                                                             url: '/Approvals/GetUserById',
+                                                                                             type: 'POST',
+                                                                                             data: { EmployeeID: EmployeeID },
+                                                                                             dataType: 'json',
+                                                                                             success: function (response) {
+                                                                                                 // console.log(response);
+                                                                                                 if (currentuserid != EmployeeID) {
+                                                                                                     ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver7ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                     //alert(ApproverTableData);
+                                                                                                     $("#aprrovallist").html(ApproverTableData);
+                                                                                                 }
+                                                                                                 if (Approver8ID > 0) {
+                                                                                                     var EmployeeID = Approver8ID;
+                                                                                                     $.ajax({
+                                                                                                         url: '/Approvals/GetUserById',
+                                                                                                         type: 'POST',
+                                                                                                         data: { EmployeeID: EmployeeID },
+                                                                                                         dataType: 'json',
+                                                                                                         success: function (response) {
+                                                                                                             // console.log(response);
+                                                                                                             if (currentuserid != EmployeeID) {
+                                                                                                                 ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver8ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                 //alert(ApproverTableData);
+                                                                                                                 $("#aprrovallist").html(ApproverTableData);
+                                                                                                             }
+
+                                                                                                             if (Approver9ID > 0) {
+                                                                                                                 var EmployeeID = Approver9ID;
+                                                                                                                 $.ajax({
+                                                                                                                     url: '/Approvals/GetUserById',
+                                                                                                                     type: 'POST',
+                                                                                                                     data: { EmployeeID: EmployeeID },
+                                                                                                                     dataType: 'json',
+                                                                                                                     success: function (response) {
+                                                                                                                         // console.log(response);
+                                                                                                                         if (currentuserid != EmployeeID) {
+                                                                                                                             ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver9ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                             //alert(ApproverTableData);
+                                                                                                                             $("#aprrovallist").html(ApproverTableData);
+                                                                                                                         }
+                                                                                                                         if (Approver10ID > 0) {
+                                                                                                                             var EmployeeID = Approver10ID;
+                                                                                                                             $.ajax({
+                                                                                                                                 url: '/Approvals/GetUserById',
+                                                                                                                                 type: 'POST',
+                                                                                                                                 data: { EmployeeID: EmployeeID },
+                                                                                                                                 dataType: 'json',
+                                                                                                                                 success: function (response) {
+                                                                                                                                     // console.log(response);
+                                                                                                                                     if (currentuserid != EmployeeID) {
+                                                                                                                                         ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' disabled/></td><td class = 'EmployeeIdDetails'>" + Approver10ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                                         //alert(ApproverTableData);
+                                                                                                                                         $("#aprrovallist").html(ApproverTableData);
+                                                                                                                                     }
+
+                                                                                                                                 }
+                                                                                                                             });
+
+                                                                                                                         }
+
+                                                                                                                     }
+                                                                                                                 });
+
+                                                                                                             }
+
+                                                                                                         }
+                                                                                                     });
+
+                                                                                                 }
+
+                                                                                             }
+                                                                                         });
+
+                                                                                     }
+
+                                                                                 }
+                                                                             });
+
+                                                                         }
+
+                                                                     }
+                                                                 });
+
+                                                             }
+
+
+                                                         }
+                                                     });
+
+                                                 }
+
+                                             }
+                                         });
+                                     }
+
+
+                                 }
+                             });
+                             // $("#aprrovallist").html(ApproverTableData)
+                         }
+
+                     }
+
+                 });
+
+            }
+
+
+    });
+
+</script>
+
+
+
+
+<script>
+    var Flag = 0
+    $(function () {
+
+        if (Flag == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Approvals/getCategory",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert(response);
+                    var x = document.getElementById("approvercategory");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+
+                    option.text = "-- Select --";
+                    option.value = ""
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        if (option.text == "@Model.Category") {
+                            option.defaultSelected = true;
+                        }
+                        x.add(option);
+                    });
+                }
+            });
+            Flag += 1;
+
+        }
+
+    });
+
+    $(function () {
+        var user_category_id = "@Model.Category";
+          $.ajax({
+            url: '/Approvals/getSubCategory',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+
+                $('#approverfunction')
+                        .find('option')
+                        .remove();
+
+                    var x = document.getElementById("approverfunction");
+
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+
+                        if (option.text == "@Model.SubCategory") {
+
+                            option.defaultSelected = true;
+                        }
+                        x.add(option);
+                    });
+            },
+
+        });
+    });
+
+    function selectsubcategory(user_category_id) {
+        // alert(user_category_id)
+
+        //var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/Approvals/getSubCategory',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+                //alert(response);
+
+                $('#approverfunction')
+                        .find('option')
+                        .remove();
+
+                    var x = document.getElementById("approverfunction");
+
+                    var option = document.createElement("option");
+                option.text = "-- Select --";
+                option.value = "";
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        x.add(option);
+                    });
+            },
+
+        });
+    }
+
+</script>
+
+<script>
+    // Delete button alert design
+    $('#deletealert').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Delete it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (result) {
+            if (result == true) {
+               // _form.submit();
+                var ApprovalID = $("#hiddenID").val();
+                var CurrentUserID = @CurrentUserID();
+                $.ajax({
+                    url: '/Approvals/DeleteApproverFromDB',
+                    type: 'POST',
+                    data: { ApprovalID: ApprovalID, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response == "success") {
+                            swal("Successfully removed the record", {
+
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Approvals/Repository";
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in Deleting the record", {
+
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                });
+
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (result) {
+
+            if (result == true) {
+
+                // if (willDelete) {
+                $('input').removeAttr('readonly');
+                $('input').removeAttr('disabled');
+                $('textarea').removeAttr('readonly');
+                $('select').removeAttr('disabled');
+                $('datalist').removeAttr('disabled');
+                $('button').removeAttr('disabled');
+                document.getElementById("deletealert").disabled = true;
+                document.getElementById("BackButton").disabled = true;
+                $('input[type=checkbox]').removeAttr('disabled');
+                $("#saveanddiscardoption").html('<button type="button" onclick="updated();" class="btn btn-success saverecord" style="font-size:17px;width:180px;"><b>Save Changes</b></button><button type="button" onclick="DiscardChanges();" class="btn btn-danger" style="font-size:17px;width:180px;"><b>Discard Changes</button>');
+                document.getElementById("editalert").disabled = true;
+                 document.getElementById("BackButton").disabled = true;
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    });
+</script>
+
+<script>
+
+    function updated() {
+        var ApprovalID = $("#hiddenID").val();
+        var WorkflowType = $("#workflowType").val();
+        var ApproverCluster = $("#approvercategory").val();
+        var ApproverFunction = $("#approverfunction").val();
+        var CurrentUserID = @CurrentUserID();
+       // alert(CurrentUserID);
+
+         var UID = [];
+         var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+           for (var i = 0; i < Userlist.length; i++) {
+             UID.push(Userlist[i].innerHTML);
+            //AppUsers.push(UID);
+        }
+        if ((WorkflowType != null) && (ApproverCluster != null) && (ApproverFunction != null)) {
+            if ((ApproverCluster == "") || (ApproverFunction == "")) {
+                swal("Select Cluster and Function", {
+                    icon: "warning",
+                });
+            }
+            else {
+
+                if (Userlist.length > 1) {
+                    $.ajax({
+                        url: '/Approvals/UpdateApproversToDB',
+                        type: 'POST',
+                        data: { ApprovalID: ApprovalID, WorkflowType: WorkflowType, ApproverCluster: ApproverCluster, ApproverFunction: ApproverFunction, UID: UID, CurrentUserID: CurrentUserID },
+
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+                            if (response == "success") {
+                                swal("Updated Successfully", {
+                                    icon: "success",
+                                    buttons: {
+                                        confirm: {
+                                            visible: true
+                                        }
+                                    }
+                                }).then(function (result) {
+                                    if (result) {
+                                        window.location = '/Approvals/Repository';
+                                    }
+                                });
+                            }
+                            else {
+                                swal("Error in Updating", {
+                                    icon: "warning",
+                                    buttons: {
+                                        confirm: {
+                                            visible: true
+                                        }
+                                    }
+                                })
+                                    .then(function (result) {
+                                        if (result) {
+                                            window.location = "/Approvals/Repository";
+                                        }
+                                    });
+                            }
+
+                        }
+                    });
+                }
+
+                else {
+                    swal("Minimum of two Approvers Required", {
+                        icon: "warning",
+                    });
+                }
+            }
+        }
+        else {
+            swal("All fields are required", {
+                        icon: "warning",
+                    });
+        }
+    }
+</script>
+
+@**************************Integrated*****************************@
+<script>
+
+    function AddedUser(EmpID) {
+        var AppUsers = [];
+
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            var UID = Userlist[i].innerHTML;
+            AppUsers.push(UID);
+            if (UID == EmpID) {
+                return false;
+            }
+        }
+        console.log(AppUsers);
+        return true;
+
+    }
+    function CheckLimit() {
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails").length;
+        if (Userlist < 10) {
+
+            $('.btn_add').attr('disabled', false);
+            return true;
+        }
+        $('.btn_add').attr('disabled', true);
+        return false;
+
+    }
+
+</script>
+
+
+<script>
+
+    $("#btnRemoveApprover").click(function () {
+        $("#ApproversTable tbody").find('input[name="record"]').each(function () {
+            if ($(this).is(":checked")) {
+                $(this).parents("tr").remove();
+            }
+            CheckLimit();
+        });
+
+    });
+</script>
+
+<script>
+    $("#approverfunction1234567").focusout(function () {
+
+        // alert("hello");
+
+        var ApproverCluster = $("#approvercategory").val();
+        var ApproverFunction = $("#approverfunction").val();
+        var approvers = "";
+
+        if ((ApproverCluster).length > 1 && (ApproverFunction).length > 1) {
+            $.ajax({
+                url: '/Approvals/GetApproversBasedOnClusterAndFunction',
+                type: 'POST',
+                data: { ApproverCluster: ApproverCluster, ApproverFunction: ApproverFunction },
+
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response);
+                    $.each(response, function (index, value) {
+                        var UserRole = "";
+                        if (value.UserRoleAdmin == true) {
+                            UserRole = UserRole + "Admin ,";
+                        }
+                        if (value.UserRoleInitiator == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Initiator ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Initiator ,";
+                            }
+                        }
+                        if (value.UserRoleApprover == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Approver ,";
+                            }
+                        }
+                        if (value.UserRoleFinance == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Finance Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Finance Approver ,";
+                            }
+                        }
+
+                        if (value.UserRoleLegal == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Legal Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Legal Approver ,";
+                            }
+                        }
+                        if (value.UserEmployeeID != @CurrentUserID()) {
+
+                            approvers = approvers + "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + value.UserEmployeeID + "</td><td>" + value.UserEmployeeName + "</td><td>" + value.UserEmployeeEmail + "</td><td>" + value.UserEmployeeDesignation + "</td><td>" + UserRole + "</td></tr>";
+                        }
+                        });
+                    $("#ApproversTable tbody").html(approvers);
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    function ApprovalWorkflowExist() {
+        var ApprovalCluster = $("#approvercategory").val();
+        var ApprovalFunction = $("#approverfunction").val();
+        if ((ApprovalCluster).length > 1 && (ApprovalFunction).length > 1) {
+            $.ajax({
+                url: '/Approvals/CheckApprovalWorkflowExist',
+                type: 'POST',
+                data: { ApprovalCluster: ApprovalCluster, ApprovalFunction: ApprovalFunction },
+
+                dataType: 'json',
+                success: function (response) {
+
+                    // alert(response);
+                    if (response == "success") {
+                        swal("Approval Workflow already existed", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    visible: true
+                                }
+                            }
+                        }).then(function (result) {
+                            if (result == true) {
+                                window.location.reload();
+                            }
+                        });
+
+                    }
+
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+    function UserID() {
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Approvals/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch: OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+                            var select = "";
+
+                            var str2 = "Approver";
+                            if ((value.UserStatus == "Active")) {
+                                if ((UserRole.indexOf(str2) != -1)) {
+                                     select = '<button class="btn btn-sm btn-primary btn_add" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                         
+                                }
+                                else {
+                                    select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is not an Approver."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                }
+                            }
+                            else {
+                                select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is currently not active."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                            }
+
+                            tblBasicUser = tblBasicUser + '<tr><td>' + select + '</td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td id="' + value.UserEmployeeID + '_Cat">' + value.UserCategory + '</td><td id="' + value.UserEmployeeID + '_Sub">' + value.UserSubCategory + '</td><td id="' + value.UserEmployeeID + '_Desg">' + value.UserEmployeeDesignation + '</td><td id="' + value.UserEmployeeID + '_Role">' + UserRole + '</td></tr>';
+                        });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+        $('#ApproverEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#ApproverEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#ApproverEmployeeEmail').val($('#' + EmployeeID + '_Email').html());
+        $('#ApproverEmployeeRoles').val($('#' + EmployeeID + '_Role').html());
+        $('#ApproverEmployeeDesignation').val($('#' + EmployeeID + '_Desg').html());
+        $('#ApproverEmployeeCategory').val($('#' + EmployeeID + '_Cat').html());
+        $('#ApproverEmployeeSubCategory').val($('#' + EmployeeID + '_Sub').html());
+        var EmployeeID = $("#ApproverEmployeeID").val();
+        var EmployeeName = $("#ApproverEmployeeName").val();
+        var EmployeeEmail = $("#ApproverEmployeeEmail").val();
+        var EmployeeDesignation = $("#ApproverEmployeeDesignation").val();
+        var EmployeeRole = $("#ApproverEmployeeRoles").val();
+
+        if (EmployeeRole.indexOf('Approver') !== -1) {
+
+            if (CheckLimit()) {
+                var AlreadyAdded = AddedUser(EmployeeID);
+                if (AlreadyAdded) {
+
+
+                    var htmlData = "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + EmployeeID + "</td><td>" + EmployeeName + "</td><td>" + EmployeeEmail + "</td><td>" + EmployeeDesignation + "</td><td>" + EmployeeRole + "</td></tr>";
+                    $("#ApproversTable tbody").append(htmlData);
+                    // $("#searchmodal").modal('hide');
+                    $("#UsererrorCode").css({ "color": "green" });
+                    $("#UsererrorCode").html("User added to Approver list.");
+                    CheckLimit();
+
+                }
+                else {
+                    //alert("User already added");
+                    $("#searchmodal").show();
+                    $("#UsererrorCode").css({ "color": "red" });
+                    $("#UsererrorCode").html("User already added.");
+
+                }
+            }
+        }
+        else {
+            $("#searchmodal").modal('show');
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html(EmployeeName + ' is not approver');
+            //alert("Initator cannot be nominated as approver");
+        }
+    }
+</script>
+<script>
+    $(function () {
+        $("#workflowType").val("@Model.WorkflowType");
+    });
+</script>
+
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+<script>
+    function Back() {
+        window.location = "/Clause/Repository";
+    }
+</script>

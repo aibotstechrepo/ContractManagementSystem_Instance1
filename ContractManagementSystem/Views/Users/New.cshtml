@@ -1,0 +1,919 @@
+﻿@model ContractManagementSystem.Models.tblUserMaster
+@{
+    /**/
+
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+
+
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">User Master</h4>
+                <ul class="breadcrumbs">
+
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="~/Users/Repository">User Master</a>
+                    </li>
+
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+
+                    <li class="nav-item">
+                        New User
+                    </li>
+
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            @*<div class="card-title"><b>New User</b></div>*@
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title"><b>New User</b></div>
+                                </div>
+
+                                <div class="col-sm-6 text-right">
+                                    <button type="button" @*onclick="window.location = '/Users/Repository'"*@ id="discard" value="Discard" class="btn btn-sm btn-light"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Cancel</button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            @***************Integrated(Pooja) on 14/3/20*******************@
+                            @using (Html.BeginForm("New", "Users", FormMethod.Post))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="Employee">Employee ID <span class="asteriskicon"> *</span>&nbsp; <span id="UserEmployeeCode"></span></label>
+                                            <input type="text" pattern="[0-9]+" maxlength="8" oninvalid="InvalidID(this);" oninput="InvalidID(this);" class="form-control" id="useremployeeeid" name="UserEmployeeID" placeholder="Enter Employee ID" required="required">
+                                            <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="Employee Name">Full Name <span class="asteriskicon"> *</span></label>
+                                            <input type="text" pattern="[A-Za-z\s]+" maxlength="180" oninvalid="InvalidName(this);" oninput="InvalidName(this);" class="form-control form_validation" id="useremployeename" name="UserEmployeeName" placeholder="Enter Full Name" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="email">Email Address <span class="asteriskicon"> *</span></label>
+                                            <input type="email" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" id="useremailaddress" oninvalid="InvalidEmail(this);" oninput="InvalidEmail(this);" class="form-control" name="UserEmployeeEmail" placeholder="Enter Email Address" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="designation">Designation <span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" pattern="[A-Za-z\s]+" id="userdesignation" oninvalid="InvalidDesignation(this);" oninput="InvalidDesignation(this);" class="form-control" name="UserEmployeeDesignation" placeholder="Enter Designation" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Category">Cluster<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" oninvalid="InvalidCategory(this);" oninput="InvalidCategory(this);" id="user_category_names" name="UserCategory" required="required" style="padding-bottom:3px;padding-top:3px;">
+                                                <option selected value="">--Select--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Sub Category">Function<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" oninvalid="InvalidSubCategory(this);" oninput="InvalidSubCategory(this);" id="user_subcategory_names" name="UserSubCategory" required="required" style="padding-bottom:3px;padding-top:3px;">
+                                                <option selected value="">--Select--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="Status">Status<span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" id="userstatus" oninvalid="InvalidStatus(this);" oninput="InvalidStatus(this);" name="UserStatus" required="required">
+                                                @*<option>--Select--</option>*@
+                                                <option>Active</option>
+                                                <option>Inactive</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager ID<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" class="form-control" id="UserHodEmployeeID" name="UserHodEmployeeID" onkeyup="this.value = this.value.replace(/[^0-9]/g, '')" oninvalid="InvalidHodEmployeeID(this);" oninput="InvalidHodEmployeeID(this);" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager Name<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" class="form-control" oninvalid="InvalidHodEmployeeName(this);" onkeyup="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" oninput="InvalidHodEmployeeName(this);" id="UserHodEmployeeName" name="UserHodEmployeeName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Reporting Manager Email<span class="asteriskicon"> *</span></label>
+                                            <input type="email" maxlength="180" oninvalid="InvalidHodEmployeeEmail(this);" oninput="InvalidHodEmployeeEmail(this);" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.@('@')]/g, '');" class="form-control" id="UserHodEmployeeEmailAddress" name="UserHodEmployeeEmailAddress" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <br />
+                                                <button type="button" class="btn btn-sm btn-light btn_create" data-toggle="modal" data-target="#searchmodal">Search User</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group browsers">
+                                            <label for="role">Role<span class="asteriskicon"> *</span></label>
+                                            <div class="row">
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Initiator</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleInitiator" onchange="CheckboxRequired();" name="UserRoleInitiator" checked required>
+                                                            <span class="slider round round1"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                @*</div>*@
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Approver</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleApprover" onchange="CheckboxRequired();" name="UserRoleApprover" required>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Legal</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleLegal" onchange="CheckboxRequired();" name="UserRoleLegal" required>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Finance</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleFinance" onchange="CheckboxRequired();" name="UserRoleFinance" required>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    @*<div class="form-group">*@
+                                                    <label for="initiator">Admin</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleAdmin" onchange="CheckboxRequired();" name="UserRoleAdmin" required>
+                                                            <span class="slider round"></span>
+                                                        </label>
+
+                                                    </div>
+
+                                                    @*</div>*@
+                                                </div>
+                                                <div class="col-sm-1 text-center">
+                                                    <label for="initiator">Reviewer</label>
+                                                    <div>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="UserRoleReviewer" onchange="CheckboxRequired();" name="UserRoleReviewer" required>
+                                                            <span class="slider round"></span>
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+
+                                                        <label><b id="CheckboxRequiredCode"></b></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-action text-right card_footer_button">
+                                    <button type="submit" class="btn btn-success btn_SaveClearDiscard">
+                                        Create User
+                                    </button>
+                                    <button type="button" id="ClearForms" class="btn btn-secondary btn_SaveClearDiscard">
+                                        Clear
+                                    </button>
+                                    <button type="button" id="discard2" class="btn btn-danger btn_SaveClearDiscard">
+                                        Cancel
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close" style="color:white; font-size:13px;">Close</button>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button class="btn btn-sm btn_create btn-light" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th>Select User</th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+
+
+            </div>
+</div>
+
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    $(function () {
+        var requiredCheckboxes = $('.browsers :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            requiredCheckboxes.removeAttr('required');
+            $("#CheckboxRequiredCode").html('');
+        }
+        else {
+            requiredCheckboxes.attr('required', 'required');
+            $("#CheckboxRequiredCode").html('At least one Role is required !');
+            $("#CheckboxRequiredCode").css({ "color": "red" });
+        }
+    });
+
+    function CheckboxRequired() {
+        var requiredCheckboxes = $('.browsers :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            requiredCheckboxes.removeAttr('required');
+            $("#CheckboxRequiredCode").html('');
+        }
+        else {
+            requiredCheckboxes.attr('required', 'required');
+            $("#CheckboxRequiredCode").html('At least one Role is required !');
+            $("#CheckboxRequiredCode").css({ "color": "red" });
+        }
+    }
+
+</script>
+
+<script>
+    var tempCatRefresh = 0;
+    /* $('#useremployeename').focusout(*/
+    //function () {
+    $(function () {
+        if (tempCatRefresh == 0) {
+            tempCatRefresh = tempCatRefresh + 1;
+            tempCatRefresh = tempCatRefresh + 1
+            $.ajax({
+                type: "POST",
+                url: "/Users/user_category_list",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("user_category_names");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+
+                    option.text = "--Select--";
+                    option.value = "";
+                    //option.disabled = true;
+
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        x.add(option);
+                    });
+                }
+            });
+        }
+    });
+
+    $("#user_category_names").change(function () {
+        var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/Users/user_subcategory_list',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+
+                $('#user_subcategory_names')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("user_subcategory_names");
+
+                var option = document.createElement("option");
+                option.text = "--Select--";
+                option.value = "";
+                //option.disabled = true;
+
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            }
+        });
+    });
+
+
+
+
+</script>
+
+<script>
+    function InvalidID(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity('Enter an EmployeeID');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+            //} else if (textbox.validity.typeMismatch) {
+            //    textbox.setCustomValidity
+            //        ('Please enter an email address which is valid!');
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Alphabets and Special Characters are not allowed');
+        }
+
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+
+        return true;
+    }
+
+    
+    function InvalidName(textbox) {
+        //textbox.setCustomValidity('Plz enter on Alphabets');
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Name');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidEmail(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Email Address');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidDesignation(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Employee Designation');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Cluster type');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidSubCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Function');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidStatus(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Status');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeID(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter HOD Employee ID');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeName(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter Hod Employee Name');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidHodEmployeeEmail(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter Hod Email Address');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+</script>
+<script>
+
+    $('#ClearForms').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Clear all input fields !",
+            type: 'warning',
+            buttons: {
+                confirm: {
+                    text: 'Yes, Clear it !',
+                    className: 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                      text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                $('#useremployeeeid').val('');
+
+                $('#useremployeename').val('');
+                $('#useremailaddress').val('');
+                $('#userdesignation').val('');
+                $('#user_category_names').val('');
+                $('#user_subcategory_names').val('');
+                $('#userstatus').val('');
+                $('#UserHodEmployeeID').val('');
+                $('#UserHodEmployeeName').val('');
+                $('#UserHodEmployeeEmailAddress').val('');
+                document.getElementById("UserRoleInitiator").checked = true;
+                document.getElementById("UserRoleApprover").checked = false;
+                document.getElementById("UserRoleFinance").checked = false;
+                document.getElementById("UserRoleLegal").checked = false;
+                document.getElementById("UserRoleAdmin").checked = false;
+                $("#CheckboxRequiredCode").html('');
+                CheckboxRequired();
+
+                swal({
+                    title: 'Cleared!',
+                    text: 'Your form has been Cleared.',
+                    type: 'success',
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(function () {
+        var msg = '@ViewBag.Status';
+        if (msg == "NewSuccess") {
+           // alert("updated");
+
+            swal("New User created successfully !", {
+            icon: "success",
+
+        })
+               .then(function (result) {
+                        if (result){
+
+                    window.location = "/Users/Repository";
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+
+    $('#discard').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Users/Repository'
+
+            }
+        });
+    });
+
+     $('#discard2').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Users/Repository'
+
+            }
+        });
+    });
+</script>
+
+<script>
+    $("#useremployeeeid").focusout(function () {
+        var EmployeeID = $("#useremployeeeid").val();
+        if (EmployeeID.length > 0) {
+            $.ajax({
+                url: '/Users/employeeIDVerification',
+                type: 'POST',
+                data: { EmployeeID: EmployeeID },
+
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response);
+                   
+                    if (response == EmployeeID) {
+
+                        swal({
+                            title: 'Creation of New User',
+                            text: "Employee ID : " + EmployeeID + " already Exists !",
+                            icon: "warning",
+                        });
+                       
+                        //$("#UserEmployeeCode").css({ "color": "red"});
+                        //$("#UserEmployeeCode").html("Employee ID Exists <span style='color:green'><i class='fa fa-check' aria-hidden='true'></i></span>");
+
+                        $("#useremployeeeid").val("");
+                    }
+                    //else {
+                    //    $("#UserEmployeeCode").html("");
+                    //}
+
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+
+    //$('#UserRoleAdmin').click(function () {
+    //    if (document.getElementById("UserRoleAdmin").checked == true) {
+    //        document.getElementById("UserRoleInitiator").checked = true;
+    //    }
+    //});
+    $('#UserRoleReviewer').click(function () {
+        if (document.getElementById("UserRoleReviewer").checked == true) {
+            document.getElementById("UserRoleInitiator").checked = false;
+            document.getElementById("UserRoleApprover").checked = false;
+            document.getElementById("UserRoleFinance").checked = false;
+            document.getElementById("UserRoleLegal").checked = false;
+            document.getElementById("UserRoleAdmin").checked = false;
+        }
+    });
+</script>
+
+
+<script>
+    function UserID() {
+       
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Users/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch : OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+                       // alert("called");
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+                                    
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+
+                           
+                            var select = "";
+                            if (value.UserStatus == "Active") {
+                                select = '<button class="btn btn-sm btn-primary" data-dismiss="modal" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                            } 
+                            else {
+                                select = '<h5 style="color:red;" title="User is in InActive mode">Restricted</h5>';
+                            }
+                            tblBasicUser = tblBasicUser + '<tr><td><center>' + select + '</center></td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td>' + value.UserCategory + '</td><td>' + value.UserSubCategory + '</td><td>' + value.UserEmployeeDesignation + '</td><td>' + UserRole + '</td></tr>';
+                        });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+        
+        $('#UserHodEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#UserHodEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#UserHodEmployeeEmailAddress').val($('#' + EmployeeID + '_Email').html());
+
+    }
+</script>

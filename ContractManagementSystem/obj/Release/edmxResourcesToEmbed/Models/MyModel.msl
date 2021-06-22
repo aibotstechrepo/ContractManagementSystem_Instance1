@@ -1,0 +1,800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ContractManagementSystemDBModelStoreContainer" CdmEntityContainer="ContractManagementSystemDBEntities">
+    <EntitySetMapping Name="tblAlertLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblAlertLog">
+        <MappingFragment StoreEntitySet="tblAlertLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogAlertUID" ColumnName="LogAlertUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAlertSystems">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblAlertSystem">
+        <MappingFragment StoreEntitySet="tblAlertSystem">
+          <ScalarProperty Name="AlertID" ColumnName="AlertID" />
+          <ScalarProperty Name="ContractExpiryReminder1Date" ColumnName="ContractExpiryReminder1Date" />
+          <ScalarProperty Name="ContractExpiryReminder1Duration" ColumnName="ContractExpiryReminder1Duration" />
+          <ScalarProperty Name="ContractExpiryReminder2Date" ColumnName="ContractExpiryReminder2Date" />
+          <ScalarProperty Name="ContractExpiryReminder2Duration" ColumnName="ContractExpiryReminder2Duration" />
+          <ScalarProperty Name="ContractExpiryReminder3Date" ColumnName="ContractExpiryReminder3Date" />
+          <ScalarProperty Name="ContractExpiryReminder3Duration" ColumnName="ContractExpiryReminder3Duration" />
+          <ScalarProperty Name="ContractExpiryReminder4Date" ColumnName="ContractExpiryReminder4Date" />
+          <ScalarProperty Name="ContractExpiryReminder4Duration" ColumnName="ContractExpiryReminder4Duration" />
+          <ScalarProperty Name="ContractExpiryReminder5Date" ColumnName="ContractExpiryReminder5Date" />
+          <ScalarProperty Name="ContractExpiryReminder5Duration" ColumnName="ContractExpiryReminder5Duration" />
+          <ScalarProperty Name="TemplateHod" ColumnName="TemplateHod" />
+          <ScalarProperty Name="TemplateLegal" ColumnName="TemplateLegal" />
+          <ScalarProperty Name="TemplateFinance" ColumnName="TemplateFinance" />
+          <ScalarProperty Name="ContractHod" ColumnName="ContractHod" />
+          <ScalarProperty Name="ContractLegal" ColumnName="ContractLegal" />
+          <ScalarProperty Name="ContractFinance" ColumnName="ContractFinance" />
+          <ScalarProperty Name="EsclationHod" ColumnName="EsclationHod" />
+          <ScalarProperty Name="EsclationLegal" ColumnName="EsclationLegal" />
+          <ScalarProperty Name="EsclationFinance" ColumnName="EsclationFinance" />
+          <ScalarProperty Name="AuditTemplateDate" ColumnName="AuditTemplateDate" />
+          <ScalarProperty Name="AuditTemplateDuration" ColumnName="AuditTemplateDuration" />
+          <ScalarProperty Name="AuditContractDate" ColumnName="AuditContractDate" />
+          <ScalarProperty Name="AuditClauseDuration" ColumnName="AuditClauseDuration" />
+          <ScalarProperty Name="AuditClauseDate" ColumnName="AuditClauseDate" />
+          <ScalarProperty Name="AuditContractDuration" ColumnName="AuditContractDuration" />
+          <ScalarProperty Name="OldContractDate" ColumnName="OldContractDate" />
+          <ScalarProperty Name="OldContractDuration" ColumnName="OldContractDuration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApprovalLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblApprovalLog">
+        <MappingFragment StoreEntitySet="tblApprovalLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogApprovalUID" ColumnName="LogApprovalUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApprovalMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblApprovalMaster">
+        <MappingFragment StoreEntitySet="tblApprovalMaster">
+          <ScalarProperty Name="ApprovalID" ColumnName="ApprovalID" />
+          <ScalarProperty Name="WorkflowType" ColumnName="WorkflowType" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="SubCategory" ColumnName="SubCategory" />
+          <ScalarProperty Name="Approver1ID" ColumnName="Approver1ID" />
+          <ScalarProperty Name="Approver1Comments" ColumnName="Approver1Comments" />
+          <ScalarProperty Name="Approver1Status" ColumnName="Approver1Status" />
+          <ScalarProperty Name="Approver2ID" ColumnName="Approver2ID" />
+          <ScalarProperty Name="Approver2Comments" ColumnName="Approver2Comments" />
+          <ScalarProperty Name="Approver2Status" ColumnName="Approver2Status" />
+          <ScalarProperty Name="Approver3ID" ColumnName="Approver3ID" />
+          <ScalarProperty Name="Approver3Comments" ColumnName="Approver3Comments" />
+          <ScalarProperty Name="Approver3Status" ColumnName="Approver3Status" />
+          <ScalarProperty Name="Approver4ID" ColumnName="Approver4ID" />
+          <ScalarProperty Name="Approver4Comments" ColumnName="Approver4Comments" />
+          <ScalarProperty Name="Approver4Status" ColumnName="Approver4Status" />
+          <ScalarProperty Name="Approver5ID" ColumnName="Approver5ID" />
+          <ScalarProperty Name="Approver5Comments" ColumnName="Approver5Comments" />
+          <ScalarProperty Name="Approver5Status" ColumnName="Approver5Status" />
+          <ScalarProperty Name="Approver6ID" ColumnName="Approver6ID" />
+          <ScalarProperty Name="Approver6Comments" ColumnName="Approver6Comments" />
+          <ScalarProperty Name="Approver6Status" ColumnName="Approver6Status" />
+          <ScalarProperty Name="Approver7ID" ColumnName="Approver7ID" />
+          <ScalarProperty Name="Approver7Comments" ColumnName="Approver7Comments" />
+          <ScalarProperty Name="Approver7Status" ColumnName="Approver7Status" />
+          <ScalarProperty Name="Approver8ID" ColumnName="Approver8ID" />
+          <ScalarProperty Name="Approver8Comments" ColumnName="Approver8Comments" />
+          <ScalarProperty Name="Approver8Status" ColumnName="Approver8Status" />
+          <ScalarProperty Name="Approver9ID" ColumnName="Approver9ID" />
+          <ScalarProperty Name="Approver9Comments" ColumnName="Approver9Comments" />
+          <ScalarProperty Name="Approver9Status" ColumnName="Approver9Status" />
+          <ScalarProperty Name="Approver10ID" ColumnName="Approver10ID" />
+          <ScalarProperty Name="Approver10Comments" ColumnName="Approver10Comments" />
+          <ScalarProperty Name="Approver10Status" ColumnName="Approver10Status" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCategories">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblCategory">
+        <MappingFragment StoreEntitySet="tblCategory">
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCategoryLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblCategoryLog">
+        <MappingFragment StoreEntitySet="tblCategoryLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogCategoryUID" ColumnName="LogCategoryUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClauseAudits">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblClauseAudit">
+        <MappingFragment StoreEntitySet="tblClauseAudit">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AuditClauseID" ColumnName="AuditClauseID" />
+          <ScalarProperty Name="AuditClauseComments" ColumnName="AuditClauseComments" />
+          <ScalarProperty Name="AuditEmployeeID" ColumnName="AuditEmployeeID" />
+          <ScalarProperty Name="AuditLastReviewed" ColumnName="AuditLastReviewed" />
+          <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClauseLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblClauseLog">
+        <MappingFragment StoreEntitySet="tblClauseLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogClauseUID" ColumnName="LogClauseUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClauseMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblClauseMaster">
+        <MappingFragment StoreEntitySet="tblClauseMaster">
+          <ScalarProperty Name="Enable" ColumnName="Enable" />
+          <ScalarProperty Name="ClauseModificationType" ColumnName="ClauseModificationType" />
+          <ScalarProperty Name="OriginalClauseID" ColumnName="OriginalClauseID" />
+          <ScalarProperty Name="ClauseClauseID" ColumnName="ClauseClauseID" />
+          <ScalarProperty Name="ClauseClauseTitle" ColumnName="ClauseClauseTitle" />
+          <ScalarProperty Name="ClauseClauseDescription" ColumnName="ClauseClauseDescription" />
+          <ScalarProperty Name="ClauseClauseText" ColumnName="ClauseClauseText" />
+          <ScalarProperty Name="ClauseLastModified" ColumnName="ClauseLastModified" />
+          <ScalarProperty Name="ClauseStatus" ColumnName="ClauseStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractAudits">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractAudit">
+        <MappingFragment StoreEntitySet="tblContractAudit">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AuditContractD" ColumnName="AuditContractD" />
+          <ScalarProperty Name="AuditContractComments" ColumnName="AuditContractComments" />
+          <ScalarProperty Name="AuditEmployeeID" ColumnName="AuditEmployeeID" />
+          <ScalarProperty Name="AuditLastReviewed" ColumnName="AuditLastReviewed" />
+          <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractLog">
+        <MappingFragment StoreEntitySet="tblContractLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogContractUID" ColumnName="LogContractUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractMaster">
+        <MappingFragment StoreEntitySet="tblContractMaster">
+          <ScalarProperty Name="OriginalTemplateID" ColumnName="OriginalTemplateID" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+          <ScalarProperty Name="ContractType" ColumnName="ContractType" />
+          <ScalarProperty Name="ContractCategory" ColumnName="ContractCategory" />
+          <ScalarProperty Name="ContractSubCategory" ColumnName="ContractSubCategory" />
+          <ScalarProperty Name="UploadExistingFile" ColumnName="UploadExistingFile" />
+          <ScalarProperty Name="UploadExistingContractFileName" ColumnName="UploadExistingContractFileName" />
+          <ScalarProperty Name="UploadExistingContractFileType" ColumnName="UploadExistingContractFileType" />
+          <ScalarProperty Name="UploadSignOffContractFile" ColumnName="UploadSignOffContractFile" />
+          <ScalarProperty Name="UploadSignOffContractFileName" ColumnName="UploadSignOffContractFileName" />
+          <ScalarProperty Name="UploadSignOffContractFileType" ColumnName="UploadSignOffContractFileType" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Initiator" ColumnName="Initiator" />
+          <ScalarProperty Name="InitiatorComments" ColumnName="InitiatorComments" />
+          <ScalarProperty Name="InitiatorStatus" ColumnName="InitiatorStatus" />
+          <ScalarProperty Name="InitiatorDraft" ColumnName="InitiatorDraft" />
+          <ScalarProperty Name="ContractDraft" ColumnName="ContractDraft" />
+          <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="OriginalContractID" ColumnName="OriginalContractID" />
+          <ScalarProperty Name="ContractModificationType" ColumnName="ContractModificationType" />
+          <ScalarProperty Name="SupportingDoc1" ColumnName="SupportingDoc1" />
+          <ScalarProperty Name="SupportingDoc1FileName" ColumnName="SupportingDoc1FileName" />
+          <ScalarProperty Name="SupportingDoc1FileType" ColumnName="SupportingDoc1FileType" />
+          <ScalarProperty Name="SupportingDoc2" ColumnName="SupportingDoc2" />
+          <ScalarProperty Name="SupportingDoc2FileName" ColumnName="SupportingDoc2FileName" />
+          <ScalarProperty Name="SupportingDoc2FileType" ColumnName="SupportingDoc2FileType" />
+          <ScalarProperty Name="SupportingDoc3" ColumnName="SupportingDoc3" />
+          <ScalarProperty Name="SupportingDoc3FileName" ColumnName="SupportingDoc3FileName" />
+          <ScalarProperty Name="SupportingDoc3FileType" ColumnName="SupportingDoc3FileType" />
+          <ScalarProperty Name="SupportingDoc4" ColumnName="SupportingDoc4" />
+          <ScalarProperty Name="SupportingDoc4FileName" ColumnName="SupportingDoc4FileName" />
+          <ScalarProperty Name="SupportingDoc4FileType" ColumnName="SupportingDoc4FileType" />
+          <ScalarProperty Name="SupportingDoc5" ColumnName="SupportingDoc5" />
+          <ScalarProperty Name="SupportingDoc5FileName" ColumnName="SupportingDoc5FileName" />
+          <ScalarProperty Name="SupportingDoc5FileType" ColumnName="SupportingDoc5FileType" />
+          <ScalarProperty Name="DateofInitiated" ColumnName="DateofInitiated" />
+          <ScalarProperty Name="Variables" ColumnName="Variables" />
+          <ScalarProperty Name="LastReviewed" ColumnName="LastReviewed" />
+          <ScalarProperty Name="Approver1ID" ColumnName="Approver1ID" />
+          <ScalarProperty Name="Approver1Draft" ColumnName="Approver1Draft" />
+          <ScalarProperty Name="Approver1Comments" ColumnName="Approver1Comments" />
+          <ScalarProperty Name="Approver1Status" ColumnName="Approver1Status" />
+          <ScalarProperty Name="Approver1ReceivedOn" ColumnName="Approver1ReceivedOn" />
+          <ScalarProperty Name="Approver1ApprovedOn" ColumnName="Approver1ApprovedOn" />
+          <ScalarProperty Name="Approver2ID" ColumnName="Approver2ID" />
+          <ScalarProperty Name="Approver2Draft" ColumnName="Approver2Draft" />
+          <ScalarProperty Name="Approver2Comments" ColumnName="Approver2Comments" />
+          <ScalarProperty Name="Approver2Status" ColumnName="Approver2Status" />
+          <ScalarProperty Name="Approver2ReceivedOn" ColumnName="Approver2ReceivedOn" />
+          <ScalarProperty Name="Approver2ApprovedOn" ColumnName="Approver2ApprovedOn" />
+          <ScalarProperty Name="Approver3ID" ColumnName="Approver3ID" />
+          <ScalarProperty Name="Approver3Draft" ColumnName="Approver3Draft" />
+          <ScalarProperty Name="Approver3Comments" ColumnName="Approver3Comments" />
+          <ScalarProperty Name="Approver3Status" ColumnName="Approver3Status" />
+          <ScalarProperty Name="Approver3ReceivedOn" ColumnName="Approver3ReceivedOn" />
+          <ScalarProperty Name="Approver3ApprovedOn" ColumnName="Approver3ApprovedOn" />
+          <ScalarProperty Name="Approver4ID" ColumnName="Approver4ID" />
+          <ScalarProperty Name="Approver4Draft" ColumnName="Approver4Draft" />
+          <ScalarProperty Name="Approver4Comments" ColumnName="Approver4Comments" />
+          <ScalarProperty Name="Approver4Status" ColumnName="Approver4Status" />
+          <ScalarProperty Name="Approver4ReceivedOn" ColumnName="Approver4ReceivedOn" />
+          <ScalarProperty Name="Approver4ApprovedOn" ColumnName="Approver4ApprovedOn" />
+          <ScalarProperty Name="Approver5ID" ColumnName="Approver5ID" />
+          <ScalarProperty Name="Approver5Draft" ColumnName="Approver5Draft" />
+          <ScalarProperty Name="Approver5Comments" ColumnName="Approver5Comments" />
+          <ScalarProperty Name="Approver5Status" ColumnName="Approver5Status" />
+          <ScalarProperty Name="Approver5ReceivedOn" ColumnName="Approver5ReceivedOn" />
+          <ScalarProperty Name="Approver5ApprovedOn" ColumnName="Approver5ApprovedOn" />
+          <ScalarProperty Name="Approver6ID" ColumnName="Approver6ID" />
+          <ScalarProperty Name="Approver6Draft" ColumnName="Approver6Draft" />
+          <ScalarProperty Name="Approver6Comments" ColumnName="Approver6Comments" />
+          <ScalarProperty Name="Approver6Status" ColumnName="Approver6Status" />
+          <ScalarProperty Name="Approver6ReceivedOn" ColumnName="Approver6ReceivedOn" />
+          <ScalarProperty Name="Approver6ApprovedOn" ColumnName="Approver6ApprovedOn" />
+          <ScalarProperty Name="Approver7ID" ColumnName="Approver7ID" />
+          <ScalarProperty Name="Approver7Draft" ColumnName="Approver7Draft" />
+          <ScalarProperty Name="Approver7Comments" ColumnName="Approver7Comments" />
+          <ScalarProperty Name="Approver7Status" ColumnName="Approver7Status" />
+          <ScalarProperty Name="Approver7ReceivedOn" ColumnName="Approver7ReceivedOn" />
+          <ScalarProperty Name="Approver7ApprovedOn" ColumnName="Approver7ApprovedOn" />
+          <ScalarProperty Name="Approver8ID" ColumnName="Approver8ID" />
+          <ScalarProperty Name="Approver8Draft" ColumnName="Approver8Draft" />
+          <ScalarProperty Name="Approver8Comments" ColumnName="Approver8Comments" />
+          <ScalarProperty Name="Approver8Status" ColumnName="Approver8Status" />
+          <ScalarProperty Name="Approver8ReceivedOn" ColumnName="Approver8ReceivedOn" />
+          <ScalarProperty Name="Approver8ApprovedOn" ColumnName="Approver8ApprovedOn" />
+          <ScalarProperty Name="Approver9ID" ColumnName="Approver9ID" />
+          <ScalarProperty Name="Approver9Draft" ColumnName="Approver9Draft" />
+          <ScalarProperty Name="Approver9Comments" ColumnName="Approver9Comments" />
+          <ScalarProperty Name="Approver9Status" ColumnName="Approver9Status" />
+          <ScalarProperty Name="Approver9ReceivedOn" ColumnName="Approver9ReceivedOn" />
+          <ScalarProperty Name="Approver9ApprovedOn" ColumnName="Approver9ApprovedOn" />
+          <ScalarProperty Name="Approver10ID" ColumnName="Approver10ID" />
+          <ScalarProperty Name="Approver10Draft" ColumnName="Approver10Draft" />
+          <ScalarProperty Name="Approver10Comments" ColumnName="Approver10Comments" />
+          <ScalarProperty Name="Approver10Status" ColumnName="Approver10Status" />
+          <ScalarProperty Name="Approver10ReceivedOn" ColumnName="Approver10ReceivedOn" />
+          <ScalarProperty Name="Approver10ApprovedOn" ColumnName="Approver10ApprovedOn" />
+          <ScalarProperty Name="PendingFrom" ColumnName="PendingFrom" />
+          <ScalarProperty Name="NextApprover" ColumnName="NextApprover" />
+          <ScalarProperty Name="DefaultVariables" ColumnName="DefaultVariables" />
+          <ScalarProperty Name="RejectedBy" ColumnName="RejectedBy" />
+          <ScalarProperty Name="ModifiedSupportingDoc1" ColumnName="ModifiedSupportingDoc1" />
+          <ScalarProperty Name="ModifiedSupportingDoc1FileName" ColumnName="ModifiedSupportingDoc1FileName" />
+          <ScalarProperty Name="ModifiedSupportingDoc1FileType" ColumnName="ModifiedSupportingDoc1FileType" />
+          <ScalarProperty Name="InEffectFrom" ColumnName="InEffectFrom" />
+          <ScalarProperty Name="InEffectTo" ColumnName="InEffectTo" />
+          <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
+          <ScalarProperty Name="PhysicalCopyLocation" ColumnName="PhysicalCopyLocation" />
+          <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
+          <ScalarProperty Name="ReviewedComments" ColumnName="ReviewedComments" />
+          <ScalarProperty Name="Template" ColumnName="Template" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractModifications">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractModification">
+        <MappingFragment StoreEntitySet="tblContractModification">
+          <ScalarProperty Name="OriginalTemplateID" ColumnName="OriginalTemplateID" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+          <ScalarProperty Name="ContractType" ColumnName="ContractType" />
+          <ScalarProperty Name="ContractCategory" ColumnName="ContractCategory" />
+          <ScalarProperty Name="ContractSubCategory" ColumnName="ContractSubCategory" />
+          <ScalarProperty Name="UploadExistingFile" ColumnName="UploadExistingFile" />
+          <ScalarProperty Name="UploadExistingContractFileName" ColumnName="UploadExistingContractFileName" />
+          <ScalarProperty Name="UploadExistingContractFileType" ColumnName="UploadExistingContractFileType" />
+          <ScalarProperty Name="UploadSignOffContractFile" ColumnName="UploadSignOffContractFile" />
+          <ScalarProperty Name="UploadSignOffContractFileName" ColumnName="UploadSignOffContractFileName" />
+          <ScalarProperty Name="UploadSignOffContractFileType" ColumnName="UploadSignOffContractFileType" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Initiator" ColumnName="Initiator" />
+          <ScalarProperty Name="InitiatorComments" ColumnName="InitiatorComments" />
+          <ScalarProperty Name="InitiatorStatus" ColumnName="InitiatorStatus" />
+          <ScalarProperty Name="InitiatorDraft" ColumnName="InitiatorDraft" />
+          <ScalarProperty Name="ContractDraft" ColumnName="ContractDraft" />
+          <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="OriginalContractID" ColumnName="OriginalContractID" />
+          <ScalarProperty Name="ContractModificationType" ColumnName="ContractModificationType" />
+          <ScalarProperty Name="SupportingDoc1" ColumnName="SupportingDoc1" />
+          <ScalarProperty Name="SupportingDoc1FileName" ColumnName="SupportingDoc1FileName" />
+          <ScalarProperty Name="SupportingDoc1FileType" ColumnName="SupportingDoc1FileType" />
+          <ScalarProperty Name="SupportingDoc2" ColumnName="SupportingDoc2" />
+          <ScalarProperty Name="SupportingDoc2FileName" ColumnName="SupportingDoc2FileName" />
+          <ScalarProperty Name="SupportingDoc2FileType" ColumnName="SupportingDoc2FileType" />
+          <ScalarProperty Name="SupportingDoc3" ColumnName="SupportingDoc3" />
+          <ScalarProperty Name="SupportingDoc3FileName" ColumnName="SupportingDoc3FileName" />
+          <ScalarProperty Name="SupportingDoc3FileType" ColumnName="SupportingDoc3FileType" />
+          <ScalarProperty Name="SupportingDoc4" ColumnName="SupportingDoc4" />
+          <ScalarProperty Name="SupportingDoc4FileName" ColumnName="SupportingDoc4FileName" />
+          <ScalarProperty Name="SupportingDoc4FileType" ColumnName="SupportingDoc4FileType" />
+          <ScalarProperty Name="SupportingDoc5" ColumnName="SupportingDoc5" />
+          <ScalarProperty Name="SupportingDoc5FileName" ColumnName="SupportingDoc5FileName" />
+          <ScalarProperty Name="SupportingDoc5FileType" ColumnName="SupportingDoc5FileType" />
+          <ScalarProperty Name="DateofInitiated" ColumnName="DateofInitiated" />
+          <ScalarProperty Name="Variables" ColumnName="Variables" />
+          <ScalarProperty Name="LastReviewed" ColumnName="LastReviewed" />
+          <ScalarProperty Name="Approver1ID" ColumnName="Approver1ID" />
+          <ScalarProperty Name="Approver1Draft" ColumnName="Approver1Draft" />
+          <ScalarProperty Name="Approver1Comments" ColumnName="Approver1Comments" />
+          <ScalarProperty Name="Approver1Status" ColumnName="Approver1Status" />
+          <ScalarProperty Name="Approver1ReceivedOn" ColumnName="Approver1ReceivedOn" />
+          <ScalarProperty Name="Approver1ApprovedOn" ColumnName="Approver1ApprovedOn" />
+          <ScalarProperty Name="Approver2ID" ColumnName="Approver2ID" />
+          <ScalarProperty Name="Approver2Draft" ColumnName="Approver2Draft" />
+          <ScalarProperty Name="Approver2Comments" ColumnName="Approver2Comments" />
+          <ScalarProperty Name="Approver2Status" ColumnName="Approver2Status" />
+          <ScalarProperty Name="Approver2ReceivedOn" ColumnName="Approver2ReceivedOn" />
+          <ScalarProperty Name="Approver2ApprovedOn" ColumnName="Approver2ApprovedOn" />
+          <ScalarProperty Name="Approver3ID" ColumnName="Approver3ID" />
+          <ScalarProperty Name="Approver3Draft" ColumnName="Approver3Draft" />
+          <ScalarProperty Name="Approver3Comments" ColumnName="Approver3Comments" />
+          <ScalarProperty Name="Approver3Status" ColumnName="Approver3Status" />
+          <ScalarProperty Name="Approver3ReceivedOn" ColumnName="Approver3ReceivedOn" />
+          <ScalarProperty Name="Approver3ApprovedOn" ColumnName="Approver3ApprovedOn" />
+          <ScalarProperty Name="Approver4ID" ColumnName="Approver4ID" />
+          <ScalarProperty Name="Approver4Draft" ColumnName="Approver4Draft" />
+          <ScalarProperty Name="Approver4Comments" ColumnName="Approver4Comments" />
+          <ScalarProperty Name="Approver4Status" ColumnName="Approver4Status" />
+          <ScalarProperty Name="Approver4ReceivedOn" ColumnName="Approver4ReceivedOn" />
+          <ScalarProperty Name="Approver4ApprovedOn" ColumnName="Approver4ApprovedOn" />
+          <ScalarProperty Name="Approver5ID" ColumnName="Approver5ID" />
+          <ScalarProperty Name="Approver5Draft" ColumnName="Approver5Draft" />
+          <ScalarProperty Name="Approver5Comments" ColumnName="Approver5Comments" />
+          <ScalarProperty Name="Approver5Status" ColumnName="Approver5Status" />
+          <ScalarProperty Name="Approver5ReceivedOn" ColumnName="Approver5ReceivedOn" />
+          <ScalarProperty Name="Approver5ApprovedOn" ColumnName="Approver5ApprovedOn" />
+          <ScalarProperty Name="Approver6ID" ColumnName="Approver6ID" />
+          <ScalarProperty Name="Approver6Draft" ColumnName="Approver6Draft" />
+          <ScalarProperty Name="Approver6Comments" ColumnName="Approver6Comments" />
+          <ScalarProperty Name="Approver6Status" ColumnName="Approver6Status" />
+          <ScalarProperty Name="Approver6ReceivedOn" ColumnName="Approver6ReceivedOn" />
+          <ScalarProperty Name="Approver6ApprovedOn" ColumnName="Approver6ApprovedOn" />
+          <ScalarProperty Name="Approver7ID" ColumnName="Approver7ID" />
+          <ScalarProperty Name="Approver7Draft" ColumnName="Approver7Draft" />
+          <ScalarProperty Name="Approver7Comments" ColumnName="Approver7Comments" />
+          <ScalarProperty Name="Approver7Status" ColumnName="Approver7Status" />
+          <ScalarProperty Name="Approver7ReceivedOn" ColumnName="Approver7ReceivedOn" />
+          <ScalarProperty Name="Approver7ApprovedOn" ColumnName="Approver7ApprovedOn" />
+          <ScalarProperty Name="Approver8ID" ColumnName="Approver8ID" />
+          <ScalarProperty Name="Approver8Draft" ColumnName="Approver8Draft" />
+          <ScalarProperty Name="Approver8Comments" ColumnName="Approver8Comments" />
+          <ScalarProperty Name="Approver8Status" ColumnName="Approver8Status" />
+          <ScalarProperty Name="Approver8ReceivedOn" ColumnName="Approver8ReceivedOn" />
+          <ScalarProperty Name="Approver8ApprovedOn" ColumnName="Approver8ApprovedOn" />
+          <ScalarProperty Name="Approver9ID" ColumnName="Approver9ID" />
+          <ScalarProperty Name="Approver9Draft" ColumnName="Approver9Draft" />
+          <ScalarProperty Name="Approver9Comments" ColumnName="Approver9Comments" />
+          <ScalarProperty Name="Approver9Status" ColumnName="Approver9Status" />
+          <ScalarProperty Name="Approver9ReceivedOn" ColumnName="Approver9ReceivedOn" />
+          <ScalarProperty Name="Approver9ApprovedOn" ColumnName="Approver9ApprovedOn" />
+          <ScalarProperty Name="Approver10ID" ColumnName="Approver10ID" />
+          <ScalarProperty Name="Approver10Draft" ColumnName="Approver10Draft" />
+          <ScalarProperty Name="Approver10Comments" ColumnName="Approver10Comments" />
+          <ScalarProperty Name="Approver10Status" ColumnName="Approver10Status" />
+          <ScalarProperty Name="Approver10ReceivedOn" ColumnName="Approver10ReceivedOn" />
+          <ScalarProperty Name="Approver10ApprovedOn" ColumnName="Approver10ApprovedOn" />
+          <ScalarProperty Name="PendingFrom" ColumnName="PendingFrom" />
+          <ScalarProperty Name="NextApprover" ColumnName="NextApprover" />
+          <ScalarProperty Name="DefaultVariables" ColumnName="DefaultVariables" />
+          <ScalarProperty Name="RejectedBy" ColumnName="RejectedBy" />
+          <ScalarProperty Name="ModifiedSupportingDoc1" ColumnName="ModifiedSupportingDoc1" />
+          <ScalarProperty Name="ModifiedSupportingDoc1FileName" ColumnName="ModifiedSupportingDoc1FileName" />
+          <ScalarProperty Name="ModifiedSupportingDoc1FileType" ColumnName="ModifiedSupportingDoc1FileType" />
+          <ScalarProperty Name="InEffectFrom" ColumnName="InEffectFrom" />
+          <ScalarProperty Name="InEffectTo" ColumnName="InEffectTo" />
+          <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
+          <ScalarProperty Name="PhysicalCopyLocation" ColumnName="PhysicalCopyLocation" />
+          <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
+          <ScalarProperty Name="ReviewedComments" ColumnName="ReviewedComments" />
+          <ScalarProperty Name="Template" ColumnName="Template" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSubCategories">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblSubCategory">
+        <MappingFragment StoreEntitySet="tblSubCategory">
+          <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSubCategoryLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblSubCategoryLog">
+        <MappingFragment StoreEntitySet="tblSubCategoryLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogSubCategoryUID" ColumnName="LogSubCategoryUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTemplateAudits">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblTemplateAudit">
+        <MappingFragment StoreEntitySet="tblTemplateAudit">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AuditTemplateID" ColumnName="AuditTemplateID" />
+          <ScalarProperty Name="AuditTemplateComments" ColumnName="AuditTemplateComments" />
+          <ScalarProperty Name="AuditEmployeeID" ColumnName="AuditEmployeeID" />
+          <ScalarProperty Name="AuditLastReviewed" ColumnName="AuditLastReviewed" />
+          <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTemplateLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblTemplateLog">
+        <MappingFragment StoreEntitySet="tblTemplateLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogTemplateUID" ColumnName="LogTemplateUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTemplateMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblTemplateMaster">
+        <MappingFragment StoreEntitySet="tblTemplateMaster">
+          <ScalarProperty Name="Enable" ColumnName="Enable" />
+          <ScalarProperty Name="TemplateModificationType" ColumnName="TemplateModificationType" />
+          <ScalarProperty Name="OriginalTemplateID" ColumnName="OriginalTemplateID" />
+          <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="SubCategory" ColumnName="SubCategory" />
+          <ScalarProperty Name="Initiator" ColumnName="Initiator" />
+          <ScalarProperty Name="InitiatorStatus" ColumnName="InitiatorStatus" />
+          <ScalarProperty Name="InitiatorComments" ColumnName="InitiatorComments" />
+          <ScalarProperty Name="Template" ColumnName="Template" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateofInitiated" ColumnName="DateofInitiated" />
+          <ScalarProperty Name="LastReviewed" ColumnName="LastReviewed" />
+          <ScalarProperty Name="Approver1ID" ColumnName="Approver1ID" />
+          <ScalarProperty Name="Approver1Draft" ColumnName="Approver1Draft" />
+          <ScalarProperty Name="Approver1Comments" ColumnName="Approver1Comments" />
+          <ScalarProperty Name="Approver1Status" ColumnName="Approver1Status" />
+          <ScalarProperty Name="Approver1ReceivedOn" ColumnName="Approver1ReceivedOn" />
+          <ScalarProperty Name="Approver1ApprovedOn" ColumnName="Approver1ApprovedOn" />
+          <ScalarProperty Name="Approver2ID" ColumnName="Approver2ID" />
+          <ScalarProperty Name="Approver2Draft" ColumnName="Approver2Draft" />
+          <ScalarProperty Name="Approver2Comments" ColumnName="Approver2Comments" />
+          <ScalarProperty Name="Approver2Status" ColumnName="Approver2Status" />
+          <ScalarProperty Name="Approver2ReceivedOn" ColumnName="Approver2ReceivedOn" />
+          <ScalarProperty Name="Approver2ApprovedOn" ColumnName="Approver2ApprovedOn" />
+          <ScalarProperty Name="Approver3ID" ColumnName="Approver3ID" />
+          <ScalarProperty Name="Approver3Draft" ColumnName="Approver3Draft" />
+          <ScalarProperty Name="Approver3Comments" ColumnName="Approver3Comments" />
+          <ScalarProperty Name="Approver3Status" ColumnName="Approver3Status" />
+          <ScalarProperty Name="Approver3ReceivedOn" ColumnName="Approver3ReceivedOn" />
+          <ScalarProperty Name="Approver3ApprovedOn" ColumnName="Approver3ApprovedOn" />
+          <ScalarProperty Name="Approver4ID" ColumnName="Approver4ID" />
+          <ScalarProperty Name="Approver4Draft" ColumnName="Approver4Draft" />
+          <ScalarProperty Name="Approver4Comments" ColumnName="Approver4Comments" />
+          <ScalarProperty Name="Approver4Status" ColumnName="Approver4Status" />
+          <ScalarProperty Name="Approver4ReceivedOn" ColumnName="Approver4ReceivedOn" />
+          <ScalarProperty Name="Approver4ApprovedOn" ColumnName="Approver4ApprovedOn" />
+          <ScalarProperty Name="Approver5ID" ColumnName="Approver5ID" />
+          <ScalarProperty Name="Approver5Draft" ColumnName="Approver5Draft" />
+          <ScalarProperty Name="Approver5Comments" ColumnName="Approver5Comments" />
+          <ScalarProperty Name="Approver5Status" ColumnName="Approver5Status" />
+          <ScalarProperty Name="Approver5ReceivedOn" ColumnName="Approver5ReceivedOn" />
+          <ScalarProperty Name="Approver5ApprovedOn" ColumnName="Approver5ApprovedOn" />
+          <ScalarProperty Name="Approver6ID" ColumnName="Approver6ID" />
+          <ScalarProperty Name="Approver6Draft" ColumnName="Approver6Draft" />
+          <ScalarProperty Name="Approver6Comments" ColumnName="Approver6Comments" />
+          <ScalarProperty Name="Approver6Status" ColumnName="Approver6Status" />
+          <ScalarProperty Name="Approver6ReceivedOn" ColumnName="Approver6ReceivedOn" />
+          <ScalarProperty Name="Approver6ApprovedOn" ColumnName="Approver6ApprovedOn" />
+          <ScalarProperty Name="Approver7ID" ColumnName="Approver7ID" />
+          <ScalarProperty Name="Approver7Draft" ColumnName="Approver7Draft" />
+          <ScalarProperty Name="Approver7Comments" ColumnName="Approver7Comments" />
+          <ScalarProperty Name="Approver7Status" ColumnName="Approver7Status" />
+          <ScalarProperty Name="Approver7ReceivedOn" ColumnName="Approver7ReceivedOn" />
+          <ScalarProperty Name="Approver7ApprovedOn" ColumnName="Approver7ApprovedOn" />
+          <ScalarProperty Name="Approver8ID" ColumnName="Approver8ID" />
+          <ScalarProperty Name="Approver8Draft" ColumnName="Approver8Draft" />
+          <ScalarProperty Name="Approver8Comments" ColumnName="Approver8Comments" />
+          <ScalarProperty Name="Approver8Status" ColumnName="Approver8Status" />
+          <ScalarProperty Name="Approver8ReceivedOn" ColumnName="Approver8ReceivedOn" />
+          <ScalarProperty Name="Approver8ApprovedOn" ColumnName="Approver8ApprovedOn" />
+          <ScalarProperty Name="Approver9ID" ColumnName="Approver9ID" />
+          <ScalarProperty Name="Approver9Draft" ColumnName="Approver9Draft" />
+          <ScalarProperty Name="Approver9Comments" ColumnName="Approver9Comments" />
+          <ScalarProperty Name="Approver9Status" ColumnName="Approver9Status" />
+          <ScalarProperty Name="Approver9ReceivedOn" ColumnName="Approver9ReceivedOn" />
+          <ScalarProperty Name="Approver9ApprovedOn" ColumnName="Approver9ApprovedOn" />
+          <ScalarProperty Name="Approver10ID" ColumnName="Approver10ID" />
+          <ScalarProperty Name="Approver10Draft" ColumnName="Approver10Draft" />
+          <ScalarProperty Name="Approver10Comments" ColumnName="Approver10Comments" />
+          <ScalarProperty Name="Approver10Status" ColumnName="Approver10Status" />
+          <ScalarProperty Name="Approver10ReceivedOn" ColumnName="Approver10ReceivedOn" />
+          <ScalarProperty Name="Approver10ApprovedOn" ColumnName="Approver10ApprovedOn" />
+          <ScalarProperty Name="PendingFrom" ColumnName="PendingFrom" />
+          <ScalarProperty Name="NextApprover" ColumnName="NextApprover" />
+          <ScalarProperty Name="RejectedBy" ColumnName="RejectedBy" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="InitiatorTemplate" ColumnName="InitiatorTemplate" />
+          <ScalarProperty Name="ReviewerID" ColumnName="ReviewerID" />
+          <ScalarProperty Name="PhysicalCopyLocation" ColumnName="PhysicalCopyLocation" />
+          <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
+          <ScalarProperty Name="ReviewedComments" ColumnName="ReviewedComments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblUserLog">
+        <MappingFragment StoreEntitySet="tblUserLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogUserUID" ColumnName="LogUserUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserLogins">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblUserLogin">
+        <MappingFragment StoreEntitySet="tblUserLogin">
+          <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblUserMaster">
+        <MappingFragment StoreEntitySet="tblUserMaster">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserEmployeeID" ColumnName="UserEmployeeID" />
+          <ScalarProperty Name="UserEmployeeName" ColumnName="UserEmployeeName" />
+          <ScalarProperty Name="UserEmployeeEmail" ColumnName="UserEmployeeEmail" />
+          <ScalarProperty Name="UserEmployeeDesignation" ColumnName="UserEmployeeDesignation" />
+          <ScalarProperty Name="UserCategory" ColumnName="UserCategory" />
+          <ScalarProperty Name="UserSubCategory" ColumnName="UserSubCategory" />
+          <ScalarProperty Name="UserRoleInitiator" ColumnName="UserRoleInitiator" />
+          <ScalarProperty Name="UserRoleApprover" ColumnName="UserRoleApprover" />
+          <ScalarProperty Name="UserRoleLegal" ColumnName="UserRoleLegal" />
+          <ScalarProperty Name="UserRoleFinance" ColumnName="UserRoleFinance" />
+          <ScalarProperty Name="UserRoleAdmin" ColumnName="UserRoleAdmin" />
+          <ScalarProperty Name="UserRoleReviewer" ColumnName="UserRoleReviewer" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserHodEmployeeID" ColumnName="UserHodEmployeeID" />
+          <ScalarProperty Name="UserHodEmployeeName" ColumnName="UserHodEmployeeName" />
+          <ScalarProperty Name="UserHodEmployeeEmailAddress" ColumnName="UserHodEmployeeEmailAddress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVariables">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVariable">
+        <MappingFragment StoreEntitySet="tblVariables">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Variables" ColumnName="Variables" />
+          <ScalarProperty Name="VariableType" ColumnName="VariableType" />
+          <ScalarProperty Name="VariableValues" ColumnName="VariableValues" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVendorLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVendorLog">
+        <MappingFragment StoreEntitySet="tblVendorLog">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LogVendorUID" ColumnName="LogVendorUID" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVariableDatas">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVariableData">
+        <MappingFragment StoreEntitySet="tblVariableData">
+          <ScalarProperty Name="VariableFrom" ColumnName="VariableFrom" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Variable" ColumnName="Variable" />
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVendorMasters">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVendorMaster">
+        <MappingFragment StoreEntitySet="tblVendorMaster">
+          <ScalarProperty Name="Partner10Address" ColumnName="Partner10Address" />
+          <ScalarProperty Name="Partner10FatherName" ColumnName="Partner10FatherName" />
+          <ScalarProperty Name="Partner10Age" ColumnName="Partner10Age" />
+          <ScalarProperty Name="Partner10Name" ColumnName="Partner10Name" />
+          <ScalarProperty Name="Partner9Address" ColumnName="Partner9Address" />
+          <ScalarProperty Name="Partner9FatherName" ColumnName="Partner9FatherName" />
+          <ScalarProperty Name="Partner9Age" ColumnName="Partner9Age" />
+          <ScalarProperty Name="Partner9Name" ColumnName="Partner9Name" />
+          <ScalarProperty Name="Partner8Address" ColumnName="Partner8Address" />
+          <ScalarProperty Name="Partner8FatherName" ColumnName="Partner8FatherName" />
+          <ScalarProperty Name="Partner8Age" ColumnName="Partner8Age" />
+          <ScalarProperty Name="Partner8Name" ColumnName="Partner8Name" />
+          <ScalarProperty Name="Partner7Address" ColumnName="Partner7Address" />
+          <ScalarProperty Name="Partner7FatherName" ColumnName="Partner7FatherName" />
+          <ScalarProperty Name="Partner7Age" ColumnName="Partner7Age" />
+          <ScalarProperty Name="Partner7Name" ColumnName="Partner7Name" />
+          <ScalarProperty Name="Partner6Address" ColumnName="Partner6Address" />
+          <ScalarProperty Name="Partner6FatherName" ColumnName="Partner6FatherName" />
+          <ScalarProperty Name="Partner6Age" ColumnName="Partner6Age" />
+          <ScalarProperty Name="Partner6Name" ColumnName="Partner6Name" />
+          <ScalarProperty Name="Partner5Address" ColumnName="Partner5Address" />
+          <ScalarProperty Name="Partner5FatherName" ColumnName="Partner5FatherName" />
+          <ScalarProperty Name="Partner5Age" ColumnName="Partner5Age" />
+          <ScalarProperty Name="Partner5Name" ColumnName="Partner5Name" />
+          <ScalarProperty Name="Partner4Address" ColumnName="Partner4Address" />
+          <ScalarProperty Name="Partner4FatherName" ColumnName="Partner4FatherName" />
+          <ScalarProperty Name="Partner4Age" ColumnName="Partner4Age" />
+          <ScalarProperty Name="Partner4Name" ColumnName="Partner4Name" />
+          <ScalarProperty Name="Partner3Address" ColumnName="Partner3Address" />
+          <ScalarProperty Name="Partner3FatherName" ColumnName="Partner3FatherName" />
+          <ScalarProperty Name="Partner3Age" ColumnName="Partner3Age" />
+          <ScalarProperty Name="Partner3Name" ColumnName="Partner3Name" />
+          <ScalarProperty Name="Partner2Address" ColumnName="Partner2Address" />
+          <ScalarProperty Name="Partner2FatherName" ColumnName="Partner2FatherName" />
+          <ScalarProperty Name="Partner2Age" ColumnName="Partner2Age" />
+          <ScalarProperty Name="Partner2Name" ColumnName="Partner2Name" />
+          <ScalarProperty Name="Partner1Address" ColumnName="Partner1Address" />
+          <ScalarProperty Name="Partner1FatherName" ColumnName="Partner1FatherName" />
+          <ScalarProperty Name="Partner1Age" ColumnName="Partner1Age" />
+          <ScalarProperty Name="Partner1Name" ColumnName="Partner1Name" />
+          <ScalarProperty Name="LLPIN" ColumnName="LLPIN" />
+          <ScalarProperty Name="AdhaarCardNo" ColumnName="AdhaarCardNo" />
+          <ScalarProperty Name="PAN" ColumnName="PAN" />
+          <ScalarProperty Name="NameoftheProprietor" ColumnName="NameoftheProprietor" />
+          <ScalarProperty Name="CorporateAddress" ColumnName="CorporateAddress" />
+          <ScalarProperty Name="VendorBranchOffice5" ColumnName="VendorBranchOffice5" />
+          <ScalarProperty Name="VendorBranchOffice4" ColumnName="VendorBranchOffice4" />
+          <ScalarProperty Name="VendorBranchOffice3" ColumnName="VendorBranchOffice3" />
+          <ScalarProperty Name="VendorBranchOffice2" ColumnName="VendorBranchOffice2" />
+          <ScalarProperty Name="VendorBranchOffice1" ColumnName="VendorBranchOffice1" />
+          <ScalarProperty Name="VendorRegisteredAddress" ColumnName="VendorRegisteredAddress" />
+          <ScalarProperty Name="VendorAuthorisedSignatory" ColumnName="VendorAuthorisedSignatory" />
+          <ScalarProperty Name="VendorTypeofEntity" ColumnName="VendorTypeofEntity" />
+          <ScalarProperty Name="VendorVendorName" ColumnName="VendorVendorName" />
+          <ScalarProperty Name="VendorCorporateIdentificationNumber" ColumnName="VendorCorporateIdentificationNumber" />
+          <ScalarProperty Name="VendorVendorID" ColumnName="VendorVendorID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVendorTemplates">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVendorTemplate">
+        <MappingFragment StoreEntitySet="tblVendorTemplate">
+          <ScalarProperty Name="VendorOthers" ColumnName="VendorOthers" />
+          <ScalarProperty Name="VendorLLPF" ColumnName="VendorLLPF" />
+          <ScalarProperty Name="VendorSoleProprietorship" ColumnName="VendorSoleProprietorship" />
+          <ScalarProperty Name="VendorPartnershipFirm" ColumnName="VendorPartnershipFirm" />
+          <ScalarProperty Name="VendorCompany" ColumnName="VendorCompany" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVendorTemplateLogs">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblVendorTemplateLog">
+        <MappingFragment StoreEntitySet="tblVendorTemplateLog">
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+          <ScalarProperty Name="ChangedTo" ColumnName="ChangedTo" />
+          <ScalarProperty Name="ChangedFrom" ColumnName="ChangedFrom" />
+          <ScalarProperty Name="LogActivity" ColumnName="LogActivity" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="LogVendorTemplateUID" ColumnName="LogVendorTemplateUID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblConfigurations">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblConfiguration">
+        <MappingFragment StoreEntitySet="tblConfiguration">
+          <ScalarProperty Name="MarginRight" ColumnName="MarginRight" />
+          <ScalarProperty Name="MarginBottom" ColumnName="MarginBottom" />
+          <ScalarProperty Name="MarginLeft" ColumnName="MarginLeft" />
+          <ScalarProperty Name="MarginTop" ColumnName="MarginTop" />
+          <ScalarProperty Name="PaperSize" ColumnName="PaperSize" />
+          <ScalarProperty Name="PaperType" ColumnName="PaperType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApprovalEscalations">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblApprovalEscalation">
+        <MappingFragment StoreEntitySet="tblApprovalEscalation">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="SubDepartment" ColumnName="SubDepartment" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Plant" ColumnName="Plant" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractContents">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractContent">
+        <MappingFragment StoreEntitySet="tblContractContent">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="ContractContent" ColumnName="ContractContent" />
+          <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblContractModificationContents">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblContractModificationContent">
+        <MappingFragment StoreEntitySet="tblContractModificationContent">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="ContractContent" ColumnName="ContractContent" />
+          <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTemplateContents">
+      <EntityTypeMapping TypeName="ContractManagementSystemDBModel.tblTemplateContent">
+        <MappingFragment StoreEntitySet="tblTemplateContent">
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="TemplateContent" ColumnName="TemplateContent" />
+          <ScalarProperty Name="EMPID" ColumnName="EMPID" />
+          <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

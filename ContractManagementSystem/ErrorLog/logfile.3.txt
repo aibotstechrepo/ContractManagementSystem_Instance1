@@ -1,0 +1,499 @@
+------Info(2021-06-08 00:05:53.1014)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-08 00:05:53.2470)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-08 00:05:53.2769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-08 00:05:53.2769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-08 00:05:53.2879)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-08 00:05:53.2879)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-08 00:05:53.2879)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-08 00:05:53.2879)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-08 00:05:53.3069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-08 00:05:53.3717)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:05:53.4285)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-08 00:05:53.9751)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Home Dashboard Page
+
+------Info(2021-06-08 00:05:53.9751)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Dashboard
+
+------Info(2021-06-08 00:05:57.2726)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home GetNextApproverName
+
+------Info(2021-06-08 00:05:57.2726)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-08 00:05:57.2726)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home ContractStatistics
+
+------Info(2021-06-08 00:05:57.2726)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Statistic Details : Checking Status
+
+------Info(2021-06-08 00:05:57.3164)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-08 00:05:57.5658)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking Contract Statistic Details : Status Count Found
+
+------Info(2021-06-08 00:06:09.2666)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Contract Repository Page
+
+------Info(2021-06-08 00:06:09.2666)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Info(2021-06-08 00:06:11.9342)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details
+
+------Info(2021-06-08 00:06:12.0180)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Checking Status
+
+------Info(2021-06-08 00:06:12.0180)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Details Found
+
+------Info(2021-06-08 00:06:12.0180)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to Contract Details Page
+
+------Info(2021-06-08 00:06:12.3820)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract getLogDetail
+
+------Info(2021-06-08 00:06:12.3820)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogID match
+
+------Info(2021-06-08 00:06:12.3820)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetUserById
+
+------Info(2021-06-08 00:06:12.3820)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-08 00:06:12.3820)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogDetails Found
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-08 00:06:12.4149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-08 00:06:12.4601)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetUserById
+
+------Info(2021-06-08 00:06:12.4601)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-08 00:06:12.4830)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-08 00:06:13.9080)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details
+
+------Info(2021-06-08 00:06:13.9400)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Contract DraftView Page
+
+------Info(2021-06-08 00:06:16.7683)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract Contracttabledetails
+
+------Info(2021-06-08 00:06:16.7683)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details : ContractID match
+
+------Info(2021-06-08 00:06:16.9379)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract Contractvariabletable
+
+------Info(2021-06-08 00:06:16.9379)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetApproverComments
+
+------Info(2021-06-08 00:06:16.9379)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details
+
+------Info(2021-06-08 00:06:16.9379)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: ContractID match
+
+------Info(2021-06-08 00:06:16.9379)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details : ContractID match
+
+------Info(2021-06-08 00:06:17.0057)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details : Details Found
+
+------Info(2021-06-08 00:06:17.0745)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorCIN
+
+------Info(2021-06-08 00:06:17.0745)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.0835)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor CIN List Found
+
+------Info(2021-06-08 00:06:17.0835)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorNameType1
+
+------Info(2021-06-08 00:06:17.0835)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.1752)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor Name List Found
+
+------Info(2021-06-08 00:06:17.2939)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details : Details Found
+
+------Info(2021-06-08 00:06:17.2939)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorNameType2
+
+------Info(2021-06-08 00:06:17.2939)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.3338)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetApproversForTemplate
+
+------Info(2021-06-08 00:06:17.3338)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: ContractID match
+
+------Info(2021-06-08 00:06:17.3338)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorNameType4
+
+------Info(2021-06-08 00:06:17.3338)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.3338)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor Name List Found
+
+------Info(2021-06-08 00:06:17.3797)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor Name List Found
+
+------Info(2021-06-08 00:06:17.5033)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorNameType3
+
+------Info(2021-06-08 00:06:17.5163)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.5841)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor Name List Found
+
+------Info(2021-06-08 00:06:17.6779)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetVendorNameType5
+
+------Info(2021-06-08 00:06:17.6779)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Vendor Details
+
+------Info(2021-06-08 00:06:17.6978)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB, Checking for Vendor Details: Vendor Name List Found
+
+------Info(2021-06-08 00:06:17.6978)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetReviewerNameOnID
+
+------Info(2021-06-08 00:06:17.6978)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: ContractID match
+
+------Info(2021-06-08 00:06:17.7736)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract getLogDetail
+
+------Info(2021-06-08 00:06:17.7736)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogID match
+
+------Info(2021-06-08 00:06:17.8634)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogDetails Found
+
+------Info(2021-06-08 00:06:17.9970)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetPaperTypeDetails
+
+------Info(2021-06-08 00:06:17.9970)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Error(2021-06-08 00:06:18.2972)VINOD-PC------
+                       Exception Type:System.InvalidOperationException |                       Exception Message:Sequence contains no elements |                       Stack Trace: |                       Additional Info:'Contract' Controller , 'GetModifiedReviewerNameOnID' Action HTTP POST Main Exception Message: Sequence contains no elements | Exception Stacktrace   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__0[TResult](IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   at ContractManagementSystem.Controllers.ContractController.GetReviewerNameOnID(Int32 ID) in D:\AiBots\ITC_Projects\ContractManagementSystem(CMS)\CMS_FBD\Code\CMSFBD\ContractManagementSystem\Controllers\ContractController.cs:line 24689
+
+------Info(2021-06-08 00:06:18.2972)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-08 00:06:18.3471)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Contract Initiator and Approvers Comments Found
+
+------Info(2021-06-08 00:06:18.3860)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetPaperTypeDetails
+
+------Info(2021-06-08 00:06:18.3860)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Info(2021-06-08 00:06:18.3860)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Details Found
+
+------Info(2021-06-08 00:06:18.3860)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetPaperTypeDetails
+
+------Info(2021-06-08 00:06:18.4089)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Info(2021-06-08 00:06:18.4089)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-08 00:06:18.4478)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetTemplateNameOnID
+
+------Info(2021-06-08 00:06:18.4478)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details: ContractID match
+
+------Info(2021-06-08 00:06:18.4478)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-08 00:06:18.4997)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Details Found
+
+------Debug(2021-06-08 00:06:20.1343)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:06:47.5898)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:07:16.1513)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:07:40.9831)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:08:05.8512)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:08:29.0353)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:08:55.5196)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:09:19.9514)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:09:48.5781)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:10:16.9594)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:10:40.4765)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:11:05.6911)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:11:30.9007)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:11:58.4605)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:12:26.1967)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:12:50.4047)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:13:14.5509)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:13:41.2049)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:14:08.7583)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:14:38.1907)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:15:03.1834)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:15:28.2903)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:15:52.8611)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:16:19.3028)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:16:45.2570)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:17:12.8985)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:17:42.2051)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:18:07.8174)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:18:31.9212)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:18:54.9801)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:19:20.2779)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:19:49.2296)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:20:14.1569)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:20:42.6669)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:21:11.7273)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:21:40.2015)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:22:05.8082)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:22:33.9250)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:22:59.5282)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:23:28.9566)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:23:55.8732)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:24:24.4796)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:24:51.3336)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:25:18.7536)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:25:45.2441)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:26:11.8472)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:26:36.1478)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:27:01.8359)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:27:25.9475)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:27:50.5769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:28:17.0444)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:28:45.2016)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:29:11.0181)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:29:40.1099)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:30:07.2612)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:30:31.9157)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:30:54.9801)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:31:18.6779)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:31:47.5156)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:32:14.5721)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:32:41.3043)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:33:10.4565)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:33:36.7577)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:34:03.9390)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-08 00:34:31.8899)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+

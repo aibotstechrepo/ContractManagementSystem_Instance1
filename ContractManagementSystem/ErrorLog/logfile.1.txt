@@ -1,0 +1,422 @@
+------Info(2021-06-03 23:22:52.9430)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-03 23:22:53.1445)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-03 23:22:53.1963)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-03 23:22:53.2053)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-03 23:22:53.2053)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-03 23:22:53.2053)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-03 23:22:53.2053)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-03 23:22:53.2143)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-03 23:22:53.2143)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-03 23:22:53.2362)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:22:53.8914)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:22:54.3516)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-03 23:23:03.0260)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-03 23:23:17.8410)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-03 23:23:17.8410)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-03 23:23:18.2116)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Info(2021-06-03 23:23:18.7271)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Password Match
+
+------Info(2021-06-03 23:23:18.7578)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:18.7578)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User is Active
+
+------Info(2021-06-03 23:23:18.8178)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Home Dashboard Page
+
+------Info(2021-06-03 23:23:18.8178)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Dashboard
+
+------Info(2021-06-03 23:23:22.7335)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home GetNextApproverName
+
+------Info(2021-06-03 23:23:22.7335)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-03 23:23:22.7814)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home ContractStatistics
+
+------Info(2021-06-03 23:23:22.7814)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Statistic Details : Checking Status
+
+------Info(2021-06-03 23:23:22.7814)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-03 23:23:23.1065)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking Contract Statistic Details : Status Count Found
+
+------Debug(2021-06-03 23:23:23.3017)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:23:30.2079)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Details
+
+------Info(2021-06-03 23:23:30.2713)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Checking Status
+
+------Info(2021-06-03 23:23:30.2713)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details: Details Found
+
+------Info(2021-06-03 23:23:30.2713)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to Contract Details Page
+
+------Info(2021-06-03 23:23:32.8152)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract getLogDetail
+
+------Info(2021-06-03 23:23:32.8152)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogID match
+
+------Info(2021-06-03 23:23:32.8152)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetUserById
+
+------Info(2021-06-03 23:23:32.8152)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Log Details: LogDetails Found
+
+------Info(2021-06-03 23:23:32.8152)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.8591)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-03 23:23:32.8980)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetUserById
+
+------Info(2021-06-03 23:23:32.8980)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-03 23:23:32.9159)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.9159)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.9159)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.9159)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.9179)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:23:32.9179)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-03 23:23:32.9179)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-03 23:23:42.3145)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Contract Repository Page
+
+------Info(2021-06-03 23:23:42.3145)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Info(2021-06-03 23:23:42.9908)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Contract GetNextApproverName
+
+------Info(2021-06-03 23:23:42.9908)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-03 23:23:43.0167)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-03 23:23:44.7687)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt DivisionMaster Category
+
+------Info(2021-06-03 23:23:44.7687)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Category Page
+
+------Debug(2021-06-03 23:23:47.2931)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:23:54.2228)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing ClauseMaster Repository Page
+
+------Info(2021-06-03 23:23:54.2228)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Info(2021-06-03 23:23:56.7327)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Clause New Page
+
+------Info(2021-06-03 23:24:05.9731)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-232405\India-JoiningForm.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232405
+
+------Info(2021-06-03 23:24:08.4764)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-232405\India-JoiningForm.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232405
+
+------Debug(2021-06-03 23:24:16.6850)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:24:42.4710)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:24:53.6540)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-232453\1.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232453
+
+------Info(2021-06-03 23:24:53.9303)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-232453\1.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232453
+
+------Debug(2021-06-03 23:25:06.1799)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:25:34.7169)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:25:59.6922)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:26:20.5288)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-232620\2.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232620
+
+------Info(2021-06-03 23:26:21.1704)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-232620\2.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232620
+
+------Debug(2021-06-03 23:26:24.6055)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:26:53.0244)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:27:20.5408)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:27:29.1836)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-232729\Test-Template-out.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232729
+
+------Info(2021-06-03 23:27:29.6703)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-232729\Test-Template-out.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232729
+
+------Debug(2021-06-03 23:27:49.3190)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:28:35.9483)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-03 23:28:36.0800)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-03 23:28:36.1119)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-03 23:28:36.1119)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-03 23:28:36.1219)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-03 23:28:36.1219)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-03 23:28:36.1219)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-03 23:28:36.1219)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-03 23:28:36.1468)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-03 23:28:36.1987)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:28:36.2376)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:28:36.5416)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-03 23:28:48.9156)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-03 23:28:54.4318)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-03 23:28:54.4318)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-03 23:28:54.6615)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Info(2021-06-03 23:28:55.0416)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Password Match
+
+------Info(2021-06-03 23:28:55.0656)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Checking Status
+
+------Info(2021-06-03 23:28:55.0656)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User is Active
+
+------Info(2021-06-03 23:28:55.1284)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Home Dashboard Page
+
+------Info(2021-06-03 23:28:55.1284)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Dashboard
+
+------Info(2021-06-03 23:28:58.1386)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home GetNextApproverName
+
+------Info(2021-06-03 23:28:58.1386)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-03 23:28:58.1386)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home ContractStatistics
+
+------Info(2021-06-03 23:28:58.1386)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Statistic Details : Checking Status
+
+------Info(2021-06-03 23:28:58.1775)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-03 23:28:58.4457)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking Contract Statistic Details : Status Count Found
+
+------Info(2021-06-03 23:29:01.3524)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing ClauseMaster Repository Page
+
+------Info(2021-06-03 23:29:01.3524)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Debug(2021-06-03 23:29:02.3606)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:29:04.0406)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Clause New Page
+
+------Info(2021-06-03 23:29:10.3397)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-232910\India-JoiningForm.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232910
+
+------Info(2021-06-03 23:29:12.5494)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-232910\India-JoiningForm.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-232910
+
+------Debug(2021-06-03 23:29:31.8876)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:29:59.1074)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:30:02.7466)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-233002\seminar.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233002
+
+------Info(2021-06-03 23:30:03.3973)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-233002\seminar.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233002
+
+------Debug(2021-06-03 23:30:26.2315)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:30:34.6364)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-233034\2.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233034
+
+------Info(2021-06-03 23:30:35.2578)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-233034\2.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233034
+
+------Debug(2021-06-03 23:30:49.5629)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:31:14.9767)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:31:16.3281)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-233116\1.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233116
+
+------Info(2021-06-03 23:31:16.5944)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-233116\1.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233116
+
+------Debug(2021-06-03 23:31:40.2085)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:32:04.9674)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-03 23:32:19.1583)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Called word upload function. | file D:\ABT\CMSFBDWD\2021036-233219\ManufacturingAgreementStandardTemplate.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233219
+
+------Info(2021-06-03 23:32:19.8772)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Extracted word data. | file D:\ABT\CMSFBDWD\2021036-233219\ManufacturingAgreementStandardTemplate.docxoutputDirectory : D:\ABT\CMSFBDWD\2021036-233219
+
+------Debug(2021-06-03 23:32:32.8567)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:32:56.7462)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:33:26.5412)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:33:51.2907)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:34:15.0894)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:34:39.5196)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-03 23:35:07.2634)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+

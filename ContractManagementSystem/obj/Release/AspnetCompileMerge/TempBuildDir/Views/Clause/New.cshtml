@@ -1,0 +1,673 @@
+﻿@model ContractManagementSystem.Models.tblClauseMaster
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+        return userName;
+    }
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Clause Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Clause/Repository">Clause Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        New Clause
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title"><b>New Clause</b></div>
+                                </div>
+
+                                <div class="col-sm-6 text-right redirectionallink">
+                                    <button type="button" class="btn btn-xs btn-light" id="DocumentUpload" title="Upload Word Document" data-toggle="modal" data-target="#WordDocumentModal" @*style="display:none;"*@><i class="flaticon-archive"></i>&nbsp; Upload</button>
+
+                                    &nbsp;<button @*onclick="window.location = '/Clause/Repository'"*@="button" id="discard" class="btn btn-sm btn-light" value="Discard"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Cancel</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("New", "Clause", FormMethod.Post, new { id = "ClauseForm" }))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                            <label for="title">Clause Title<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" id="clausetitle" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');" class="form-control" name="ClauseClauseTitle" placeholder="Enter Clause Title">
+                                        </div>
+                                    </div>
+                                    @*<div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="type">Clause Type<span class="asteriskicon"> *</span></label>
+                                                <input type="text" id="clausetype" oninvalid="InvalidType(this);" oninput="InvalidType(this);" class="form-control" name="ClauseClauseType" placeholder="Enter Clause Type" required>
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="description">Clause Description</label>
+                                            <textarea class="form-control text_area" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" name="ClauseClauseDescription" id="clausedescription" placeholder="Enter Clause Description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="ClauseEnable">
+                                        <div class="form-group form-inline">
+                                            <label for="initiator">Enable</label>&nbsp; &nbsp;
+                                            <div>
+                                                <label class="switch">
+                                                    <input type="checkbox" name="Enable">
+                                                    <span class="slider round round1"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="text">Clause Text<span class="asteriskicon"> *</span></label>
+                                            @*<textarea class="form-control text_area_description text_area" id="clausetext" oninvalid="InvalidText(this);" oninput="InvalidText(this);" name="ClauseClauseText" placeholder="Enter Clause Text" required></textarea>*@
+                                            <textarea name="editor1" id="IDofEditor"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-action text-right card_footer_button">
+                                    <button type="button" onclick="ClauseSubmit();" class="btn  btn-success btn_SaveClearDiscard">
+                                        Save
+                                    </button>
+                                    <button type="button" id="ClearForms" class="btn  btn-secondary btn_SaveClearDiscard">
+                                        Clear
+                                    </button>
+                                    <button type="button" id="discard2" class="btn  btn-danger btn_SaveClearDiscard">
+                                        Cancel
+                                    </button>
+                                </div>
+
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WordDocumentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" style="max-width:50%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label style="font-size: 20px !important;">
+                        <b>Upload Word document (.DOCX only)</b>
+                    </label>
+                    <div class="text-right model_body_position">
+                        <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close">Close</button>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input type="file" name="UploadWordDocument" id="UploadWordDocument" class="file" accept=".docx">
+                                        <div class="input-group col-xs-10">
+                                            <span class="input-group-addon "><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input type="text" class="form-control input-lg browse" id="UploadWordDocument2" name="UploadWordDocument" placeholder="Choose File">
+                                            <span class="input-group-btn ">
+                                                <button class="browse btn btn-primary uploadbtnsizing" type="button"><i class="glyphicon glyphicon-search"></i><i class="flaticon-search-2" aria-hidden="true"></i>&nbsp;&nbsp;Browse </button>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <button type="button" id="UploadButton" style="display:none;" class="btn btn-primary uploadbtnsizing" data-dismiss="modal" data-toggle="modal" onclick="UploadWord();"><i class="flaticon-archive" aria-hidden="true"></i>&nbsp;&nbsp;Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+<script>
+    function ClauseSubmit() {
+        var ClauseTitle = $("#clausetitle").val();
+        var ClauseText = CKEDITOR.instances.IDofEditor.getData();
+
+        if (ClauseTitle.length > 0) {
+            if (ClauseText.length > 0) {
+                $("#ClauseForm").submit();
+            }
+            else {
+                swal({
+                    text: 'Clause Text is required !',
+                    icon: 'warning',
+                });
+            }
+        }
+        else {
+            swal({
+                text: 'Clause Title is required !',
+                icon: 'warning',
+            });
+        }
+    }
+</script>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+
+    CKEDITOR.replace('editor1', {
+        bodyClass: 'document-editor',
+        contentsCss: ['../../Content/ckeditor/contents.css', '../../Content/ckeditor/mystyles.css'],
+        height: 400,
+        removePlugins: 'lite,autogrow',
+
+        // extraAllowedContent: 'span',
+        //         on :
+        //{
+        //     instanceReady : function ( evt )
+        //   {
+        //     // Hide the editor top bar.
+        //     document.getElementById('cke_1_top').style.display = 'none';
+        // }
+
+        // blockedKeystrokes: [13]
+    });
+    //CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+    // CKEDITOR.instances.IDofEditor.execCommand('lite-acceptall');
+    //CKEDITOR.config.removeButtons = 'lite-acceptall';
+    CKEDITOR.disableAutoInLine = true;
+    CKEDITOR.config.allowedContent = true;
+
+    //CKEDITOR.config.readOnly = true;
+    //CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+
+
+    CKEDITOR.scriptLoader.load('../../Content/assets/js/plugin/webfont/webfont.min.js');
+    // CKEDITOR.config.fullPage = true;
+    // CKEDITOR.config.blockedKeystrokes( CKEDITOR.CTRL + 120, false );
+    CKEDITOR.config.keystrokes = [[CKEDITOR.CTRL + 90 /*Shift-Enter*/, 'null ']];
+    CKEDITOR.config.removePlugins = 'elementspath,resize';
+
+
+
+
+    //CKEDITOR.config.removePlugins = 'contextmenu,liststyle,tabletools,tableselection';
+    //CKEDITOR.config.keystrokes =
+    // [
+    //     [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
+    // ];
+    // CKEDITOR.inline('editor1', {
+    //     blockedKeystrokes: [120, CKEDITOR.CTRL + 120]
+    // });
+    //CKEDITOR.config.readOnly = true;
+    // Add code to display your toolbar here (example)
+    CKEDITOR.on('paste', function (evt) {
+        // Create a standalone filter passing 'p' and 'b' elements.
+        var filter = new CKEDITOR.filter('p b'),
+            // Parse the HTML string to a pseudo-DOM structure.
+            fragment = CKEDITOR.htmlParser.fragment.fromHtml(evt.data.dataValue),
+            writer = new CKEDITOR.htmlParser.basicWriter();
+        filter.applyTo(fragment);
+        fragment.writeHtml(writer);
+        evt.data.dataValue = writer.getHtml();
+    });
+
+
+    CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+        CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+            var sel = CKEDITOR.instances.IDofEditor.getSelection();
+            if (!(sel && !sel.isLocked)) { retrun; }
+            var el = sel.getStartElement();
+            if ((el && el.is && el.is("del"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("del"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("ins"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("ins"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("h4"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("h4"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("p"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("p"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("span"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("span"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    function InvalidTitle(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Title');
+            textbox.style.borderColor = "red";
+
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidType(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Type');
+            textbox.style.borderColor = "red";
+
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidText(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Text');
+            textbox.style.borderColor = "red";
+
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidCategory(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Category');
+            textbox.style.borderColor = "red";
+
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+</script>
+
+<script>
+
+    $('#ClearForms').click(function (e) {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Clear all input fields !",
+            type: 'warning',
+            buttons: {
+                confirm: {
+                    text: 'Yes, Clear it !',
+                    className: 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (result) {
+            if (result == true) {
+                $('#clausetitle').val('');
+                $('#clausetype').val('');
+                $('#clausedescription').val('');
+                $('#clausetext').val('');
+                $('#CategoryNames').val('');
+                $('#ClauseClauseSubCategory').val('');
+                CKEDITOR.instances.IDofEditor.setData('');
+                swal({
+                    title: 'Cleared!',
+                    text: 'Your form has been Cleared.',
+                    type: 'success',
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+</script>
+@*<script type="text/javascript">
+        $('#test').click(function () {
+                alert(@ViewBag.saveStatus);
+            });
+
+    </script>*@
+
+@*****************Integrated (Pooja) on 13/3/20**************@
+@if (Model != null)
+{
+    <script>
+        $(function () {
+            swal("Clause : @Model.ClauseClauseTitle created successfully !", {
+            icon: "success",
+        })
+           // .then((Update) => {
+           //     if (Update) {
+
+                .then(function (result) {
+                        if (result) {
+                    window.location = "/Clause/Repository";
+                }
+            });
+            });
+    </script>
+}
+@*****************************************************************@
+
+<script>
+
+    $('#discard').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Clause/Repository'
+
+            }
+        });
+    });
+
+    $('#discard2').click(function (e) {
+
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Clause/Repository'
+
+            }
+        });
+    });
+</script>
+
+
+@* --------word document-------- *@
+<script>
+
+    function UploadWord() {
+        var url = window.location.href;
+        var page = url.split('/');
+        var ID = page[page.length - 1];
+        $.ajax({
+            url: "/Clause/UploadWordDocument",
+            type: "POST",
+            data: function () {
+                var data = new FormData();
+                data.append("UploadWordDocument", jQuery("#UploadWordDocument").get(0).files[0]);
+                return data;
+            }(),
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.length > 0) {
+
+                    CKEDITOR.instances.IDofEditor.setData(response);
+                    $("#UploadWordDocument2").val("");
+                    $("#UploadButton").hide();
+                    swal("Uploaded Successfully", {
+                        icon: "success",
+                    });
+                }
+
+                //else
+                //    swal("Error", {
+                //        icon: "error",
+                //    });
+            },
+            error: function (jqXHR, textStatus, errorMessage) {
+                console.log(errorMessage);
+            }
+        });
+    }
+</script>
+
+<script>
+    $(".file").change(function () {
+        var file = $(".file").val();
+        if (file != "") {
+            $("#UploadButton").show();
+        }
+        else {
+            $("#UploadButton").hide();
+        }
+    });
+</script>
+
+<script>
+    $(document).on('click', '.browse', function () {
+        var file = $(this).parent().parent().parent().find('.file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        var data = $(this).parent().find('.form-control').val();
+        var extension = data.substr(data.lastIndexOf('.') + 1).toLowerCase();
+
+        var allowedExtensions = ['docx'];
+        if (data.length > 0) {
+            if (allowedExtensions.indexOf(extension) === -1) {
+                //alert('Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.');
+                $.notify(
+                    {
+                        // options
+                        title: 'Uploading Files',
+                        message: 'Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.',
+                        target: '_blank',
+                        icon: 'fa fa-exclamation-triangle'
+                    },
+                    {
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "danger",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                            '<span data-notify="icon"></span> ' +
+                            '<span data-notify="title">{1}</span> ' +
+                            '<span data-notify="message">{2}</span>' +
+                            '<div class="progress" data-notify="progressbar">' +
+                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                            '</div>' +
+                            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                            '</div>'
+                    });
+                $(this).parent().find('.form-control').val('');
+                $("#UploadButton").hide();
+                try {
+                    // $("#uploadFile").hide();
+                } catch (error) { }
+            }
+        }
+        else {
+            $(this).parent().find('.form-control').val('');
+
+        }
+    });
+
+</script>
+

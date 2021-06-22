@@ -1,0 +1,2034 @@
+﻿@model ContractManagementSystem.Models.tblVendorMaster
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Vendor Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Vendor/Repository">Vendor Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Vendor Details
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">
+                                    <b>Vendor Details</b>
+                                </div>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <div class="card-tools form-inline">
+                                        <button onclick="Back();" class="btn btn-sm btn-light" title="Back to Repository" id="BackButton"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</button>
+                                        <button class="btn btn-sm btn-light" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                        @using (Html.BeginForm("DeleteConfirmed", "Vendor", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" value="@Model.VendorVendorID" name="VendorVendorID" id="vendorID" />
+                                            <input type="hidden" id="UserID" name="UserID" class="form-control" value="@CurrentUserID()" />
+                                            <button type="button" class="btn btn-sm btn-light" id="deletealert" title="Delete"><i class="flaticon-interface-5" aria-hidden="true"></i> &nbsp;Delete</button>
+                                        }
+                                        <button class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="entity">Type of Entity<span class="asteriskicon"> *</span></label>
+                                        <select class="form-control" maxlength="180" onchange="TypeOfEntity(this.value);" style="padding-bottom:3px;padding-top:3px;" id="type_of_entity_vendor" disabled>
+                                            <option>Company</option>
+                                            <option>Partnership Firm</option>
+                                            <option>Sole Proprietorship</option>
+                                            <option>Limited Liability Partnership Firm</option>
+                                            <option>Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                        <label id="Vendor_Name">Name of the Company<span class="asteriskicon"> *</span></label>
+                                        <input type="text" maxlength="180" id="vendorname" value="@Html.Raw(Model.VendorVendorName)" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Name" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="IDforCompany" style="display:none;">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="cin">Corporate Identification Number (CIN)<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="12" id="vendorcin" value="@Model.VendorCorporateIdentificationNumber" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" class="form-control" placeholder="Enter Corporate Identification Number (CIN)">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="signatory">Authorised Signatory<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" id="vendorauthorisedsignatoryname" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Authorised Signatory Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="reg address">Registered Address<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="vendorregisteredaddress" placeholder="Enter Registered Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="reg address">Corporate Address<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="CorporateAddress" placeholder="Enter Corporate Address">@Html.Raw(Model.CorporateAddress)</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="IDforSole" style="display:none;">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input type="hidden" value="@CurrentUserID()" name="UserID" />
+                                            <label for="name">Name of the Proprietorship<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" value="@Html.Raw(Model.NameoftheProprietor)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="NameoftheProprietor" class="form-control" placeholder="Enter Name of the Proprietorship">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>PAN number<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="10" value="@Model.PAN" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" id="PAN" class="form-control" placeholder="Enter PAN number">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Adhaar Card No<span class="asteriskicon"> *</span></label>
+                                            <input type="number" min="1" maxlength="12" value="@Model.AdhaarCardNo" readonly oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="AdhaarCardNo" class="form-control" placeholder="Enter Adhaar Card No">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Address of the Proprietorship Concern<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="ProprietorshipAddress" placeholder="Enter Address of the Proprietorship Concern"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="IDforLimited" style="display:none;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Limited Liability Partnership Identification Number (LLP IN)<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="8" value="@Model.LLPIN" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" id="LLPIN" class="form-control" placeholder="Enter LLP IN">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Registered Address of the LLP<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" readonly id="LLPAddress" placeholder="Enter Address of the LLP"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="IDforOthers" style="display:none;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Address<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="OthersAddress" placeholder="Enter Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="IDforPartnership" style="display:none;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="signatory">Authorised Signatory<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" id="Partnership_AuthSign" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Authorised Signatory Name">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Registered Address<span class="asteriskicon"> *</span></label>
+                                            <textarea maxlength="1800" class="form-control text_area_description text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="PartnershipAddress" placeholder="Enter Registered Address" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            @if (String.IsNullOrWhiteSpace(Model.VendorBranchOffice1))
+                            {
+                                <div class="row" id="back_to_branch_button">
+                                    <div class="col-lg-12">
+                                        <div class="form-group" id="branch_address1">
+                                            <button type="button" class="btn btn-light" onclick="add_branch1();" disabled><i class="flaticon-plus"></i>&nbsp; Add Branch Address</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="branch_address2">
+                                </div>
+                            }
+
+                            @if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice1))
+                            {
+                                <div id=""></div>
+                                <div class="row" id="back_to_branch_button">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Branch 1 Address</label>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control text_area_description text_area branchaddress1" maxlength="1800" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" placeholder="Enter Branch Address" id="branchaddress1" name="VendorBranchOffice1" disabled>@Html.Raw(Model.VendorBranchOffice1)</textarea>
+                                                </div>
+                                                <div class="col-sm-3 button_align">
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" onclick="add_branch2();" id="branch_00" disabled>
+                                                        <i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add
+                                                    </button>&nbsp;
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="back_to_branch();" id="branch_01" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="branch_address2"></div>
+                            }
+                            @if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice2))
+                            {
+
+                                <div class="row" id="branch_address22">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Branch 2 Address</label>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control text_area_description text_area branchaddress2" maxlength="1800" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" placeholder="Enter Branch Address" id="branchaddress2" name="VendorBranchOffice2" disabled>@Html.Raw(Model.VendorBranchOffice2)</textarea>
+                                                </div>
+                                                <div class="col-sm-3 button_align">
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" onclick="add_branch3();" id="branch_10" disabled><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch22();" id="branch_11" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="add_branch3"></div>
+                            }
+                            @if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice3))
+                            {
+                                <div class="row" id="add_branch33">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Branch 3 Address</label>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control text_area_description text_area branchaddress3" maxlength="1800" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" placeholder="Enter Branch Address" id="branchaddress3" name="VendorBranchOffice3" disabled>@Html.Raw(Model.VendorBranchOffice3)</textarea>
+                                                </div>
+                                                <div class="col-sm-3 button_align">
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" onclick="add_branch4();" id="branch_20" disabled><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch33();" id="branch_21" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="add_branch4"></div>
+                            }
+                            @if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice4))
+                            {
+                                <div class="row" id="add_branch44">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Branch 4 Address</label>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control text_area_description text_area branchaddress4" maxlength="1800" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" placeholder="Enter Branch Address" id="branchaddress4" name="VendorBranchOffice4" disabled>@Html.Raw(Model.VendorBranchOffice4)</textarea>
+                                                </div>
+                                                <div class="col-sm-3 button_align">
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:green;" onclick="add_branch5();" id="branch_30" disabled><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch44();" id="branch_31" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="add_branch5"></div>
+                            }
+                            @if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice5))
+                            {
+                                <div class="row" id="add_branch55">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="reg address">Branch 5 Address</label>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control text_area_description text_area branchaddress5" maxlength="1800" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" placeholder="Enter Branch Address" id="branchaddress5" name="VendorBranchOffice5" disabled>@Html.Raw(Model.VendorBranchOffice5)</textarea>
+                                                </div>
+                                                <div class="col-sm-3 button_align">
+
+                                                    <button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch55();" id="branch_41" disabled><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+
+
+
+
+                            <div class="IDforPartnership" style="display:none;">
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-lg-6">
+                                                            <h4><b>First Partner Details</b></h4>
+                                                        </div>
+                                                        <div class="col-lg-6 text-right">
+                                                            <button type="button" class="btn btn-sm btn-light" style="color:green;" disabled id="FirstP_add" onclick="AddPartner2();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="form-group">
+                                                                <label>Name of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                <input type="text" maxlength="180" value="@Html.Raw(Model.Partner1Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner1Name" class="form-control" placeholder="Enter Name of the First Partner">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label>Age of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                <input type="number" min="1" max="200" maxlength="3" value="@Model.Partner1Age" readonly oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="Partner1Age" class="form-control" placeholder="Enter Age of the First Partner">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label>Father’s / Husband’s Name of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                <input type="text" maxlength="180" value="@Html.Raw(Model.Partner1FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner1FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the First Partner">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label for="reg address">Address of the First Partner<span class="asteriskicon"> *</span></label>
+                                                                <textarea maxlength="1800" rows="1" class="form-control text_area PartyAddress" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner1Address" readonly placeholder="Enter Address of the First Partner">@Html.Raw(Model.Partner1Address)</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div id="Second_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Second Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" class="btn btn-sm btn-light" style="color:green;" disabled id="SecondP_add" onclick="AddPartner3();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" disabled id="SecondP_remove" onclick="RemovePartner2();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner2Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner2Name" class="form-control" placeholder="Enter Name of the Second Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" value="@Model.Partner2Age" readonly maxlength="3" id="Partner2Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Second Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner2FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner2FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Second Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Second Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" readonly class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner2Address" placeholder="Enter Address of the Second Partner">@Html.Raw(Model.Partner2Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Third_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Third Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="ThirdP_add" onclick="AddPartner4();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="ThirdP_remove" onclick="RemovePartner3();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" value="@Html.Raw(Model.Partner3Name)" readonly id="Partner3Name" class="form-control" placeholder="Enter Name of the Third Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" id="Partner3Age" value="@Model.Partner3Age" readonly oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Third Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" value="@Html.Raw(Model.Partner3FatherName)" readonly id="Partner3FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Third Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Third Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner3Address" placeholder="Enter Address of the Third Partner">@Html.Raw(Model.Partner3Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Fourth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Fourth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="FourthP_add" onclick="AddPartner5();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="FourthP_remove" onclick="RemovePartner4();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" value="@Html.Raw(Model.Partner4Name)" readonly id="Partner4Name" class="form-control" placeholder="Enter Name of the Fourth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" id="Partner4Age" value="@Model.Partner4Age" readonly oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Fourth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" value="@Html.Raw(Model.Partner4FatherName)" id="Partner4FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Fourth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Fourth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner4Address" placeholder="Enter Address of the Fourth Partner">@Html.Raw(Model.Partner4Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="Fifth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Fifth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="FifthP_add" onclick="AddPartner6();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="FifthP_remove" onclick="RemovePartner5();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner5Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner5Name" class="form-control" placeholder="Enter Name of the Fifth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" id="Partner5Age" value="@Model.Partner5Age" readonly oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Fifth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner5FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner5FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Fifth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Fifth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner5Address" placeholder="Enter Address of the Fifth Partner" readonly>@Html.Raw(Model.Partner5Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Sixth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Sixth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="SixthP_add" onclick="AddPartner7();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="SixthP_remove" onclick="RemovePartner6();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner6Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner6Name" class="form-control" placeholder="Enter Name of the Sixth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" value="@Model.Partner6Age" readonly maxlength="3" id="Partner6Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Sixth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner6FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner6FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Sixth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Sixth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner6Address" placeholder="Enter Address of the Sixth Partner">@Html.Raw(Model.Partner6Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Seventh_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Seventh Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="SeventhP_add" onclick="AddPartner8();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="SeventhP_remove" onclick="RemovePartner7();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner7Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner7Name" class="form-control" placeholder="Enter Name of the Seventh Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" value="@Model.Partner7Age" readonly max="200" maxlength="3" id="Partner7Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Seventh Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner7FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner7FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Seventh Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Seventh Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner7Address" placeholder="Enter Address of the Seventh Partner">@Html.Raw(Model.Partner7Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="Eighth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Eighth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="EighthP_add" onclick="AddPartner9();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="EighthP_remove" onclick="RemovePartner8();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner8Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner8Name" class="form-control" placeholder="Enter Name of the Eighth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" value="@Model.Partner8Age" readonly id="Partner8Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Eighth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner8FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner8FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Eighth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Eighth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner8Address" placeholder="Enter Address of the Eighth Partner" readonly>@Html.Raw(Model.Partner8Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Ninth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Ninth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:green;" class="btn btn-sm btn-light" id="NinthP_add" onclick="AddPartner10();"><i class="flaticon-plus"></i>&nbsp; Add Partner</button>
+                                                                &nbsp;<button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="NinthP_remove" onclick="RemovePartner9();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner9Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner9Name" class="form-control" placeholder="Enter Name of the Ninth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" maxlength="3" value="@Model.Partner9Age" readonly id="Partner9Age" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Enter Age of the Ninth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner9FatherName)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner9FatherName" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Ninth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Ninth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" class="form-control text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner9Address" placeholder="Enter Address of the Ninth Partner" readonly>@Html.Raw(Model.Partner9Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="Tenth_Partner" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-lg-6">
+                                                                <h4><b>Tenth Partner Details</b></h4>
+                                                            </div>
+                                                            <div class="col-lg-6 text-right">
+                                                                <button type="button" disabled style="color:red;" class="btn btn-sm btn-light" id="TenthP_remove" onclick="RemovePartner10();"><i class="flaticon-line"></i>&nbsp; Remove Partner</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Name of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner10Name)" readonly onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" id="Partner10Name" class="form-control" placeholder="Enter Name of the Tenth Partner">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Age of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="number" min="1" max="200" value="@Model.Partner10Age" readonly maxlength="3" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="this.value = this.value.replace(/[^0-9]/g, '');" id="Partner10Age" class="form-control" placeholder="Enter Age of the Tenth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Father’s / Husband’s Name of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <input type="text" maxlength="180" value="@Html.Raw(Model.Partner10FatherName)" readonly id="Partner10FatherName" onkeyup="this.value = this.value.replace(/[^a-zA-Z-.&\s]/g, '')" class="form-control" placeholder="Enter Father’s / Husband’s Name of the Tenth Partner">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="reg address">Address of the Tenth Partner<span class="asteriskicon"> *</span></label>
+                                                                    <textarea maxlength="1800" rows="1" readonly class="form-control  text_area" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '')" id="Partner10Address" placeholder="Enter Address of the Tenth Partner">@Html.Raw(Model.Partner10Address)</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+                            <div class="card-action text-right card_footer_button" id="saveanddiscardoption">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+        @*<div class="text-right model_body_position">
+                <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-error fa-3x " aria-hidden="true"></i></a>
+            </div>*@
+
+        <div class="modal-dialog" style="max-width: 80%;">
+
+            <div class="modal-content">
+
+                <div class="modal-header modalheadercolor websitecolour">
+                    <label style="font-size: 20px !important;"><b> Vendor Modified History</b></label>
+                    <button type="button" class="btn btn-sm btn-light btn_close" title="Close" data-dismiss="modal" style="font-size:13px;">Close</button>
+                </div>
+                <div class="modal-body" style="height:450px; overflow: auto;">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="tableFixHead_LogHistory">
+                                <table class="table table-bordered">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th><center>Date and Time</center></th>
+                                            <th><center>Modified By</center></th>
+                                            <th><center>Activity</center></th>
+                                            <th><center>Changed From</center></th>
+                                            <th><center>Changed To</center></th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="tblVendorLogList">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    function add_branch1() {
+        var x = '<div class="form-group"><label for="reg address">Branch 1 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress01" onkeyup="address1();" maxlength="1800" class="form-control text_area_description text_area branchaddress1" placeholder="Enter Branch Address" name="VendorBranchOffice1"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch2()" style="color:green;" id="branch_00";><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" onclick="back_to_branch();" style="color:red;" id="branch_01"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div><div id="branch_address2"></div>';
+        document.getElementById('branch_address1').innerHTML = x;
+    }
+
+    function back_to_branch() {
+        var x = '<div class="col-lg-12"><div class="form-group" id="branch_address1"><button type="button" class="btn btn-light" onclick="add_branch1();"><i class="flaticon-plus"></i>&nbsp; Add Branch Address</button></div></div>';
+        document.getElementById('back_to_branch_button').innerHTML = x;
+    }
+
+    function add_branch2() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 2 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress02" onkeyup="address2();" maxlength="1800" class="form-control text_area_description text_area branchaddress2" placeholder="Enter Branch Address" name="VendorBranchOffice2"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch3();" style="color:green;" id="branch_10"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch2();" id="branch_11"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch3"></div>';
+        document.getElementById('branch_address2').innerHTML = x;
+        document.getElementById("branch_00").disabled = true;
+        document.getElementById("branch_01").disabled = true;
+
+    }
+
+    function remove_branch2() {
+        document.getElementById('branch_address2').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_00").disabled = false;
+        document.getElementById("branch_01").disabled = false;
+
+    }
+
+    function add_branch3() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 3 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress03" onkeyup="address3();" maxlength="1800" class="form-control text_area_description text_area branchaddress3" placeholder="Enter Branch Address" name="VendorBranchOffice3"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch4();" style="color:green;" id="branch_20"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch3();" id="branch_21"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch4"></div>';
+        document.getElementById('add_branch3').innerHTML = x;
+        document.getElementById("branch_10").disabled = true;
+        document.getElementById("branch_11").disabled = true;
+    }
+
+    function remove_branch3() {
+        document.getElementById('add_branch3').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_10").disabled = false;
+        document.getElementById("branch_11").disabled = false;
+
+    }
+
+    function add_branch4() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 4 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress04" onkeyup="address4();" maxlength="1800" class="form-control text_area_description text_area branchaddress4" placeholder="Enter Branch Address" name="VendorBranchOffice4"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" onclick="add_branch5();" style="color:green;" id="branch_30"><i class="flaticon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>&nbsp;<button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch4();" id="branch_31"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div></div><div id="add_branch5"></div>';
+        document.getElementById('add_branch4').innerHTML = x;
+        document.getElementById("branch_20").disabled = true;
+        document.getElementById("branch_21").disabled = true;
+
+    }
+
+
+    function remove_branch4() {
+        document.getElementById('add_branch4').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_20").disabled = false;
+        document.getElementById("branch_21").disabled = false;
+
+    }
+
+    function add_branch5() {
+        var x = '<div class="row"><div class="col-lg-12"><div class="form-group"><label for="reg address">Branch 5 Address</label><div class="row"><div class="col-sm-9"><textarea id="branchaddress05" onkeyup="address5();" maxlength="1800" class="form-control text_area_description text_area branchaddress5" placeholder="Enter Branch Address" name="VendorBranchOffice5"></textarea></div><div class="col-sm-3 button_align"><button type="button" class="btn btn-sm btn-light" style="color:red;" onclick="remove_branch5();"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Remove</button></div></div></div></div>';
+        document.getElementById('add_branch5').innerHTML = x;
+        document.getElementById("branch_30").disabled = true;
+        document.getElementById("branch_31").disabled = true;
+
+    }
+
+    function remove_branch5() {
+        document.getElementById('add_branch5').innerHTML = "";//.style.display = "none";
+        document.getElementById("branch_30").disabled = false;
+        document.getElementById("branch_31").disabled = false;
+
+    }
+
+
+
+    function remove_branch22() {
+        document.getElementById('branch_address22').innerHTML = "";//.style.display = "none";
+        $("#branch_00").show();
+        $("#branch_01").show();
+
+    }
+
+    function remove_branch33() {
+        document.getElementById('add_branch33').innerHTML = "";//.style.display = "none";
+        $("#branch_10").show();
+        $("#branch_11").show();
+
+    }
+
+    function remove_branch44() {
+        document.getElementById('add_branch44').innerHTML = "";//.style.display = "none";
+        $("#branch_20").show();
+        $("#branch_21").show();
+
+    }
+    function remove_branch55() {
+        document.getElementById('add_branch55').innerHTML = "";//.style.display = "none";
+        $("#branch_30").show();
+        $("#branch_31").show();
+
+    }
+</script>
+
+<script>
+
+    function address1() {
+
+        var toedit = document.getElementById("branchaddress01").value;
+        var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+        document.getElementById("branchaddress01").value = txt;
+    }
+    function address2() {
+
+        var toedit = document.getElementById("branchaddress02").value;
+        var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+        document.getElementById("branchaddress02").value = txt;
+    }
+    function address3() {
+
+        var toedit = document.getElementById("branchaddress03").value;
+        var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+        document.getElementById("branchaddress03").value = txt;
+    }
+    function address4() {
+
+        var toedit = document.getElementById("branchaddress04").value;
+        var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+        document.getElementById("branchaddress04").value = txt;
+    }
+    function address5() {
+
+        var toedit = document.getElementById("branchaddress05").value;
+        var txt = toedit.replace(/[^a-zA-Z0-9-,_.#&()\s]/g, '');
+        document.getElementById("branchaddress05").value = txt;
+    }
+</script>
+
+<script>
+    // Delete button alert design
+    $('#deletealert').click(function (e) {
+        var _form = $(this).closest("form");
+        e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Delete it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                _form.submit();
+
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                $('input').removeAttr('readonly');
+                $('input').removeAttr('disabled');
+                $('textarea').removeAttr('readonly');
+                $('textarea').removeAttr('disabled');
+                $('select').removeAttr('disabled');
+                $('button').removeAttr('disabled');
+                $("#saveanddiscardoption").html('<button type="button" onclick="UpdateVendorDetails();" class="btn btn-success saverecord" style="font-size:17px;width:180px;"><b>Save Changes</b></button><button type="button" onclick="DiscardChanges();" class="btn btn-danger" style="font-size:17px;width:180px;"><b>Discard Changes</b></button>');
+                document.getElementById("editalert").disabled = true;
+                document.getElementById("deletealert").disabled = true;
+                document.getElementById("BackButton").disabled = true;
+            }
+        });
+    })
+
+
+</script>
+<script>
+        function Back() {
+            window.location = "/Vendor/Repository";
+        }
+</script>
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+<script>
+    $(function () {
+        // alert("hello");
+
+        var tblLog = "";
+       // var ID = $("#vendorID").val();
+        var ID = "@Model.VendorVendorID";
+        $.ajax({
+            type: "POST",
+            url: "/Vendor/getLogDetail",
+            data: { ID: ID },
+
+
+            success: function (response) {
+
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '<center></td><td  style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblVendorLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+
+@if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice2))
+{
+    <script>
+        $(function () {
+            try {
+                $("#branch_00").hide();
+                $("#branch_01").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+@if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice3))
+{
+    <script>
+        $(function () {
+            try {
+                $("#branch_00").hide();
+                $("#branch_01").hide();
+                $("#branch_10").hide();
+                $("#branch_11").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+@if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice4))
+{
+    <script>
+        $(function () {
+            try {
+                $("#branch_00").hide();
+                $("#branch_01").hide();
+                $("#branch_10").hide();
+                $("#branch_11").hide();
+                $("#branch_20").hide();
+                $("#branch_21").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+@if (!String.IsNullOrWhiteSpace(Model.VendorBranchOffice5))
+{
+    <script>
+        $(function () {
+            try {
+                $("#branch_00").hide();
+                $("#branch_01").hide();
+                $("#branch_10").hide();
+                $("#branch_11").hide();
+                $("#branch_20").hide();
+                $("#branch_21").hide();
+                $("#branch_30").hide();
+                $("#branch_31").hide();
+            } catch (error) {
+            }
+        });
+    </script>
+}
+
+<script>
+    $(function () {
+        $("#type_of_entity_vendor").val("@Model.VendorTypeofEntity");
+    });
+</script>
+
+
+
+<script>
+    function TypeOfEntity(Option) {
+        if (Option == "Partnership Firm") {
+            $(".IDforPartnership").show();
+            $("#Vendor_Name").html("Name of the Partnership Firm");
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Company") {
+            $("#IDforCompany").show();
+            $("#Vendor_Name").html("Name of the Company");
+            $(".IDforPartnership").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Sole Proprietorship") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").show();
+            $("#Vendor_Name").html("Name of the Proprietorship Concern");
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Limited Liability Partnership Firm") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").show();
+            $("#Vendor_Name").html("Name of the Limited Liability Partnership");
+            $("#IDforOthers").hide();
+        }
+        else if (Option == "Others") {
+            $(".IDforPartnership").hide();
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").show();
+            $("#Vendor_Name").html("Name");
+        }
+    }
+</script>
+
+
+<script>
+    function AddPartner2() {
+        $("#Second_Partner").show();
+        $("#FirstP_add").attr('disabled', 'disabled');
+    }
+
+    function RemovePartner2() {
+        $("#Second_Partner").hide();
+        $("#FirstP_add").show();
+        $("#FirstP_add").removeAttr('disabled');
+        $("#Partner2Name").val("");
+        $("#Partner2Age").val("");
+        $("#Partner2FatherName").val("");
+        $("#Partner2Address").val("");
+    }
+
+
+    function AddPartner3() {
+        $("#Third_Partner").show();
+        $("#SecondP_add").attr('disabled', 'disabled');
+        $("#SecondP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner3() {
+        $("#Third_Partner").hide();
+        $("#SecondP_add").show();
+        $("#SecondP_remove").show();
+        $("#SecondP_add").removeAttr('disabled');
+        $("#SecondP_remove").removeAttr('disabled');
+        $("#Partner3Name").val("");
+        $("#Partner3Age").val("");
+        $("#Partner3FatherName").val("");
+        $("#Partner3Address").val("");
+    }
+
+
+    function AddPartner4() {
+        $("#Fourth_Partner").show();
+        $("#ThirdP_add").attr('disabled', 'disabled');
+        $("#ThirdP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner4() {
+        $("#Fourth_Partner").hide();
+        $("#ThirdP_add").show();
+        $("#ThirdP_remove").show();
+        $("#ThirdP_add").removeAttr('disabled');
+        $("#ThirdP_remove").removeAttr('disabled');
+        $("#Partner4Name").val("");
+        $("#Partner4Age").val("");
+        $("#Partner4FatherName").val("");
+        $("#Partner4Address").val("");
+    }
+
+    function AddPartner5() {
+        $("#Fifth_Partner").show();
+        $("#FourthP_add").attr('disabled', 'disabled');
+        $("#FourthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner5() {
+        $("#Fifth_Partner").hide();
+        $("#FourthP_add").show();
+        $("#FourthP_remove").show();
+        $("#FourthP_add").removeAttr('disabled');
+        $("#FourthP_remove").removeAttr('disabled');
+        $("#Partner5Name").val("");
+        $("#Partner5Age").val("");
+        $("#Partner5FatherName").val("");
+        $("#Partner5Address").val("");
+    }
+
+    function AddPartner6() {
+        $("#Sixth_Partner").show();
+        $("#FifthP_add").attr('disabled', 'disabled');
+        $("#FifthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner6() {
+        $("#Sixth_Partner").hide();
+        $("#FifthP_add").show();
+        $("#FifthP_remove").show();
+        $("#FifthP_add").removeAttr('disabled');
+        $("#FifthP_remove").removeAttr('disabled');
+        $("#Partner6Name").val("");
+        $("#Partner6Age").val("");
+        $("#Partner6FatherName").val("");
+        $("#Partner6Address").val("");
+    }
+
+    function AddPartner7() {
+        $("#Seventh_Partner").show();
+        $("#SixthP_add").attr('disabled', 'disabled');
+        $("#SixthP_remove").attr('disabled', 'disabled');
+
+    }
+    function RemovePartner7() {
+        $("#Seventh_Partner").hide();
+        $("#SixthP_add").show();
+        $("#SixthP_remove").show();
+        $("#SixthP_add").removeAttr('disabled');
+        $("#SixthP_remove").removeAttr('disabled');
+        $("#Partner7Name").val("");
+        $("#Partner7Age").val("");
+        $("#Partner7FatherName").val("");
+        $("#Partner7Address").val("");
+    }
+
+    function AddPartner8() {
+        $("#Eighth_Partner").show();
+        $("#SeventhP_add").attr('disabled', 'disabled');
+        $("#SeventhP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner8() {
+        $("#Eighth_Partner").hide();
+        $("#SeventhP_add").show();
+        $("#SeventhP_remove").show();
+        $("#SeventhP_add").removeAttr('disabled');
+        $("#SeventhP_remove").removeAttr('disabled');
+        $("#Partner8Name").val("");
+        $("#Partner8Age").val("");
+        $("#Partner8FatherName").val("");
+        $("#Partner8Address").val("");
+    }
+
+    function AddPartner9() {
+        $("#Ninth_Partner").show();
+        $("#EighthP_add").attr('disabled', 'disabled');
+        $("#EighthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner9() {
+        $("#Ninth_Partner").hide();
+        $("#EighthP_add").show();
+        $("#EighthP_remove").show();
+        $("#EighthP_add").removeAttr('disabled');
+        $("#EighthP_remove").removeAttr('disabled');
+        $("#Partner9Name").val("");
+        $("#Partner9Age").val("");
+        $("#Partner9FatherName").val("");
+        $("#Partner9Address").val("");
+    }
+
+    function AddPartner10() {
+        $("#Tenth_Partner").show();
+        $("#NinthP_add").attr('disabled', 'disabled');
+        $("#NinthP_remove").attr('disabled', 'disabled');
+    }
+    function RemovePartner10() {
+        $("#Tenth_Partner").hide();
+        $("#NinthP_add").show();
+        $("#NinthP_remove").show();
+        $("#NinthP_add").removeAttr('disabled');
+        $("#NinthP_remove").removeAttr('disabled');
+        $("#Partner10Name").val("");
+        $("#Partner10Age").val("");
+        $("#Partner10FatherName").val("");
+        $("#Partner10Address").val("");
+    }
+
+</script>
+
+
+
+
+@if (Model.VendorTypeofEntity == "Partnership Firm")
+{
+    <script>
+        $(function () {
+            $(".IDforPartnership").show();
+            var AuthSign = "@Html.Raw(Model.VendorAuthorisedSignatory)";
+            var Regaddress = "@Html.Raw(Model.VendorRegisteredAddress)";
+            $("#Partnership_AuthSign").val(AuthSign);
+            $("#PartnershipAddress").val(Regaddress);
+            $("#Vendor_Name").html("Name of the Partnership Firm<span class='asteriskicon'> *</span>");
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        });
+    </script>
+}
+
+@if (Model.VendorTypeofEntity == "Company")
+{
+    <script>
+        $(function () {
+            var AuthSign = "@Html.Raw(Model.VendorAuthorisedSignatory)";
+            var Regaddress = "@Html.Raw(Model.VendorRegisteredAddress)";
+
+            $("#IDforCompany").show();
+            $("#vendorauthorisedsignatoryname").val(AuthSign);
+            $("#vendorregisteredaddress").val(Regaddress);
+            $("#Vendor_Name").html("Name of the Company<span class='asteriskicon'> *</span>");
+            $(".IDforPartnership").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        });
+    </script>
+}
+
+@if (Model.VendorTypeofEntity == "Sole Proprietorship")
+{
+    <script>
+        $(function () {
+
+            $(".IDforPartnership").hide();
+            var Regaddress = "@Html.Raw(Model.VendorRegisteredAddress)";
+            $("#ProprietorshipAddress").val(Regaddress);
+            $("#IDforCompany").hide();
+            $("#IDforSole").show();
+            $("#Vendor_Name").html("Name of the Proprietorship Concern<span class='asteriskicon'> *</span>");
+            $("#IDforLimited").hide();
+            $("#IDforOthers").hide();
+        });
+    </script>
+}
+
+@if (Model.VendorTypeofEntity == "Limited Liability Partnership Firm")
+{
+    <script>
+        $(function () {
+
+            $(".IDforPartnership").hide();
+            var Regaddress = "@Html.Raw(Model.VendorRegisteredAddress)";
+
+            $("#LLPAddress").val(Regaddress);
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").show();
+            $("#Vendor_Name").html("Name of the Limited Liability Partnership<span class='asteriskicon'> *</span>");
+            $("#IDforOthers").hide();
+        });
+    </script>
+}
+
+@if (Model.VendorTypeofEntity == "Others")
+{
+    <script>
+        $(function () {
+
+            $(".IDforPartnership").hide();
+            var Regaddress = "@Html.Raw(Model.VendorRegisteredAddress)";
+            $("#OthersAddress").val(Regaddress);
+            $("#IDforCompany").hide();
+            $("#IDforSole").hide();
+            $("#IDforLimited").hide();
+            $("#IDforOthers").show();
+            $("#Vendor_Name").html("Name<span class='asteriskicon'> *</span>");
+        });
+    </script>
+}
+
+
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner2Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Second_Partner").show();
+                $("#FirstP_add").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner3Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Third_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner4Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Fourth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner5Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Fifth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner6Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Sixth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+                $("#FifthP_add").hide();
+                $("#FifthP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+@if (!String.IsNullOrWhiteSpace(Model.Partner7Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Seventh_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+                $("#FifthP_add").hide();
+                $("#FifthP_remove").hide();
+                $("#SixthP_add").hide();
+                $("#SixthP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner8Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Eighth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+                $("#FifthP_add").hide();
+                $("#FifthP_remove").hide();
+                $("#SixthP_add").hide();
+                $("#SixthP_remove").hide();
+                $("#SeventhP_add").hide();
+                $("#SeventhP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner9Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Ninth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+                $("#FifthP_add").hide();
+                $("#FifthP_remove").hide();
+                $("#SixthP_add").hide();
+                $("#SixthP_remove").hide();
+                $("#SeventhP_add").hide();
+                $("#SeventhP_remove").hide();
+                $("#EighthP_add").hide();
+                $("#EighthP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Partner10Name))
+{
+    <script>
+        $(function () {
+            try {
+                $("#Tenth_Partner").show();
+                $("#FirstP_add").hide();
+                $("#SecondP_add").hide();
+                $("#SecondP_remove").hide();
+                $("#ThirdP_add").hide();
+                $("#ThirdP_remove").hide();
+                $("#FourthP_add").hide();
+                $("#FourthP_remove").hide();
+                $("#FifthP_add").hide();
+                $("#FifthP_remove").hide();
+                $("#SixthP_add").hide();
+                $("#SixthP_remove").hide();
+                $("#SeventhP_add").hide();
+                $("#SeventhP_remove").hide();
+                $("#EighthP_add").hide();
+                $("#EighthP_remove").hide();
+                $("#NinthP_add").hide();
+                $("#NinthP_remove").hide();
+            } catch (error) { }
+        });
+    </script>
+}
+
+<script>
+    function UpdateVendorDetails() {
+
+        var ID = "@Model.VendorVendorID";
+
+        var TypeOfEntity = $("#type_of_entity_vendor").val();
+        var VendorName = $("#vendorname").val();
+
+
+        var CIN = $("#vendorcin").val();
+        var AuthSign = $("#vendorauthorisedsignatoryname").val();
+        var RegAddress = $("#vendorregisteredaddress").val();
+        var CorporateAddress = $("#CorporateAddress").val();
+
+        var Branch1 = $(".branchaddress1").val();
+        var Branch2 = $(".branchaddress2").val();
+        var Branch3 = $(".branchaddress3").val();
+        var Branch4 = $(".branchaddress4").val();
+        var Branch5 = $(".branchaddress5").val();
+
+        var NameoftheProprietor = $("#NameoftheProprietor").val();
+        var PAN = $("#PAN").val();
+        var AdhaarCardNo = $("#AdhaarCardNo").val();
+        var ProprietorshipAddress = $("#ProprietorshipAddress").val();
+
+        var LLPIN = $("#LLPIN").val();
+        var LLPAddress = $("#LLPAddress").val();
+
+        var OthersAddress = $("#OthersAddress").val();
+
+        var PartnershipAuthSign = $("#Partnership_AuthSign").val();
+        var PartnershipAddress = $("#PartnershipAddress").val();
+
+        var Partner1Name = $("#Partner1Name").val();
+        var Partner1Age = $("#Partner1Age").val();
+
+        var Partner1FatherName = $("#Partner1FatherName").val();
+        var Partner1Address = $("#Partner1Address").val();
+        var Partner2Name = $("#Partner2Name").val();
+        var Partner2Age = $("#Partner2Age").val();
+        var Partner2FatherName = $("#Partner2FatherName").val();
+        var Partner2Address = $("#Partner2Address").val();
+        var Partner3Name = $("#Partner3Name").val();
+        var Partner3Age = $("#Partner3Age").val();
+        var Partner3FatherName = $("#Partner3FatherName").val();
+        var Partner3Address = $("#Partner3Address").val();
+        var Partner4Name = $("#Partner4Name").val();
+        var Partner4Age = $("#Partner4Age").val();
+        var Partner4FatherName = $("#Partner4FatherName").val();
+        var Partner4Address = $("#Partner4Address").val();
+        var Partner5Name = $("#Partner5Name").val();
+        var Partner5Age = $("#Partner5Age").val();
+        var Partner5FatherName = $("#Partner5FatherName").val();
+        var Partner5Address = $("#Partner5Address").val();
+        var Partner6Name = $("#Partner6Name").val();
+        var Partner6Age = $("#Partner6Age").val();
+        var Partner6FatherName = $("#Partner6FatherName").val();
+        var Partner6Address = $("#Partner6Address").val();
+        var Partner7Name = $("#Partner7Name").val();
+        var Partner7Age = $("#Partner7Age").val();
+        var Partner7FatherName = $("#Partner7FatherName").val();
+        var Partner7Address = $("#Partner7Address").val();
+        var Partner8Name = $("#Partner8Name").val();
+        var Partner8Age = $("#Partner8Age").val();
+        var Partner8FatherName = $("#Partner8FatherName").val();
+        var Partner8Address = $("#Partner8Address").val();
+        var Partner9Name = $("#Partner9Name").val();
+        var Partner9Age = $("#Partner9Age").val();
+        var Partner9FatherName = $("#Partner9FatherName").val();
+        var Partner9Address = $("#Partner9Address").val();
+        var Partner10Name = $("#Partner10Name").val();
+        var Partner10Age = $("#Partner10Age").val();
+        var Partner10FatherName = $("#Partner10FatherName").val();
+        var Partner10Address = $("#Partner10Address").val();
+
+
+        if (TypeOfEntity == "Company") {
+            if (VendorName.length > 0 && CIN.length > 0 && AuthSign.length > 0 && RegAddress.length > 0 && CorporateAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/UpdateCompanyVendor',
+                    type: 'POST',
+                    data: { ID: ID, TypeOfEntity: TypeOfEntity,VendorName: VendorName, CIN: CIN, AuthSign: AuthSign, RegAddress: RegAddress, CorporateAddress: CorporateAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details updated successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+        else if (TypeOfEntity == "Sole Proprietorship") {
+            if (VendorName.length > 0 && NameoftheProprietor.length > 0 && PAN.length > 0 && AdhaarCardNo.length > 0 && ProprietorshipAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/UpdateSoleProprietorshipVendor',
+                    type: 'POST',
+                    data: { ID: ID, TypeOfEntity: TypeOfEntity, VendorName:VendorName, NameoftheProprietor: NameoftheProprietor, PAN: PAN, AdhaarCardNo: AdhaarCardNo, ProprietorshipAddress: ProprietorshipAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details updated successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+
+        else if (TypeOfEntity == "Limited Liability Partnership Firm") {
+            if (VendorName.length > 0 && LLPIN.length > 0 && LLPAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/UpdateLLPFirmVendor',
+                    type: 'POST',
+                    data: { ID: ID, TypeOfEntity: TypeOfEntity, VendorName:VendorName, LLPIN: LLPIN, LLPAddress: LLPAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details updated successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+
+        else if (TypeOfEntity == "Others") {
+            if (VendorName.length > 0 && OthersAddress.length > 0) {
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/UpdateOtherVendor',
+                    type: 'POST',
+                    data: { ID: ID, TypeOfEntity: TypeOfEntity, VendorName:VendorName, OthersAddress: OthersAddress, Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5 },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details updated successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+
+         else if (TypeOfEntity == "Partnership Firm") {
+            if (VendorName.length > 0 && PartnershipAuthSign.length > 0 && PartnershipAddress.length > 0 && Partner1Name.length > 0 && Partner1Age.length > 0 && Partner1FatherName.length > 0 && Partner1Address.length > 0) {
+
+                $.ajax({
+                    async: false,
+                    url: '/Vendor/UpdatePartnershipVendor',
+                    type: 'POST',
+                    data: {
+                        ID: ID, TypeOfEntity: TypeOfEntity, VendorName: VendorName, PartnershipAuthSign: PartnershipAuthSign, PartnershipAddress: PartnershipAddress,
+                        Partner1Name: Partner1Name, Partner1Age: Partner1Age, Partner1FatherName: Partner1FatherName, Partner1Address: Partner1Address,
+                        Partner2Name: Partner2Name, Partner2Age: Partner2Age, Partner2FatherName: Partner2FatherName, Partner2Address: Partner2Address,
+                        Partner3Name: Partner3Name, Partner3Age: Partner3Age, Partner3FatherName: Partner3FatherName, Partner3Address: Partner3Address,
+                        Partner4Name: Partner4Name, Partner4Age: Partner4Age, Partner4FatherName: Partner4FatherName, Partner4Address: Partner4Address,
+                        Partner5Name: Partner5Name, Partner5Age: Partner5Age, Partner5FatherName: Partner5FatherName, Partner5Address: Partner5Address,
+                        Partner6Name: Partner6Name, Partner6Age: Partner6Age, Partner6FatherName: Partner6FatherName, Partner6Address: Partner6Address,
+                        Partner7Name: Partner7Name, Partner7Age: Partner7Age, Partner7FatherName: Partner7FatherName, Partner7Address: Partner7Address,
+                        Partner8Name: Partner8Name, Partner8Age: Partner8Age, Partner8FatherName: Partner8FatherName, Partner8Address: Partner8Address,
+                        Partner9Name: Partner9Name, Partner9Age: Partner9Age, Partner9FatherName: Partner9FatherName, Partner9Address: Partner9Address,
+                        Partner10Name: Partner10Name, Partner10Age: Partner10Age, Partner10FatherName: Partner10FatherName, Partner10Address: Partner10Address,
+                        Branch1: Branch1, Branch2: Branch2, Branch3: Branch3, Branch4: Branch4, Branch5: Branch5
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == "success") {
+                            swal("Vendor Details updated successfully", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = "/Vendor/Repository";
+                                }
+                            });
+
+                        }
+                    }
+                });
+            } else {
+                 swal("All Fields are required", {
+                        icon: "warning",
+                    });
+            }
+        }
+
+
+    }
+</script>

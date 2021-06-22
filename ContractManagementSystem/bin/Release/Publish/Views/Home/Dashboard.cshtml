@@ -1,0 +1,730 @@
+﻿@model ContractManagementSystem.Models.CommonModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserLoggedID = CurrentUserID();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <br />
+        @***********************************************Integrated on 13/2/20*********************************************@
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <a href="#pendingsignoff" style="height: 50vh;">
+                    <div class="card card-stats card-primary card-round Dashboard_Navigation">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="icon-big " style="margin-left:25px">
+                                        <i class="flaticon-users"></i>
+                                    </div>
+                                </div>
+                                <div class="col-9 ">
+                                    <center>
+                                        <div class="numbers">
+                                            <p class="card-category">Pending Sign-off</p>
+                                            <input type="hidden" id="EmployeeInitiatorID" class="form-control" value="@CurrentUserID()" />
+                                        </div>
+
+                                        <h1 id="pending_signoff">0</h1>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <a href="#pendingapproval" style="height:50vh;">
+                    <div class="card card-stats card-success card-round Dashboard_Navigation">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="icon-big " style="margin-left:25px">
+                                        <i class="flaticon-stopwatch"></i>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <center>
+                                        <div class="numbers">
+                                            <p class="card-category">Pending Approval</p>
+                                        </div>
+                                        <h1 id="pending_approval">0</h1>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <a href="#Contractrework" style="height: 50vh;">
+                    <div class="card card-stats card-warning card-round Dashboard_Navigation">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="icon-big" style="margin-left:25px">
+                                        <i class="flaticon-error"></i>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <center>
+                                        <div class="numbers">
+                                            <p class="card-category">Rejected</p>
+                                        </div>
+                                        <h1 id="contract_rework">0</h1>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <a href="#Contractexpiry" style="height: 50vh;">
+                    <div class="card card-stats card-danger card-round Dashboard_Navigation">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="icon-big" style="margin-left:25px">
+                                        <i class="flaticon-calendar"></i>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <center>
+                                        <div class="numbers">
+                                            <p class="card-category">Expired</p>
+                                        </div>
+                                        <h1 id="expired">0</h1>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+        </div>
+
+        @***************************************************************************************************************@
+
+        @if (User.IsInRole("Initiator") || (User.IsInRole("Admin") || (User.IsInRole("Approver"))))
+        {
+            <div class="row" id="pendingsignoff">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title">
+                                        <b>Approved and Pending for Sign-off</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <div class="card-title">
+                                        <span class='badge Legal shadow  Approve'>
+                                            <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                            <span><b>Approved</b></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="basic-datatables" class="display table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Contract ID</center></th>
+                                                    <th><center>Contract Name</center></th>
+                                                    <th><center>Contract Type</center></th>
+                                                    <th><center>Cluster</center></th>
+                                                    <th><center>Function</center></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach (var item in Model.Contract)
+                                                {
+                                                    if ((item.Status == "Approved") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Contract", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.ContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                                @foreach (var item in Model.ContractModification)
+                                                {
+                                                    if ((item.Status == "Approved") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Addendum", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.OriginalContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        @if (User.IsInRole("Initiator") || (User.IsInRole("Approver")) || (User.IsInRole("Admin")))
+        {
+            <div class="row" id="pendingapproval">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title">
+                                        <b>Pending approval</b>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <div class="card-title">
+                                        <span class='badge Legal shadow  Pennding_Approvals'>
+                                            <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                            <span><b>Pending approval</b></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="basicdatatables6" class="display table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Contract ID</center></th>
+                                                    <th><center>Contract Name</center></th>
+                                                    <th><center>Contract Type</center></th>
+                                                    @*<th><center>Description</center></th>*@
+                                                    <th><center>Cluster</center></th>
+                                                    <th><center>Function</center></th>
+                                                    <th><center>Initiated On</center></th>
+                                                    <th><center>Pending From</center></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var item in Model.Contract)
+                                                {
+
+                                                    if ((item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Contract", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+
+                                                            <td>@item.ContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            @*<td>@item.Description</td>*@
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td>@item.DateofInitiated</td>
+
+                                                            <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                                @foreach (var item in Model.ContractModification)
+                                                {
+
+                                                    if ((item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Addendum", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.OriginalContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            @*<td>@item.Description</td>*@
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td>@item.DateofInitiated</td>
+                                                            <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        @if (User.IsInRole("Initiator") || User.IsInRole("approver") || User.IsInRole("Admin"))
+        {
+            <div class="row" id="Contractrework">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title">
+                                        <b>Rejected</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <div class="card-title">
+                                        <span class='badge Legal shadow Rework'>
+                                            <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                            <span><b>Rejected</b></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="basicdatatables4" class="display table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Contract ID</center></th>
+                                                    <th><center>Contract Name</center></th>
+                                                    <th><center>Contract Type</center></th>
+                                                    @*<th><center>Description</center></th>*@
+                                                    <th><center>Cluster</center></th>
+                                                    <th><center>Function</center></th>
+                                                    <th><center>Initiator</center></th>
+                                                    <th><center>Rejected By</center></th>
+                                                    <th><center>Assign To</center></th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach (var item in Model.Contract)
+                                                {
+                                                    if ((item.Status == "Rejected") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Contract", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.ContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            @*<td>@item.Description</td>*@
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td id="@item.Initiator" class="Approver_id">@item.Initiator </td>
+                                                            <td id="@item.RejectedBy" class="Approver_id">@item.RejectedBy</td>
+                                                            <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                                @foreach (var item in Model.ContractModification)
+                                                {
+                                                    if ((item.Status == "Rejected") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Addendum", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.OriginalContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            @*<td>@item.Description</td>*@
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td id="@item.Initiator" class="Approver_id">@item.Initiator </td>
+                                                            <td id="@item.RejectedBy" class="Approver_id">@item.RejectedBy</td>
+                                                            <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Approver") || User.IsInRole("Initiator"))
+        {
+            <div class="row" id="Contractexpiry">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title">
+                                        <b>Expired</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <div class="card-title">
+                                        <span class='badge Legal shadow Expired'>
+                                            <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                            <span><b>Expired</b></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="basicdatatables5" class="display table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Contract ID</center></th>
+                                                    <th><center>Contract Name</center></th>
+                                                    <th><center>Contract Type</center></th>
+                                                    <th><center>Cluster</center></th>
+                                                    <th><center>Function</center></th>
+                                                    <th><center>Expired On</center></th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach (var item in Model.Contract)
+                                                {
+                                                    if ((item.Status == "Expired") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Contract", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.ContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td>@item.InEffectTo</td>
+
+                                                        </tr>
+                                                    }
+                                                }
+
+                                                @foreach (var item in Model.ContractModification)
+                                                {
+                                                    if ((item.Status == "Expired") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                    {
+                                                        <tr>
+                                                            <td class="redirectionallink">
+                                                                <center>
+                                                                    <a href="@Url.Action("Details", "Addendum", new { id = item.ContractID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                </center>
+                                                            </td>
+                                                            <td>@item.OriginalContractID</td>
+                                                            <td>@item.ContractName</td>
+                                                            <td>@item.ContractType</td>
+                                                            <td>@item.ContractCategory</td>
+                                                            <td>@item.ContractSubCategory</td>
+                                                            <td>@item.InEffectTo</td>
+
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+@*<script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>*@
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="~/Content/assets/js/plugin/chart.js/chart.min.js"></script>
+
+
+
+
+
+<script>
+
+    //var pieChart = document.getElementById('pieChart').getContext('2d');
+
+   var pieChart = document.getElementById('pieChart').getContext('2d');
+
+    $(document).ready(setTimeout(function () {
+        var pieChart = document.getElementById('pieChart').getContext('2d');
+
+        var PendingSignoff = 0;
+        var Expired = 0;
+        var PendingApproval = 0;
+        var Rework = 0;
+        var EmployeeID = @CurrentUserID();
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/ContractStatistics",
+            data: { EmployeeID: EmployeeID },
+            success: function (response) {
+                PendingSignoff = response[0]; Expired = response[1]; PendingApproval = response[2], Rework = response[3];
+
+                // Pendingapproval = Pendingapproval + response;
+                $('#pending_signoff').html(response[0]);
+                $('#expired').html(response[1]);
+                $('#pending_approval').html(response[2]);
+                $('#contract_rework').html(response[3]);
+               // piGraph(PendingSignoff, Expired, PendingApproval, Rework);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }), 0);
+    function piGraph(PendingSignoff, Expired, PendingApproval, Rework)
+
+     {
+
+           // alert(Pendingapproval+ undernegotiation+ rework+ expiry);
+
+            var myPieChart = new Chart(pieChart, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+
+                        data: [PendingSignoff, Expired, PendingApproval, Rework],
+                        backgroundColor: ["#1d7af3", "#f3545d", "#fdaf4b", "#f00"],
+                        borderWidth: 0
+                    }],
+                    labels: ['Pending SignOff', 'Expired', 'Pending Approval', 'Rework/Rejected']
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontColor: 'rgb(154, 154, 154)',
+                            fontSize: 11,
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    pieceLabel: {
+                        render: 'percentage',
+                        fontColor: 'white',
+                        fontSize: 14,
+                    },
+                    tooltips: false,
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 20,
+                            bottom: 20
+                        }
+                    }
+                }
+            })
+        };
+
+
+</script>
+
+<script>
+
+
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+                { "width": "15%", "targets": 3 },
+                { "width": "20%", "targets": 4 },
+                { "width": "20%", "targets": 5 }
+
+            ]
+        });
+        $('#basicdatatables2').DataTable({
+        });
+        $('#basicdatatables3').DataTable({
+        });
+        $('#basicdatatables4').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
+                { "width": "35%", "targets": 2 },
+                { "width": "10%", "targets": 3 },
+                { "width": "15%", "targets": 4 },
+                { "width": "15%", "targets": 5 },
+                { "width": "5%", "targets": 6 },
+                { "width": "5%", "targets": 7 },
+                { "width": "5%", "targets": 8 }
+            ]
+        });
+        $('#basicdatatables6').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "10%", "targets": 1 },
+                { "width": "20%", "targets": 2 },
+                { "width": "15%", "targets": 3 },
+                { "width": "15%", "targets": 4 },
+                { "width": "15%", "targets": 5 },
+                { "width": "10%", "targets": 6 },
+                { "width": "10%", "targets": 7 }
+            ]
+        });
+        $('#basicdatatables5').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "5%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+                { "width": "10%", "targets": 3 },
+                { "width": "20%", "targets": 4 },
+                { "width": "20%", "targets": 5 },
+                { "width": "10%", "targets": 6 }
+
+            ]
+        });
+    });
+</script>
+
+<script>
+
+    $(document).ready(setTimeout(function () {
+
+        $(".Approver_id").each(function () {
+            //console.log($(this).html());
+            var ID = "#" + $(this).attr('id');
+            //alert(ID);
+            var NextApproverID = $(ID).html();
+            //alert(NextApproverID);
+            var NextApproverName = "";
+            $.ajax({
+                type: "POST",
+                url: "/Home/GetNextApproverName",
+                data: { NextApproverID: NextApproverID },
+                success: function (response) {
+                    NextApproverName = NextApproverID + " - " + response;
+
+                    $(".Approver_id[id=" + NextApproverID + "]").html(NextApproverName);
+                }
+            });
+        });
+
+    }), 1000);
+</script>
+
+
+<!-- Chart JS -->
+<!--<script src="../../Content/assets/js/plugin/chart.js/chart.min.js"></script>-->
+
+
+<!-- Chart Circle -->
+<!--<script src="../../Content/assets/js/plugin/chart-circle/circles.min.js"></script>-->
+
+
+

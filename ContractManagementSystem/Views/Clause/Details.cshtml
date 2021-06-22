@@ -1,0 +1,913 @@
+﻿
+@model ContractManagementSystem.Models.tblClauseMaster
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string getRelativeDateTime(DateTime date)
+    {
+        TimeSpan ts = DateTime.Now - date;
+        if (ts.TotalMinutes < 1)//seconds ago
+            return "just now";
+        if (ts.TotalHours < 1)//min ago
+            return (int)ts.TotalMinutes == 1 ? "1 Minute ago" : (int)ts.TotalMinutes + " Minutes ago";
+        if (ts.TotalDays < 1)//hours ago
+            return (int)ts.TotalHours == 1 ? "1 Hour ago" : (int)ts.TotalHours + " Hours ago";
+        if (ts.TotalDays < 7)//days ago
+            return (int)ts.TotalDays == 1 ? "1 Day ago" : (int)ts.TotalDays + " Days ago";
+        if (ts.TotalDays < 30.4368)//weeks ago
+            return (int)(ts.TotalDays / 7) == 1 ? "1 Week ago" : (int)(ts.TotalDays / 7) + " Weeks ago";
+        if (ts.TotalDays < 365.242)//months ago
+            return (int)(ts.TotalDays / 30.4368) == 1 ? "1 Month ago" : (int)(ts.TotalDays / 30.4368) + " Months ago";
+        //years ago
+        return (int)(ts.TotalDays / 365.242) == 1 ? "1 Year ago" : (int)(ts.TotalDays / 365.242) + " Years ago";
+    }
+
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Clause Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Clause/Repository">Clause Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Clause Details
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">
+                                    <b>Clause Details</b> &nbsp;
+                                    @{
+                                        if (Model.ClauseModificationType == "Cloning")
+                                        {
+                                            <span class='badge Legal_icon shadow'>Cloned from : @Model.OriginalClauseID</span>
+                                        }
+                                    }
+                                </div>
+                                @if (User.IsInRole("admin") || User.IsInRole("legal"))
+                                {
+                                    <div class="card-tools form-inline">
+                                        <button type="button" class="btn btn-xs btn-light" id="DocumentUpload" title="Upload Word Document" data-toggle="modal" data-target="#WordDocumentModal" style="display:none;"><i class="flaticon-archive"></i>&nbsp; Upload</button>
+                                        &nbsp;<button onclick="Back();" class="btn btn-sm btn-light" title="Back to Repository" id="BackButton"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</button>
+
+                                        @*<div id="SaveAndDiscardbtn"></div>&nbsp;*@
+                                        <button id="editalert" class="btn btn-sm btn-light buttonsStyle" title="Edit"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+                                        @using (Html.BeginForm("DeleteConfirmed", "Clause", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="hiddenID" value="@Model.ClauseClauseID" name="ClauseClauseID" />
+                                            <input type="hidden" id="UserID" class="form-control" name="UserID" value="@CurrentUserID()" />
+                                            <button type="button" class="btn btn-sm btn-light buttonsStyle" id="deletealert" title="Delete"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Delete</button>
+
+                                        }
+                                        @if (User.IsInRole("legal"))
+                                        {
+                                            <button type="button" title="Clone" class="btn btn-sm btn-light" onclick="ClauseClone();"><i class="flaticon-web-1" aria-hidden="true"></i>&nbsp; Clone</button>
+                                        }
+                                        <button class="btn btn-sm btn-light buttonsStyle" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+
+
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("ClauseEdit", "Clause", FormMethod.Post, new { id = "ClauseForm" }))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="title">Clause Title<span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');" id="clausetitle" class="form-control" value="@Model.ClauseClauseTitle" name="ClauseClauseTitle" placeholder="Enter Clause Title" readonly required>
+                                            <input type="hidden" class="form-control" id="clauseid" value="@Model.ClauseClauseID" name="ClauseClauseID">
+                                        </div>
+                                    </div>
+                                    @*<div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="type">Clause Type<span class="asteriskicon"> *</span></label>
+                                                <input type="text" oninvalid="InvalidType(this);" id="clausetype" oninput="InvalidType(this);" class="form-control" value="@Model.ClauseClauseType" name="ClauseClauseType" placeholder="Enter Clause Type" readonly required>
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="description">Clause Description</label>
+                                            <textarea class="form-control text_area" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="clausedescription" name="ClauseClauseDescription" placeholder="Enter Clause Description" disabled>@Html.Raw(Model.ClauseClauseDescription)</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="TemplateEnable">
+                                        <div class="form-group form-inline">
+                                            <label for="initiator">Enable</label>&nbsp; &nbsp;
+                                            <div>
+                                                <label class="switch">
+                                                    @if (Model.Enable == "Active")
+                                                    {
+                                                        <input type="checkbox" checked name="Enable" disabled id="EnableCheckbox">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" disabled name="Enable" id="EnableCheckbox">
+                                                    }
+                                                    <span class="slider round round1"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="text">Clause Text<span class="asteriskicon"> *</span></label>
+                                            @*<textarea class="form-control text_area_description text_area" oninvalid="InvalidText(this);" oninput="InvalidText(this);" id="clausetext" name="ClauseClauseText" placeholder="Enter Clause Text" readonly required>@Model.ClauseClauseText</textarea>*@
+                                            <textarea name="editor1" class="text_area" id="IDofEditor" disabled>@Model.ClauseClauseText</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action text-right card_footer_button saverecord" id="saveanddiscardoption">
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+            <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="fa fa-times fa-3x " aria-hidden="true"></i></a>
+        </div>*@
+
+    <div class="modal-dialog" style="max-width: 80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Clause Modified History</b></label>
+                <button type="button" class="btn btn-sm btn-light btn_close" title="Close" data-dismiss="modal" style="font-size:13px;">Close</button>
+
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblClauseLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<hr />
+
+                    <div class="card-action text-right card_footer_button">
+                        <input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+
+                    </div>*@
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="WordDocumentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" style="max-width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label style="font-size: 20px !important;">
+                    <b>Upload Word document (.DOCX only)</b>
+                </label>
+                <div class="text-right model_body_position">
+                    <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close">Close</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="form-group">
+                                    <input type="file" name="UploadWordDocument" id="UploadWordDocument" class="file" accept=".docx">
+                                    <div class="input-group col-xs-10">
+                                        <span class="input-group-addon "><i class="glyphicon glyphicon-picture"></i></span>
+                                        <input type="text" class="form-control input-lg browse" id="UploadWordDocument2" name="UploadWordDocument" placeholder="Choose File">
+                                        <span class="input-group-btn ">
+                                            <button class="browse btn btn-primary uploadbtnsizing" type="button"><i class="glyphicon glyphicon-search"></i><i class="flaticon-search-2" aria-hidden="true"></i>&nbsp;&nbsp;Browse </button>&nbsp;
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <button type="button" id="UploadButton" style="display:none;" class="btn btn-primary uploadbtnsizing" data-dismiss="modal" data-toggle="modal" onclick="UploadWord();"><i class="flaticon-archive" aria-hidden="true"></i>&nbsp;&nbsp;Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+<script>
+    function ClauseSubmit() {
+        var ClauseTitle = $("#clausetitle").val();
+        var ClauseText = CKEDITOR.instances.IDofEditor.getData();
+        if (ClauseTitle.length > 0) {
+            if (ClauseText.length > 0) {
+                $("#ClauseForm").submit();
+            }
+            else {
+                swal({
+                    text: 'Clause Text is required !',
+                    icon: 'warning',
+                });
+            }
+        }
+        else {
+            swal({
+                text: 'Clause Title is required !',
+                icon: 'warning',
+            });
+        }
+    }
+</script>
+<script>
+    function InvalidTitle(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Title');
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        }
+        else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+        return true;
+    }
+    function InvalidType(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Type');
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+        return true;
+    }
+    function InvalidText(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Clause Text');
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+        return true;
+    }
+    function InvalidCategory(textbox) {
+        //alert("Hello" );
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Category');
+            textbox.style.borderColor = "red";
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+        return true;
+    }
+</script>
+
+<script>
+    // Delete button alert design
+    $('#deletealert').click(function (e) {
+        var _form = $(this).closest("form");
+        e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Delete it !',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            // alert(value);
+            if (value == true) {
+                _form.submit();
+
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                $('input').removeAttr('readonly');
+                $('textarea').removeAttr('readonly');
+                $('textarea').removeAttr('disabled');
+                $('select').removeAttr('readony');
+                $("#DocumentUpload").show();
+                $('#EnableCheckbox').removeAttr('disabled');
+                document.getElementById("deletealert").disabled = true;
+                CKEDITOR.instances.IDofEditor.setReadOnly(false);
+                $("#saveanddiscardoption").html('<button type="button" onclick="ClauseSubmit();" class="btn btn-success saverecord" style="font-size:17px;width:180px;"><b>Save Changes</b></button><button type="button" onclick="DiscardChanges();" class="btn btn-danger" style="font-size:17px;width:180px;"><b>Discard Changes</b></button>');
+                //$("#SaveAndDiscardbtn").html('<button type="submit" class="btn btn-sm btn-success saverecord"><i class="far fa-save"></i>&nbsp;&nbsp;Save</button>&nbsp;&nbsp;<button type="button" onclick="window.location.reload();" class="btn btn-sm btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i>&nbsp;&nbsp;Discard</button>');
+                document.getElementById("editalert").disabled = true;
+                document.getElementById("BackButton").disabled = true;
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    })
+</script>
+<script>
+    function Back() {
+        window.location = "/Clause/Repository";
+    }
+</script>
+<script>
+    function DiscardChanges() {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+@*<script>
+        function clauseupdated() {
+            //alert("called");
+            //e.preventDefault();
+            document.getElementById("formsubmit").submit();
+            swal("Updated", {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        visible: false
+                    }
+                }
+            })
+                .then(function (result) {
+                    if (result == true) {
+
+                        window.location = "/Clause/Repository";
+                    }
+                });
+
+        }
+    </script>*@
+
+
+
+<script>
+    $(function () {
+        // alert("hello");
+
+        var tblLog = "";
+        var ID = $("#hiddenID").val();
+        $.ajax({
+            type: "POST",
+            url: "/Clause/getLogDetail",
+            data: { ID: ID },
+
+
+            success: function (response) {
+
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '<center></td><td style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblClauseLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+
+
+@*<script>
+        $(function () {
+
+             var UserID = "@CurrentLoggedUserID - @CurrentLoggedUserName";
+
+            $("#clausetitle").focus(function () {
+                $(this).data('titleval', $(this).val());
+            });
+            $("#clausetitle").change(function () {
+                var initialvalue = "Title : " + $(this).data('titleval');
+                var details = "Title : " + $(this).val();
+                var ID = $("#clauseid").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Clause/SaveLog",
+                    data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+                    success: function (response) {
+
+                        // alert(called);
+                    }
+                });
+            });
+
+            CKEDITOR.instances.IDofEditor.on('focus', function () {
+
+                //CKEDITOR.instances.IDofEditor.focus(function() {
+                var content = CKEDITOR.instances.IDofEditor.getData();
+                $(this).data('textval', content);
+                //alert(content);
+                //  $(this).data('typeval', $(this).CKEDITOR.instances.IDofEditor.document.getBody().getHtml());
+            });
+
+            CKEDITOR.instances.IDofEditor.on('blur', function () {
+
+                var initialvalue = "Text : " + $(this).data('textval');
+                var content = CKEDITOR.instances.IDofEditor.getData();
+                var details = "Text : " + content;
+                //alert(details);
+                var ID = $("#clauseid").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Clause/SaveLog",
+                    data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+
+                    success: function (response) {
+
+                        // alert(response);
+                        //alert(response.LogUserID);
+                        // alert(called);
+                    },
+
+                    failure: function (response) {
+                        alert(response);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+
+            $("#clausedescription").focus(function () {
+                $(this).data('desval', $(this).text());
+            });
+            $("#clausedescription").change(function () {
+                var initialvalue = "Description : " + $(this).data('desval');
+                var details = "Description : " + $(this).val();
+                var ID = $("#clauseid").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Clause/SaveLog",
+                    data: { initialvalue: initialvalue, details: details, ID: ID, UserID: UserID },
+
+                    success: function (response) {
+
+                        //alert(response.LogUserID);
+                        // alert(called);
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+
+
+
+        });
+    </script>*@
+
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+
+    CKEDITOR.replace('editor1', {
+        bodyClass: 'document-editor',
+        contentsCss: ['../../Content/ckeditor/contents.css', '../../Content/ckeditor/mystyles.css'],
+        height: 400,
+        removePlugins: 'lite,autogrow'
+    });
+
+    CKEDITOR.disableAutoInLine = true;
+
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.scriptLoader.load('../../Content/assets/js/plugin/webfont/webfont.min.js');
+    // CKEDITOR.config.keystrokes = [[CKEDITOR.CTRL + 90 /*Shift-Enter*/, 'null ']];
+    CKEDITOR.config.removePlugins = 'elementspath,resize';
+    CKEDITOR.on('paste', function (evt) {
+        // Create a standalone filter passing 'p' and 'b' elements.
+        var filter = new CKEDITOR.filter('p b'),
+            // Parse the HTML string to a pseudo-DOM structure.
+            fragment = CKEDITOR.htmlParser.fragment.fromHtml(evt.data.dataValue),
+            writer = new CKEDITOR.htmlParser.basicWriter();
+        filter.applyTo(fragment);
+        fragment.writeHtml(writer);
+        evt.data.dataValue = writer.getHtml();
+    });
+
+
+    //CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //        if (!(sel && !sel.isLocked)) { retrun; }
+    //        var el = sel.getStartElement();
+    //        if ((el && el.is && el.is("del"))) {
+    //            ev.cancel();
+    //            CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //                CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //                    var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //                    if (!(sel && !sel.isLocked)) { retrun; }
+    //                    var el = sel.getStartElement();
+    //                    if ((el && el.is && el.is("del"))) {
+    //                        ev.cancel();
+    //                        ev.stop();
+    //                    }
+    //                }, null, null, 1);
+    //            });
+    //        }
+    //        if ((el && el.is && el.is("ins"))) {
+    //            ev.cancel();
+    //            CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //                CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //                    var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //                    if (!(sel && !sel.isLocked)) { retrun; }
+    //                    var el = sel.getStartElement();
+    //                    if ((el && el.is && el.is("ins"))) {
+    //                        ev.cancel();
+    //                        ev.stop();
+    //                    }
+    //                }, null, null, 1);
+    //            });
+    //        }
+    //        if ((el && el.is && el.is("h4"))) {
+    //            ev.cancel();
+    //            CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //                CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //                    var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //                    if (!(sel && !sel.isLocked)) { retrun; }
+    //                    var el = sel.getStartElement();
+    //                    if ((el && el.is && el.is("h4"))) {
+    //                        ev.cancel();
+    //                        ev.stop();
+    //                    }
+    //                }, null, null, 1);
+    //            });
+    //        }
+    //        if ((el && el.is && el.is("p"))) {
+    //            ev.cancel();
+    //            CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //                CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //                    var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //                    if (!(sel && !sel.isLocked)) { retrun; }
+    //                    var el = sel.getStartElement();
+    //                    if ((el && el.is && el.is("p"))) {
+    //                        ev.cancel();
+    //                        ev.stop();
+    //                    }
+    //                }, null, null, 1);
+    //            });
+    //        }
+    //        if ((el && el.is && el.is("span"))) {
+    //            ev.cancel();
+    //            CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+    //                CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+    //                    var sel = CKEDITOR.instances.IDofEditor.getSelection();
+    //                    if (!(sel && !sel.isLocked)) { retrun; }
+    //                    var el = sel.getStartElement();
+    //                    if ((el && el.is && el.is("span"))) {
+    //                        ev.cancel();
+    //                        ev.stop();
+    //                    }
+    //                }, null, null, 1);
+    //            });
+    //        }
+    //    });
+    //});
+</script>
+
+<script>
+
+    function ClauseClone() {
+
+        //var ModificationType = "Cloning";
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Clone !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Clone it !',
+                    className: 'btn btn-success'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                var url = window.location.href;
+                var page = url.split('/');
+                var ClauseID = "@Model.ClauseClauseID";
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Clause/ClonningClause",
+                    data: { ClauseID: ClauseID },
+
+
+                    success: function (response) {
+                        if (response[0] == "sucess") {
+                            window.location = '/Clause/Details/' + response[1];
+                        }
+                        else
+                            swal("Error", {
+                                icon: "error",
+                            });
+                    }
+                });
+
+            }
+        });
+    }
+</script>
+
+
+@* --------word document-------- *@
+<script>
+
+    function UploadWord() {
+        var url = window.location.href;
+        var page = url.split('/');
+        var ID = page[page.length - 1];
+        $.ajax({
+            url: "/Clause/UploadWordDocument",
+            type: "POST",
+            data: function () {
+                var data = new FormData();
+                data.append("UploadWordDocument", jQuery("#UploadWordDocument").get(0).files[0]);
+                return data;
+            }(),
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.length > 0) {
+
+                    CKEDITOR.instances.IDofEditor.setData(response);
+                    $("#UploadWordDocument2").val("");
+                    $("#UploadButton").hide();
+                    swal("Uploaded Successfully", {
+                        icon: "success",
+                    });
+                }
+
+                //else
+                //    swal("Error", {
+                //        icon: "error",
+                //    });
+            },
+            error: function (jqXHR, textStatus, errorMessage) {
+                console.log(errorMessage);
+            }
+        });
+    }
+</script>
+
+<script>
+    $(".file").change(function () {
+        var file = $(".file").val();
+        if (file != "") {
+            $("#UploadButton").show();
+        }
+        else {
+            $("#UploadButton").hide();
+        }
+    });
+</script>
+
+<script>
+    $(document).on('click', '.browse', function () {
+        var file = $(this).parent().parent().parent().find('.file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        var data = $(this).parent().find('.form-control').val();
+        var extension = data.substr(data.lastIndexOf('.') + 1).toLowerCase();
+
+        var allowedExtensions = ['docx'];
+        if (data.length > 0) {
+            if (allowedExtensions.indexOf(extension) === -1) {
+                //alert('Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.');
+                $.notify(
+                    {
+                        // options
+                        title: 'Uploading Files',
+                        message: 'Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.',
+                        target: '_blank',
+                        icon: 'fa fa-exclamation-triangle'
+                    },
+                    {
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "danger",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                            '<span data-notify="icon"></span> ' +
+                            '<span data-notify="title">{1}</span> ' +
+                            '<span data-notify="message">{2}</span>' +
+                            '<div class="progress" data-notify="progressbar">' +
+                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                            '</div>' +
+                            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                            '</div>'
+                    });
+                $(this).parent().find('.form-control').val('');
+                $("#UploadButton").hide();
+                try {
+                    // $("#uploadFile").hide();
+                } catch (error) { }
+            }
+        }
+        else {
+            $(this).parent().find('.form-control').val('');
+
+        }
+    });
+
+</script>
+

@@ -1,0 +1,606 @@
+﻿
+@model IQueryable<ContractManagementSystem.Models.TemplateRepositoryModel>
+@{
+    ViewBag.Title = "Repository";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+      string CurrentUserLoggedID = CurrentUserID();
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Template Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Template Master
+                    </li>
+                    @if (User.IsInRole("initiator") || User.IsInRole("admin") || User.IsInRole("legal"))
+                    {
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#templatelibrary">Library</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("admin") || User.IsInRole("legal"))
+                    {
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+
+                        <li class="nav-item">
+                            <span class="Draft_dot" style="margin-bottom:2px;"> </span>
+                            <a href="#templatedraft">Draft</a>
+                        </li>
+                    }
+                    @*<li class="separator">
+            <i class="flaticon-right-arrow"></i>
+        </li>*@
+                    @*<li class="nav-item">
+            <span class="Initiated_dot" style="margin-bottom:2px;"> </span>
+            <a href="#templateinitiated">Initiated</a>
+        </li>*@
+                    @if (User.IsInRole("approver") || User.IsInRole("admin") || User.IsInRole("legal"))
+                    {
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <span class="pendingapproval_dot" style="margin-bottom:2px;"> </span>
+                            <a href="#templatependingapprovals">Pending Approval</a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <span class="Rework_dot" style="margin-bottom:2px;"> </span>
+                            <a href="#templaterework">Rejected</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("approver") || User.IsInRole("admin") || User.IsInRole("legal") || User.IsInRole("reviewer"))
+                    {
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <span class="Ineffect_dot" style="margin-bottom:2px;"> </span>
+                                <a href="#templateineffect">Approved</a>
+                            </li>
+                            }
+                        
+                    </ul>
+            </div>
+            @if (User.IsInRole("initiator") || User.IsInRole("admin") || User.IsInRole("legal"))
+            {
+
+                <div class="row" id="templatelibrary">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-title"><b>Library</b></div>
+                                    </div>
+                                    @if ((User.IsInRole("admin")) || (User.IsInRole("legal")))
+                                    {
+                                        <div class="col-sm-6 text-right redirectionallink">
+                                            <button type="button" class="btn btn-sm btn-light btn_create" onclick="window.location = '/Template/New'">Create New Template</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables" class="display table table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th><center>View</center></th>
+                                                        <th><center>Template ID</center></th>
+                                                        <th><center>Template Name</center></th>
+                                                        <th><center>Template Type</center></th>
+                                                        @*<th><center>Cluster</center> </th>*@
+                                                        @*<th><center>Function</center></th>*@
+
+                                                        <th><center>Status</center></th>
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+
+
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        //if (((item.Status == "Draft") && ((item.Initiator + "") == CurrentUserLoggedID)) || (item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)) || ((item.Status == "Rejected") && (item.NextApprover == CurrentUserLoggedID)) || (item.Status == "In Effect"))
+                                                        //{
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    <center>
+                                                                        <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td>@item.TemplateID</td>
+                                                                <td>@item.Name</td>
+                                                                <td>@item.Type</td>
+
+                                                                <td>
+                                                                    @{ if (item.Status == "Draft")
+                                                                        {
+                                                                            <span class='badge Legal shadow draft'>
+                                                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                <span>Draft</span>
+                                                                            </span>
+                                                                        }
+                                                                        if (item.Status == "Pending Approval")
+                                                                        {
+                                                                            <span class='badge Legal shadow  Pennding_Approvals'>
+                                                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                <span>Pending Approvals</span>
+                                                                            </span>
+                                                                        }
+                                                                        if (item.Status == "Rejected")
+                                                                        {
+                                                                            <span class='badge Legal shadow Rework'>
+                                                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                <span>Rejected</span>
+                                                                            </span>
+                                                                        }
+                                                                        if (item.Status == "In Effect")
+                                                                        {
+                                                                            <span class='badge Legal shadow Ineffect'>
+                                                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                                                <span>Approved</span>
+                                                                            </span>
+                                                                        }
+                                                                        
+
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        //}
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (User.IsInRole("admin") || User.IsInRole("legal"))
+            {
+                <div class="row" id="templatedraft">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-title">
+                                            <b>Draft</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <div class="card-title">
+                                            <span class='badge Legal shadow draft'>
+                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                <span><b>Draft</b></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables2" class="display table table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th><center>View</center></th>
+                                                        <th><center>Template ID</center></th>
+                                                        <th><center>Template Name</center></th>
+                                                        <th><center>Template Type</center></th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        if ((item.Status == "Draft") && ((item.Initiator + "") == CurrentUserLoggedID))
+                                                        {
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    <center>
+                                                                        <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td>@item.TemplateID</td>
+                                                                <td>@item.Name</td>
+                                                                <td>@item.Type</td>
+
+                                                            </tr>
+                                                        }
+
+                                                    }
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (User.IsInRole("approver") || User.IsInRole("admin") || User.IsInRole("legal"))
+            {
+                <div class="row" id="templatependingapprovals">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-title">
+                                            <b>Pending Approvals</b>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <div class="card-title">
+                                            <span class='badge Legal shadow  Pennding_Approvals'>
+                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                <span><b>Pending Approvals</b></span>
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables4" class="display table table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th><center>View</center></th>
+                                                        <th><center>Template ID</center></th>
+                                                        <th><center>Template Name</center></th>
+                                                        <th><center>Template Type</center></th>
+                                                        <th><center>Initiator</center></th>
+                                                        <th><center>Pending From</center></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        if ((item.Status == "Pending Approval") && ((item.Initiator.ToString() == CurrentUserLoggedID) || (item.NextApprover == CurrentUserLoggedID)))
+                                                        {
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    <center>
+                                                                        <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td>@item.TemplateID</td>
+                                                                <td>@item.Name</td>
+                                                                <td>@item.Type</td>
+                                                                <td id="@item.Initiator" class="Approver_id">@item.Initiator</td>
+                                                                <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+
+                                                            </tr>
+                                                        }
+
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (User.IsInRole("approver") || User.IsInRole("admin") || User.IsInRole("legal"))
+            {
+                <div class="row" id="templaterework">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-title">
+                                            <b>Rejected</b>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <div class="card-title">
+                                            <span class='badge Legal shadow Rework'>
+                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                <span><b>Rejected</b></span>
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables5" class="display table table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th><center>View</center></th>
+                                                        <th><center>Template ID</center></th>
+                                                        <th><center>Template Name</center></th>
+
+                                                        @*<th><center>Description</center></th>*@
+                                                        <th><center>Template Type</center></th>
+                                                        <th><center>Initiator</center></th>
+                                                        <th><center>Rejected By</center></th>
+                                                        <th><center>Assign To</center></th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        if ((item.Status == "Rejected") && (item.NextApprover == CurrentUserLoggedID))
+                                                        {
+                                                            <tr>
+                                                                <td class="redirectionallink">
+                                                                    <center>
+                                                                        <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                    </center>
+                                                                </td>
+                                                                <td>@item.TemplateID</td>
+                                                                <td>@item.Name</td>
+
+                                                                @*<td>@item.Description</td>*@
+                                                                <td>@item.Type</td>
+                                                                <td id="@item.Initiator" class="Approver_id">@item.Initiator</td>
+
+                                                                <td id="@item.RejectedBy" class="Approver_id">@item.RejectedBy</td>
+
+                                                                <td id="@item.NextApprover" class="Approver_id">@item.NextApprover</td>
+
+                                                            </tr>
+                                                        }
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            @if (User.IsInRole("approver") || User.IsInRole("admin") || User.IsInRole("legal") || User.IsInRole("reviewer"))
+            {
+
+                <div class="row" id="templateineffect">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card-title">
+                                            <b>Approved</b>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <div class="card-title">
+                                            <span class='badge Legal shadow Ineffect'>
+                                                <span class="dot" style="margin-bottom:1px;"> </span>&nbsp;
+                                                <span><b>Approved</b></span>
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables6" class="display table table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th><center>View</center></th>
+                                                        <th><center>Template ID</center></th>
+                                                        <th><center>Template Name</center></th>
+                                                        <th><center>Template Type</center></th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                   
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            if ((item.Status == "In Effect"))
+                                                            {
+                                                                <tr>
+                                                                    <td class="redirectionallink">
+                                                                        <center>
+                                                                            <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>@item.TemplateID</td>
+                                                                    <td>@item.Name</td>
+                                                                    <td>@item.Type</td>
+                                                                </tr>
+                                                            }
+
+                                                        }
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+            </div>
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+             "columnDefs": [
+                { "width": "10%", "targets": 0 },
+                { "width": "25%", "targets": 1 },
+                { "width": "35%", "targets": 2 },
+                { "width": "20%", "targets": 3 },
+          { "width": "10%", "targets": 4 },
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#basic-datatables2').DataTable({
+             "columnDefs": [
+                { "width": "10%", "targets": 0 },
+                { "width": "20%", "targets": 1 },
+                { "width": "40%", "targets": 2 },
+                { "width": "30%", "targets": 3 },
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#basic-datatables3').DataTable({
+        });
+    });
+
+    $(document).ready(function () {
+        $('#basic-datatables4').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "15%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+                { "width": "20%", "targets": 3 },
+                 { "width": "15%", "targets": 4 },
+                { "width": "15%", "targets": 5 },
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#basic-datatables5').DataTable({
+            "columnDefs": [
+                { "width": "5%", "targets": 0 },
+                { "width": "15%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+                { "width": "20%", "targets": 3 },
+                 { "width": "10%", "targets": 4 },
+                { "width": "10%", "targets": 5 },
+                 { "width": "10%", "targets": 6 },
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#basic-datatables6').DataTable({
+             "columnDefs": [
+                { "width": "10%", "targets": 0 },
+                { "width": "20%", "targets": 1 },
+                { "width": "40%", "targets": 2 },
+                { "width": "30%", "targets": 3 },
+            ]
+        });
+    });
+</script>
+
+
+<script>
+
+
+    $(document).ready(setTimeout(function () {
+
+        $(".Approver_id").each(function () {
+            //console.log($(this).html());
+            var ID = "#" + $(this).attr('id');
+            //alert(ID);
+            var NextApproverID = $(ID).html();
+            //alert(NextApproverID);
+            var NextApproverName = "";
+            $.ajax({
+                type: "POST",
+                url: "/Template/GetNextApproverName",
+                data: { NextApproverID: NextApproverID },
+                success: function (response) {
+                    NextApproverName = NextApproverID + " - " + response;
+
+                    $(".Approver_id[id=" + NextApproverID + "]").html(NextApproverName);
+                }
+            });
+        });
+
+    }), 1000);
+</script>

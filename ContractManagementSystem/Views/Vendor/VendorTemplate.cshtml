@@ -1,0 +1,1598 @@
+﻿@model ContractManagementSystem.Models.tblVendorTemplate
+
+@{
+    ViewBag.Title = "VendorTemplate";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+    int CurrentLoggedUserID = Convert.ToInt32(CurrentUserID());
+    string CurrentLoggedUserName = CurrentUserName();
+
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+
+                                <div class="col-md-3 form-inline align-items-center">
+                                    <label class="page-title" style="font-size:24px !important;">Vendor Template</label>
+                                </div>
+                                <div class="col-md-4 form-inline">
+                                    <label><b>Type Of Entity</b></label>&nbsp;&nbsp;
+                                    <select class="form-control" id="type_of_entity" style="width:11rem;padding:0;text-align-last:center;" onchange="TypeOfEntity(this.value);">
+                                        <option>Company</option>
+                                        <option>Partnership Firm</option>
+                                        <option>Sole Proprietorship</option>
+                                        <option>Limited Liability Partnership Firm</option>
+                                        <option>Others</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    <button type="button" class="btn btn-xs btn-light" id="DocumentUpload" title="Upload Word Document" data-toggle="modal" data-target="#WordDocumentModal" style="display:none;"><i class="flaticon-archive"></i>&nbsp; Upload</button>
+
+                                    <span id="BackButtton_2">&nbsp;</span><a href="~/Vendor/Repository" class="btn btn-sm btn-light" id="BackButtton" title="Back to Repository"><i class="flaticon-back" aria-hidden="true"></i>&nbsp; Back</a>
+                                    <span id="Save_2" style="display:none;">&nbsp;</span><button type="button" class="btn btn-light btn-sm saverecord" id="save" onclick="SaveVendorTemplate();" style="display:none; color:green;"><i class="flaticon-success"></i>&nbsp;&nbsp;Save</button>
+                                    <span id="discard_2" style="display:none;">&nbsp;</span><button type="button" class="btn btn-sm btn-light" id="discard" style="display:none; color:red;"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Discard</button>
+                                    <span id="editalert_2">&nbsp;</span><button class="btn btn-sm btn-light" type="button" title="Edit" id="editalert"><i class="flaticon-pencil" aria-hidden="true"></i>&nbsp; Edit</button>
+
+                                    &nbsp;<button class="btn btn-sm btn-light" title="History" data-toggle="modal" data-target="#LogModel"><i class="flaticon-clock-1" aria-hidden="true"></i>&nbsp; History</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <textarea name="editor1" id="IDofEditor"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+
+                                        <div class="card" style="height:485px;">
+                                            <div class="card-body">
+
+                                                <div style="height:460px; overflow-y:auto;">
+                                                    <table id="tblVendorVariable" class="table table-bordered">
+                                                        <thead>
+                                                            <tr style="background-color: #f1f1f1;">
+                                                                <th colspan="2"><center>Place Holder</center></th>
+                                                            </tr>
+
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="Name_of_the_Company">
+
+                                                                <td class="Variable_Name">Name of the Company</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Name_of_the_Company', 'Name of the Company');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="CIN">
+
+                                                                <td class="Variable_Name">CIN</td>
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('CIN', 'CIN');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Authorised_Signatory">
+
+                                                                <td class="Variable_Name">Authorised Signatory</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Authorised_Signatory', 'Authorised Signatory');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Corporate_Address">
+
+                                                                <td class="Variable_Name">Corporate Address</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Corporate_Address', 'Corporate Address');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Registered_Address">
+
+                                                                <td class="Variable_Name">Registered Address</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Registered_Address', 'Registered Address');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_the_Proprietorship_Concern" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of the Proprietorship Concern</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Name_of_the_Proprietorship_Concern', 'Name of the Proprietorship Concern');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_the_Proprietorship" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of the Proprietorship</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Name_of_the_Proprietorship', 'Name of the Proprietorship');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="PAN_Number" style="display:none;">
+
+                                                                <td class="Variable_Name">PAN Number</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('PAN_Number', 'PAN Number');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Adhaar_Card_No" style="display:none;">
+
+                                                                <td class="Variable_Name">Adhaar Card No</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Adhaar_Card_No', 'Adhaar Card No');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_the_Proprietorship_Concern" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of the Proprietorship Concern</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Address_of_the_Proprietorship_Concern', 'Address of the Proprietorship Concern');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Limited_Liability_Partnership_Firm" style="display:none;">
+
+                                                                <td class="Variable_Name">Limited Liability Partnership Firm</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Limited_Liability_Partnership_Firm', 'Limited Liability Partnership Firm');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="LLP_IN" style="display:none;">
+
+                                                                <td class="Variable_Name">LLP IN</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('LLP_IN', 'LLP IN');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Registered_Address_of_the_LLP" style="display:none;">
+
+                                                                <td class="Variable_Name">Registered Address of the LLP</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Registered_Address_of_the_LLP', 'Registered Address of the LLP');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_Others" style="display:none;">
+
+                                                                <td class="Variable_Name">Name</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Name', 'Name');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address" style="display:none;">
+
+                                                                <td class="Variable_Name">Address</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Address', 'Address');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_the_Partnership_Firm" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of the Partnership Firm</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Name_of_the_Partnership_Firm', 'Name of the Partnership Firm');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            @*<tr id="Authorised_Signatory_Partnership" style="display:none;">
+
+                                                                    <td class="Variable_Name">Authorised Signatory</td>
+
+                                                                    <td>
+                                                                        <center>
+                                                                            <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Authorised_Signatory', 'Authorised Signatory');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                        </center>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr id="Registered_Address_Partnership" style="display:none;">
+
+                                                                    <td class="Variable_Name">Registered Address</td>
+
+                                                                    <td>
+                                                                        <center>
+                                                                            <button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Registered_Address', 'Registered Address');"><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                        </center>
+                                                                    </td>
+                                                                </tr>*@
+
+                                                            <tr id="Branch1_Address">
+
+                                                                <td class="Variable_Name">Branch1 Address</td>
+
+                                                                <td><center><button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Branch1_Address','Branch1 Address');"><i class="flaticon-plus"></i>&nbsp; Add</button></center></td>
+                                                            </tr>
+                                                            <tr id="Branch2_Address">
+
+                                                                <td class="Variable_Name">Branch2 Address</td>
+
+                                                                <td><center><button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Branch2_Address','Branch2 Address');"><i class="flaticon-plus"></i>&nbsp; Add</button></center></td>
+                                                            </tr>
+                                                            <tr id="Branch3_Address">
+
+                                                                <td class="Variable_Name">Branch3 Address</td>
+
+                                                                <td><center><button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Branch3_Address','Branch3 Address');"><i class="flaticon-plus"></i>&nbsp; Add</button></center></td>
+                                                            </tr>
+                                                            <tr id="Branch4_Address">
+
+                                                                <td class="Variable_Name">Branch4 Address</td>
+
+                                                                <td><center><button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Branch4_Address','Branch4 Address');"><i class="flaticon-plus"></i>&nbsp; Add</button></center></td>
+                                                            </tr>
+                                                            <tr id="Branch5_Address">
+
+                                                                <td class="Variable_Name">Branch5 Address</td>
+
+                                                                <td><center><button class="btn btn-xs btn-light btn_link" disabled onclick="InsertVendorVariable('Branch5_Address','Branch5 Address');"><i class="flaticon-plus"></i>&nbsp; Add</button></center></td>
+                                                            </tr>
+                                                            <tr id="Name_of_1st_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 1st Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_1st_Partner', 'Name of 1st Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_1st_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 1st Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_1st_Partner', 'Age of 1st Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_1st_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 1st Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_1st_Partner', 'Father’s/Husband’s Name of 1st Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_1st_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 1st Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_1st_Partner', 'Address of 1st Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr id="Name_of_2nd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 2nd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_2nd_Partner', 'Name of 2nd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_2nd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 2nd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_2nd_Partner', 'Age of 2nd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_2nd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 2nd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_2nd_Partner', 'Father’s/Husband’s Name of 2nd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_2nd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 2nd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_2nd_Partner', 'Address of 2nd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr id="Name_of_3rd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 3rd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_3rd_Partner', 'Name of 3rd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_3rd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 3rd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_3rd_Partner', 'Age of 3rd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_3rd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 3rd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_3rd_Partner', 'Father’s/Husband’s Name of 3rd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_3rd_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 3rd Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_3rd_Partner', 'Address of 3rd Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr id="Name_of_4th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 4th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_4th_Partner', 'Name of 4th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_4th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 4th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_4th_Partner', 'Age of 4th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_4th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 4th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_4th_Partner', 'Father’s/Husband’s Name of 4th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_4th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 4th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_4th_Partner', 'Address of 4th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_5th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 5th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_5th_Partner', 'Name of 5th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_5th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 5th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_5th_Partner', 'Age of 5th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_5th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 5th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_5th_Partner', 'Father’s/Husband’s Name of 5th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_5th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 5th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_5th_Partner', 'Address of 5th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_6th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 6th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_6th_Partner', 'Name of 6th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_6th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 6th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_6th_Partner', 'Age of 6th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_6th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 6th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_6th_Partner', 'Father’s/Husband’s Name of 6th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_6th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 6th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_6th_Partner', 'Address of 6th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr id="Name_of_7th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 7th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_7th_Partner', 'Name of 7th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_7th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 7th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_7th_Partner', 'Age of 7th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_7th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 7th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_7th_Partner', 'Father’s/Husband’s Name of 7th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_7th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 7th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_7th_Partner', 'Address of 7th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr id="Name_of_8th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 8th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_8th_Partner', 'Name of 8th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_8th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 8th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_8th_Partner', 'Age of 8th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_8th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 8th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_8th_Partner', 'Father’s/Husband’s Name of 8th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_8th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 8th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_8th_Partner', 'Address of 8th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_9th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 9th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_9th_Partner', 'Name of 9th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_9th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 9th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_9th_Partner', 'Age of 9th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_9th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 9th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_9th_Partner', 'Father’s/Husband’s Name of 9th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_9th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 9th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_9th_Partner', 'Address of 9th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Name_of_10th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Name of 10th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Name_of_10th_Partner', 'Name of 10th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Age_of_10th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Age of 10th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Age_of_10th_Partner', 'Age of 10th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Father_Husband_Name_of_10th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Father’s/Husband’s Name of 10th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Father_Husband_Name_of_10th_Partner', 'Father’s/Husband’s Name of 10th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Address_of_10th_Partner" style="display:none;">
+
+                                                                <td class="Variable_Name">Address of 10th Partner</td>
+
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-xs btn-light btn_link" onclick="InsertVendorVariable('Address_of_10th_Partner', 'Address of 10th Partner');" disabled><i class="flaticon-plus"></i>&nbsp; Add</button>
+                                                                    </center>
+                                                                </td>
+                                                            </tr>
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+</div>
+<div class="modal fade" id="LogModel" role="dialog" tabindex="-1">
+    <div class="text-right model_body_position">
+    </div>
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Vendor Template Modified History</b></label>
+                <button type="button" class="btn btn-sm btn-light btn_close" title="Close" data-dismiss="modal" style="font-size:13px;">Close</button>
+
+            </div>
+            <div class="modal-body" style="height:450px; overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_LogHistory">
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th><center>Date and Time</center></th>
+                                        <th><center>Modified By</center></th>
+                                        <th><center>Activity</center></th>
+                                        <th><center>Changed From</center></th>
+                                        <th><center>Changed To</center></th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="tblLogList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @*<hr />*@
+
+                @*<div class="card-action text-right card_footer_button">*@
+                @*<input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">*@
+
+                @*</div>*@
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="WordDocumentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" style="max-width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label style="font-size: 20px !important;">
+                    <b>Upload Word document (.DOCX only)</b>
+                </label>
+                <div class="text-right model_body_position">
+                    <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close">Close</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="form-group">
+                                    <input type="file" name="UploadWordDocument" id="UploadWordDocument" class="file" accept=".docx">
+                                    <div class="input-group col-xs-10">
+                                        <span class="input-group-addon "><i class="glyphicon glyphicon-picture"></i></span>
+                                        <input type="text" class="form-control input-lg browse" id="UploadWordDocument2" name="UploadWordDocument" placeholder="Choose File">
+                                        <span class="input-group-btn ">
+                                            <button class="browse btn btn-primary uploadbtnsizing" type="button"><i class="glyphicon glyphicon-search"></i><i class="flaticon-search-2" aria-hidden="true"></i>&nbsp;&nbsp;Browse </button>&nbsp;
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <button type="button" id="UploadButton" style="display:none;" class="btn btn-primary uploadbtnsizing" data-dismiss="modal" data-toggle="modal" onclick="UploadWord();"><i class="flaticon-archive" aria-hidden="true"></i>&nbsp;&nbsp;Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+
+    CKEDITOR.replace('editor1', {
+        bodyClass: 'document-editor',
+        contentsCss: ['../../Content/ckeditor/contents.css', '../../Content/ckeditor/mystyles.css'],
+        height: 350,
+        removePlugins: 'lite,autogrow',
+
+        // extraAllowedContent: 'span',
+        //         on :
+        //{
+        //     instanceReady : function ( evt )
+        //   {
+        //     // Hide the editor top bar.
+        //     document.getElementById('cke_1_top').style.display = 'none';
+        // }
+
+        // blockedKeystrokes: [13]
+    });
+    //CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+    // CKEDITOR.instances.IDofEditor.execCommand('lite-acceptall');
+    //CKEDITOR.config.removeButtons = 'lite-acceptall';
+    CKEDITOR.disableAutoInLine = true;
+    CKEDITOR.config.allowedContent = true;
+    CKEDITOR.config.readOnly = true;
+
+
+    //CKEDITOR.config.readOnly = true;
+    //CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+
+
+    CKEDITOR.scriptLoader.load('../../Content/assets/js/plugin/webfont/webfont.min.js');
+    // CKEDITOR.config.fullPage = true;
+    // CKEDITOR.config.blockedKeystrokes( CKEDITOR.CTRL + 120, false );
+    CKEDITOR.config.keystrokes = [[CKEDITOR.CTRL + 90 /*Shift-Enter*/, 'null ']];
+    CKEDITOR.config.removePlugins = 'elementspath,resize';
+
+
+
+
+    //CKEDITOR.config.removePlugins = 'contextmenu,liststyle,tabletools,tableselection';
+    //CKEDITOR.config.keystrokes =
+    // [
+    //     [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
+    // ];
+    // CKEDITOR.inline('editor1', {
+    //     blockedKeystrokes: [120, CKEDITOR.CTRL + 120]
+    // });
+    //CKEDITOR.config.readOnly = true;
+    // Add code to display your toolbar here (example)
+    CKEDITOR.on('paste', function (evt) {
+        // Create a standalone filter passing 'p' and 'b' elements.
+        var filter = new CKEDITOR.filter('p b'),
+            // Parse the HTML string to a pseudo-DOM structure.
+            fragment = CKEDITOR.htmlParser.fragment.fromHtml(evt.data.dataValue),
+            writer = new CKEDITOR.htmlParser.basicWriter();
+        filter.applyTo(fragment);
+        fragment.writeHtml(writer);
+        evt.data.dataValue = writer.getHtml();
+    });
+
+
+    CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+        CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+            var sel = CKEDITOR.instances.IDofEditor.getSelection();
+            if (!(sel && !sel.isLocked)) { retrun; }
+            var el = sel.getStartElement();
+            if ((el && el.is && el.is("del"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("del"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("ins"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("ins"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("h4"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("h4"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("p"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("p"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("span"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("span"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+        });
+    });
+
+
+    function InsertVendorVariable(id, Lable) {
+        try {
+            var value = $("#" + id).val();
+            // alert("id" + id + "Value" + value);
+            if ($.trim(value).length < 1) {
+                value = Lable;
+            }
+
+            //CKEDITOR.instances.IDofEditor.insertHtml('<span style="color:red;" contentEditable="false" unselectable="on"> ** <span id = "testVar" class="CustomPlaceholder ' + Lable.replace(" ","_") + '">[[' + value + ']]</span> ** </span>');
+            CKEDITOR.instances.IDofEditor.insertHtml(' <span class="CustomPlaceholder ' + Lable.replace(/ /g, "_") + '" style="background:yellow;">' + value + '</span>  ');
+        } catch (error) {
+            swal("Please select the Editor", {
+                icon: "warning",
+            });
+        }
+    }
+</script>
+
+<script>
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit !", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it !',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                //document.getElementById("save").disabled = false;
+                // document.getElementById("discard").disabled = true;
+                $("#save").show();
+                $("#save_2").show();
+                $("#discard").show();
+                $("#discard_2").show();
+
+                $("#editalert").hide();
+                $("#BackButtton").hide();
+                $("#editalert_2").hide();
+                $("#BackButtton_2").hide();
+                $(".btn_link").removeAttr('disabled');
+                CKEDITOR.instances.IDofEditor.setReadOnly(false);
+                $("#type_of_entity").attr("disabled", true);
+                $("#DocumentUpload").show();
+
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    });
+
+    $("#discard").click(function () {
+        swal({
+            title: 'Are you sure?',
+            text: "You want to Discard !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Discard it !',
+                    className: 'btn btn-danger'
+                },
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location.reload();
+            }
+        });
+    });
+
+    function TypeOfEntity(Option) {
+
+        var select = Option;
+        $("#editalert").removeAttr('disabled');
+        //alert(select);
+        var template = "";
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: '/Vendor/GetVendorTemplate',
+            data: { select: select },
+            success: function (response) {
+                template = template + response;
+                CKEDITOR.instances.IDofEditor.setData(template);
+                CKEDITOR.instances.IDofEditor.setReadOnly(true);
+            }
+        });
+
+        if (Option == "Partnership Firm") {
+            document.getElementById("Name_of_the_Partnership_Firm").style.display = '';
+            //document.getElementById("Authorised_Signatory_Partnership").style.display = '';
+            //document.getElementById("Registered_Address_Partnership").style.display = '';
+            document.getElementById("Name_of_1st_Partner").style.display = '';
+            document.getElementById("Age_of_1st_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_1st_Partner").style.display = '';
+            document.getElementById("Address_of_1st_Partner").style.display = '';
+            document.getElementById("Name_of_2nd_Partner").style.display = '';
+            document.getElementById("Age_of_2nd_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_2nd_Partner").style.display = '';
+            document.getElementById("Address_of_2nd_Partner").style.display = '';
+            document.getElementById("Name_of_3rd_Partner").style.display = '';
+            document.getElementById("Age_of_3rd_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_3rd_Partner").style.display = '';
+            document.getElementById("Address_of_3rd_Partner").style.display = '';
+            document.getElementById("Name_of_4th_Partner").style.display = '';
+            document.getElementById("Age_of_4th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_4th_Partner").style.display = '';
+            document.getElementById("Address_of_4th_Partner").style.display = '';
+            document.getElementById("Name_of_5th_Partner").style.display = '';
+            document.getElementById("Age_of_5th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_5th_Partner").style.display = '';
+            document.getElementById("Address_of_5th_Partner").style.display = '';
+            document.getElementById("Name_of_6th_Partner").style.display = '';
+            document.getElementById("Age_of_6th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_6th_Partner").style.display = '';
+            document.getElementById("Address_of_6th_Partner").style.display = '';
+            document.getElementById("Name_of_7th_Partner").style.display = '';
+            document.getElementById("Age_of_7th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_7th_Partner").style.display = '';
+            document.getElementById("Address_of_7th_Partner").style.display = '';
+            document.getElementById("Name_of_8th_Partner").style.display = '';
+            document.getElementById("Age_of_8th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_8th_Partner").style.display = '';
+            document.getElementById("Address_of_8th_Partner").style.display = '';
+            document.getElementById("Name_of_9th_Partner").style.display = '';
+            document.getElementById("Age_of_9th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_9th_Partner").style.display = '';
+            document.getElementById("Address_of_9th_Partner").style.display = '';
+            document.getElementById("Name_of_10th_Partner").style.display = '';
+            document.getElementById("Age_of_10th_Partner").style.display = '';
+            document.getElementById("Father_Husband_Name_of_10th_Partner").style.display = '';
+            document.getElementById("Address_of_10th_Partner").style.display = '';
+
+            document.getElementById("Name_of_the_Company").style.display = 'none';
+            document.getElementById("CIN").style.display = 'none';
+            document.getElementById("Authorised_Signatory").style.display = '';
+            document.getElementById("Corporate_Address").style.display = 'none';
+            document.getElementById("Registered_Address").style.display = '';
+            document.getElementById("Name_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship").style.display = 'none';
+            document.getElementById("PAN_Number").style.display = 'none';
+            document.getElementById("Adhaar_Card_No").style.display = 'none';
+            document.getElementById("Address_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Limited_Liability_Partnership_Firm").style.display = 'none';
+            document.getElementById("LLP_IN").style.display = 'none';
+            document.getElementById("Registered_Address_of_the_LLP").style.display = 'none';
+            document.getElementById("Name_Others").style.display = 'none';
+            document.getElementById("Address").style.display = 'none';
+
+        }
+        else if (Option == "Company") {
+
+            document.getElementById("Name_of_the_Company").style.display = '';
+            document.getElementById("CIN").style.display = '';
+            document.getElementById("Authorised_Signatory").style.display = '';
+            document.getElementById("Corporate_Address").style.display = '';
+            document.getElementById("Registered_Address").style.display = '';
+
+            document.getElementById("Name_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship").style.display = 'none';
+            document.getElementById("PAN_Number").style.display = 'none';
+            document.getElementById("Adhaar_Card_No").style.display = 'none';
+            document.getElementById("Address_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Limited_Liability_Partnership_Firm").style.display = 'none';
+            document.getElementById("LLP_IN").style.display = 'none';
+            document.getElementById("Registered_Address_of_the_LLP").style.display = 'none';
+            document.getElementById("Name_Others").style.display = 'none';
+            document.getElementById("Address").style.display = 'none';
+            document.getElementById("Name_of_the_Partnership_Firm").style.display = 'none';
+            //document.getElementById("Authorised_Signatory_Partnership").style.display = 'none';
+            //document.getElementById("Registered_Address_Partnership").style.display = 'none';
+
+            document.getElementById("Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Age_of_1st_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Address_of_1st_Partner").style.display = 'none';
+            document.getElementById("Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Age_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Address_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Age_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Address_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Age_of_4th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Address_of_4th_Partner").style.display = 'none';
+            document.getElementById("Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Age_of_5th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Address_of_5th_Partner").style.display = 'none';
+            document.getElementById("Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Age_of_6th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Address_of_6th_Partner").style.display = 'none';
+            document.getElementById("Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Age_of_7th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Address_of_7th_Partner").style.display = 'none';
+            document.getElementById("Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Age_of_8th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Address_of_8th_Partner").style.display = 'none';
+            document.getElementById("Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Age_of_9th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Address_of_9th_Partner").style.display = 'none';
+            document.getElementById("Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Age_of_10th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Address_of_10th_Partner").style.display = 'none';
+
+        }
+        else if (Option == "Sole Proprietorship") {
+
+            document.getElementById("Name_of_the_Proprietorship").style.display = '';
+            document.getElementById("Name_of_the_Proprietorship_Concern").style.display = '';
+            document.getElementById("PAN_Number").style.display = '';
+            document.getElementById("Adhaar_Card_No").style.display = '';
+            document.getElementById("Address_of_the_Proprietorship_Concern").style.display = '';
+
+            document.getElementById("Name_of_the_Company").style.display = 'none';
+            document.getElementById("CIN").style.display = 'none';
+            document.getElementById("Authorised_Signatory").style.display = 'none';
+            document.getElementById("Corporate_Address").style.display = 'none';
+            document.getElementById("Registered_Address").style.display = 'none';
+            document.getElementById("Limited_Liability_Partnership_Firm").style.display = 'none';
+            document.getElementById("LLP_IN").style.display = 'none';
+            document.getElementById("Registered_Address_of_the_LLP").style.display = 'none';
+            document.getElementById("Name_Others").style.display = 'none';
+            document.getElementById("Address").style.display = 'none';
+            document.getElementById("Name_of_the_Partnership_Firm").style.display = 'none';
+            // document.getElementById("Authorised_Signatory_Partnership").style.display = 'none';
+            //document.getElementById("Registered_Address_Partnership").style.display = 'none';
+
+            document.getElementById("Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Age_of_1st_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Address_of_1st_Partner").style.display = 'none';
+            document.getElementById("Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Age_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Address_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Age_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Address_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Age_of_4th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Address_of_4th_Partner").style.display = 'none';
+            document.getElementById("Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Age_of_5th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Address_of_5th_Partner").style.display = 'none';
+            document.getElementById("Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Age_of_6th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Address_of_6th_Partner").style.display = 'none';
+            document.getElementById("Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Age_of_7th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Address_of_7th_Partner").style.display = 'none';
+            document.getElementById("Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Age_of_8th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Address_of_8th_Partner").style.display = 'none';
+            document.getElementById("Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Age_of_9th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Address_of_9th_Partner").style.display = 'none';
+            document.getElementById("Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Age_of_10th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Address_of_10th_Partner").style.display = 'none';
+
+        }
+        else if (Option == "Limited Liability Partnership Firm") {
+
+            document.getElementById("Limited_Liability_Partnership_Firm").style.display = '';
+            document.getElementById("LLP_IN").style.display = '';
+            document.getElementById("Registered_Address_of_the_LLP").style.display = '';
+
+            document.getElementById("Name_of_the_Company").style.display = 'none';
+            document.getElementById("CIN").style.display = 'none';
+            document.getElementById("Authorised_Signatory").style.display = 'none';
+            document.getElementById("Corporate_Address").style.display = 'none';
+            document.getElementById("Registered_Address").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship").style.display = 'none';
+            document.getElementById("PAN_Number").style.display = 'none';
+            document.getElementById("Adhaar_Card_No").style.display = 'none';
+            document.getElementById("Address_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Name_Others").style.display = 'none';
+            document.getElementById("Address").style.display = 'none';
+            document.getElementById("Name_of_the_Partnership_Firm").style.display = 'none';
+            // document.getElementById("Authorised_Signatory_Partnership").style.display = 'none';
+            //document.getElementById("Registered_Address_Partnership").style.display = 'none';
+
+            document.getElementById("Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Age_of_1st_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Address_of_1st_Partner").style.display = 'none';
+            document.getElementById("Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Age_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Address_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Age_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Address_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Age_of_4th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Address_of_4th_Partner").style.display = 'none';
+            document.getElementById("Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Age_of_5th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Address_of_5th_Partner").style.display = 'none';
+            document.getElementById("Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Age_of_6th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Address_of_6th_Partner").style.display = 'none';
+            document.getElementById("Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Age_of_7th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Address_of_7th_Partner").style.display = 'none';
+            document.getElementById("Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Age_of_8th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Address_of_8th_Partner").style.display = 'none';
+            document.getElementById("Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Age_of_9th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Address_of_9th_Partner").style.display = 'none';
+            document.getElementById("Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Age_of_10th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Address_of_10th_Partner").style.display = 'none';
+
+        }
+        else if (Option == "Others") {
+            document.getElementById("Name_Others").style.display = '';
+            document.getElementById("Address").style.display = '';
+
+            document.getElementById("Name_of_the_Company").style.display = 'none';
+            document.getElementById("CIN").style.display = 'none';
+            document.getElementById("Authorised_Signatory").style.display = 'none';
+            document.getElementById("Corporate_Address").style.display = 'none';
+            document.getElementById("Registered_Address").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Name_of_the_Proprietorship").style.display = 'none';
+            document.getElementById("PAN_Number").style.display = 'none';
+            document.getElementById("Adhaar_Card_No").style.display = 'none';
+            document.getElementById("Address_of_the_Proprietorship_Concern").style.display = 'none';
+            document.getElementById("Limited_Liability_Partnership_Firm").style.display = 'none';
+            document.getElementById("LLP_IN").style.display = 'none';
+            document.getElementById("Registered_Address_of_the_LLP").style.display = 'none';
+            document.getElementById("Name_of_the_Partnership_Firm").style.display = 'none';
+            // document.getElementById("Authorised_Signatory_Partnership").style.display = 'none';
+            // document.getElementById("Registered_Address_Partnership").style.display = 'none';
+
+            document.getElementById("Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Age_of_1st_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_1st_Partner").style.display = 'none';
+            document.getElementById("Address_of_1st_Partner").style.display = 'none';
+            document.getElementById("Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Age_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Address_of_2nd_Partner").style.display = 'none';
+            document.getElementById("Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Age_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Address_of_3rd_Partner").style.display = 'none';
+            document.getElementById("Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Age_of_4th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_4th_Partner").style.display = 'none';
+            document.getElementById("Address_of_4th_Partner").style.display = 'none';
+            document.getElementById("Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Age_of_5th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_5th_Partner").style.display = 'none';
+            document.getElementById("Address_of_5th_Partner").style.display = 'none';
+            document.getElementById("Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Age_of_6th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_6th_Partner").style.display = 'none';
+            document.getElementById("Address_of_6th_Partner").style.display = 'none';
+            document.getElementById("Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Age_of_7th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_7th_Partner").style.display = 'none';
+            document.getElementById("Address_of_7th_Partner").style.display = 'none';
+            document.getElementById("Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Age_of_8th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_8th_Partner").style.display = 'none';
+            document.getElementById("Address_of_8th_Partner").style.display = 'none';
+            document.getElementById("Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Age_of_9th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_9th_Partner").style.display = 'none';
+            document.getElementById("Address_of_9th_Partner").style.display = 'none';
+            document.getElementById("Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Age_of_10th_Partner").style.display = 'none';
+            document.getElementById("Father_Husband_Name_of_10th_Partner").style.display = 'none';
+            document.getElementById("Address_of_10th_Partner").style.display = 'none';
+
+        }
+    }
+
+
+    function SaveVendorTemplate() {
+        var content = CKEDITOR.instances.IDofEditor.getData();
+        content = content.replace(/\?/g, "");
+        var Select = $("#type_of_entity").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Vendor/SaveVendorTemplate",
+            traditional: true,
+
+            data: { content: content, Select: Select },
+            success: function (response) {
+                if (response == "success") {
+                    swal("Saved Successfully", {
+                        icon: "success",
+                    }).then(function (result) {
+                        if (result) {
+                            window.location = '/Vendor/VendorTemplate';
+                        }
+                    });
+                }
+                else {
+                    swal("Unable to Save Data", {
+                        icon: "error",
+                        text: "Unable to Save Data. Please try again",
+                    }).then(function (error) {
+                        if (error) {
+                            window.location = '/Template/TemplateAmendments';
+                        }
+                    });
+                }
+            },
+
+        });
+    }
+
+</script>
+<script>
+    $(function () {
+        // alert("hello");
+        var ID = 1;
+        var tblLog = "";
+        $.ajax({
+            type: "POST",
+            url: "/Vendor/GetVendorTemplateLogDetail",
+            data: { ID: ID },
+
+            dataType: 'json',
+            success: function (response) {
+
+                //alert(response.LogUserID);
+                $.each($(response), function (index, value) {
+                    tblLog = tblLog + '<tr><td><center>' + value.DateandTime + '</center></td><td><center>' + value.ModifiedBy + '</center></td><td style="text-align: left;">' + value.LogActivity + '</td><td style="text-align: left;">' + value.ChangedFrom + '</td><td style="text-align: left;">' + value.ChangedTo + '</td></tr>';
+                });
+                $("#tblLogList").html(tblLog);
+            }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        var select = $("#type_of_entity").val();
+        var template = "";
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: '/Vendor/GetVendorTemplate',
+            data: { select: select },
+            success: function (response) {
+                template = template + response;
+                CKEDITOR.instances.IDofEditor.setData(template);
+            }
+        });
+    });
+</script>
+
+
+@* --------word document-------- *@
+<script>
+
+    function UploadWord() {
+        var url = window.location.href;
+        var page = url.split('/');
+        var ID = page[page.length - 1];
+        $.ajax({
+            url: "/Vendor/UploadWordDocument",
+            type: "POST",
+            data: function () {
+                var data = new FormData();
+                data.append("UploadWordDocument", jQuery("#UploadWordDocument").get(0).files[0]);
+                return data;
+            }(),
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.length > 0) {
+
+                    CKEDITOR.instances.IDofEditor.setData(response);
+                    $("#UploadWordDocument2").val("");
+                    $("#UploadButton").hide();
+                    swal("Uploaded Successfully", {
+                        icon: "success",
+                    });
+                }
+
+                //else
+                //    swal("Error", {
+                //        icon: "error",
+                //    });
+            },
+            error: function (jqXHR, textStatus, errorMessage) {
+                console.log(errorMessage);
+            }
+        });
+    }
+</script>
+
+<script>
+    $(".file").change(function () {
+        var file = $(".file").val();
+        if (file != "") {
+            $("#UploadButton").show();
+        }
+        else {
+            $("#UploadButton").hide();
+        }
+    });
+</script>
+
+<script>
+    $(document).on('click', '.browse', function () {
+        var file = $(this).parent().parent().parent().find('.file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        var data = $(this).parent().find('.form-control').val();
+        var extension = data.substr(data.lastIndexOf('.') + 1).toLowerCase();
+
+        var allowedExtensions = ['docx'];
+        if (data.length > 0) {
+            if (allowedExtensions.indexOf(extension) === -1) {
+                //alert('Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.');
+                $.notify(
+                    {
+                        // options
+                        title: 'Uploading Files',
+                        message: 'Invalid file Format. Only ' + allowedExtensions.join(', ') + ' are allowed.',
+                        target: '_blank',
+                        icon: 'fa fa-exclamation-triangle'
+                    },
+                    {
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "danger",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                            '<span data-notify="icon"></span> ' +
+                            '<span data-notify="title">{1}</span> ' +
+                            '<span data-notify="message">{2}</span>' +
+                            '<div class="progress" data-notify="progressbar">' +
+                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                            '</div>' +
+                            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                            '</div>'
+                    });
+                $(this).parent().find('.form-control').val('');
+                $("#UploadButton").hide();
+                try {
+                    // $("#uploadFile").hide();
+                } catch (error) { }
+            }
+        }
+        else {
+            $(this).parent().find('.form-control').val('');
+
+        }
+    });
+
+</script>
+

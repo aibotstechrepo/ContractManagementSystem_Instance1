@@ -1,0 +1,185 @@
+﻿@model IQueryable<ContractManagementSystem.Models.ClauseRepositoryModel>
+
+@{
+    ViewBag.Title = "Repository";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    //Layout = "";
+    string getRelativeDateTime(DateTime date)
+    {
+        TimeSpan ts = DateTime.Now - date;
+        if (ts.TotalMinutes < 1)//seconds ago
+            return "just now";
+        if (ts.TotalHours < 1)//min ago
+            return (int)ts.TotalMinutes == 1 ? "1 Minute ago" : (int)ts.TotalMinutes + " Minutes ago";
+        if (ts.TotalDays < 1)//hours ago
+            return (int)ts.TotalHours == 1 ? "1 Hour ago" : (int)ts.TotalHours + " Hours ago";
+        if (ts.TotalDays < 7)//days ago
+            return (int)ts.TotalDays == 1 ? "1 Day ago" : (int)ts.TotalDays + " Days ago";
+        if (ts.TotalDays < 30.4368)//weeks ago
+            return (int)(ts.TotalDays / 7) == 1 ? "1 Week ago" : (int)(ts.TotalDays / 7) + " Weeks ago";
+        if (ts.TotalDays < 365.242)//months ago
+            return (int)(ts.TotalDays / 30.4368) == 1 ? "1 Month ago" : (int)(ts.TotalDays / 30.4368) + " Months ago";
+        //years ago
+        return (int)(ts.TotalDays / 365.242) == 1 ? "1 Year ago" : (int)(ts.TotalDays / 365.242) + " Years ago";
+    }
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Clause Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        Clause Master
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                       Library
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-title"><b>Library</b></div>
+                                </div>
+
+                                <div class="col-sm-6 text-right redirectionallink">
+                                    @*<a href="~/Clause/New"><i class="fa fa-plus" aria-hidden="true"></i></a>*@
+                                    <button type="button" class="btn btn-sm btn-light btn_create" onclick="window.location = '/Clause/New'">Create New Clause</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table id="multi-filter-select" class="display table table-striped table-hover table-bordered">
+
+                                            <thead>
+
+                                                <tr>
+                                                    <th><center>View</center></th>
+                                                    <th><center>Clause Title</center></th>
+                                                    @*<th><center>Clause Desciption</center></th>*@
+                                                    @*<th><center>Clause Text</center></th>*@
+                                                    <th><center>Last Modified</center></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="redirectionallink">
+                                                            <center>
+                                                                <a href="@Url.Action("Details", "Clause", new { id = item.ClauseClauseID})"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <center> @item.ClauseClauseTitle</center>
+                                                        </td>
+                                                        @*<td>
+                                                            <center>
+                                                                @item.ClauseClauseDescription
+                                                            </center>
+                                                        </td>*@
+                                                        <td>
+                                                            <center>
+                                                                @getRelativeDateTime(item.ClauseLastModified)
+                                                            </center>
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#multi-filter-select').DataTable({
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 10,
+            "order": [
+                [0, "desc"]],
+             "columnDefs": [
+                { "width": "15%", "targets": 0 },
+                { "width": "55%", "targets": 1 },
+                { "width": "30%", "targets": 2 },
+            ]
+        });
+
+        $('input.search.asd').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        var msg = '@ViewBag.Status';
+        if (msg == "Success") {
+           // alert("updated");
+
+            swal("Updated successfully !", {
+            icon: "success",
+
+        })
+               .then(function (result) {
+                        if (result){
+
+                  //  window.location = "/Clause/Repository";
+                }
+            });
+        }
+        if (msg == "DeleteSuccess") {
+           // alert("updated");
+
+            swal("Successfully removed the record !", {
+            icon: "success",
+
+        })
+               .then(function (result) {
+                        if (result){
+
+                   // window.location = "/Clause/Repository";
+                }
+            });
+        }
+    });
+</script>
+

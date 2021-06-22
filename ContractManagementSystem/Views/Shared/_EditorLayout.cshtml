@@ -1,0 +1,119 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="X-UA-Compatible" content="IE=11,chrome=1">
+    <title>@ViewBag.Title</title>
+
+    <!-- Fonts and icons -->
+    <script src="../../Content/assets/js/plugin/webfont/webfont.min.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../Content/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/assets/css/atlantis.min.css">
+
+    <link href="../../Content/assets/css/fonts.min.css" rel="stylesheet" />
+
+    <link href="../../Content/assets/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+
+    <link href="../../Content/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="../../Content/Custom_css/custom_css.css" rel="stylesheet" />
+
+
+
+    <style type="text/css">
+        .modalload {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('/Content/assets/img/preloader.gif') 50% 50% no-repeat;
+        }
+
+        .loading .modalload {
+            overflow: hidden;
+        }
+
+        /* Anytime the body has the loading class, our
+        modal element will be visible */
+        .loading .modalload {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+
+    <!--   Core JS Files   -->
+    <script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="../../Content/assets/js/core/bootstrap.min.js"></script>
+
+
+    <!-- jQuery UI -->
+    <script src="../../Content/assets/js/core/popper.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../Content/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+    <!-- Chart JS -->
+    <script src="../../Content/assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="../../Content/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="../../Content/assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    @*<script src="../../Content/assets/js/plugin/datatables/datatables.min.js"></script>*@
+    <script src="../../Content/DataTables/datatables.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="../../Content/assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="../../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Atlantis JS -->
+    <script src="../../Content/assets/js/atlantis.min.js"></script>
+
+    <script src="~/Content/assets/js/moment.js"></script>
+    <script src="~/Content/assets/js/datepicker.js"></script>
+    <script src="~/Content/assets/js/tempusdominus-bootstrap-4.js"></script>
+
+    <script src="../../Content/assets/js/bootstrap-slider.min.js"></script>
+
+    <script src="../../Content/assets/js/jspdf.min.js"></script>
+    <script src="../../Content/assets/js/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="../../Content/assets/js/tableHTMLExport.js"></script>
+
+    @*<script src="~/Scripts/default_jquery/jquery-3.3.1.min.js"></script>*@
+    <script src="~/Content/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script>
+        $body = $("body");
+
+        $(document).on({
+            ajaxStart: function () { $body.addClass("loading"); },
+            ajaxStop: function () { $body.removeClass("loading"); }
+        });
+    </script>
+</body>
+</html>

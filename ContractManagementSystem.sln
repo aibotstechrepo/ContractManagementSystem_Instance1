@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractManagementSystem", "ContractManagementSystem\ContractManagementSystem.csproj", "{40342E40-F8BA-49C7-AF4C-50BF6F5B1BDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40342E40-F8BA-49C7-AF4C-50BF6F5B1BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40342E40-F8BA-49C7-AF4C-50BF6F5B1BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40342E40-F8BA-49C7-AF4C-50BF6F5B1BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40342E40-F8BA-49C7-AF4C-50BF6F5B1BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {12D9969C-A1E7-4E38-9204-EDEFE0F20BAD}
+	EndGlobalSection
+EndGlobal

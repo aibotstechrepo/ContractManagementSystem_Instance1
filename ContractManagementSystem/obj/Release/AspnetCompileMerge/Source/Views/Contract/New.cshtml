@@ -1,0 +1,1967 @@
+﻿
+@model ContractManagementSystem.Models.CommonModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Contract</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Contract/Repository">Contract</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        New Contract
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            @*<div class="card-title"><b>Contract</b></div>*@
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="card-title"><b>New Contract</b></div>
+                                </div>
+                                <div class="col-sm-2 text-right redirectionallink">
+                                    <button @*onclick="window.location = '/Contract/Repository'"*@ id="discard" class="btn btn-sm btn-light" value="Discard"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp;&nbsp;Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Cluster">Contract Name <span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="65" class="form-control" title="Numbers and Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" id="contractname" name="contractname" placeholder="Enter Contract Name" required="required">
+                                            <input type="hidden" class="form-control" id="Initiator" name="Initiator" value="@CurrentUserID()" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Finance">Contract Type <span class="asteriskicon"> *</span></label>
+                                            @*<input type="text" class="form-control" name="ContractType" placeholder="Enter Type" required="required">*@
+                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" class="form-control" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="ContractType" id="ContractType" list="type_of_contract" placeholder="Enter Contract Type" required />
+                                            <datalist id="type_of_contract">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="description">Contract Description</label>
+                                            <textarea class="form-control text_area" maxlength="180" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="contractdescription" name="Description" placeholder="Enter Contract Description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="Cluster">Cluster <span class="asteriskicon"> *</span></label>
+                                            @*<select class="form-control" id="Contractcategory" name="ContractCategory" required="required" style="padding-bottom:3px;padding-top:3px;" disabled>
+                                                <option selected disabled>-- Select --</option>
+                                            </select>*@
+                                            <input type="text" maxlength="180" class="form-control" id="Contractcategory" name="ContractCategory" required="required" disabled/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="Finance">Function <span class="asteriskicon"> *</span></label>
+                                            @*<select class="form-control" id="Contractsubcategory" name="ContractSubCategory" required="required" style="padding-bottom:3px;padding-top:3px;" disabled>
+                                                <option selected disabled>-- Select --</option>
+                                            </select>*@
+                                            <input type="text" maxlength="180" class="form-control" id="Contractsubcategory"  name="ContractSubCategory" required="required" disabled/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="Category">Create Contract Using <span class="asteriskicon"> *</span></label>
+                                            <select class="form-control" id="typeformtemplate" name="TemplateType" required="required" style="padding-bottom:3px;padding-top:3px;">
+                                                <option disabled selected>-- Select --</option>
+                                                <option>Choose From Template</option>
+                                                <option>Upload Existing Contract</option>
+                                                <option>Create Fresh Contract</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3" id="formtemplate">
+
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header CardHeader_Approvers">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-6">
+                                                        <div class="card-title"><h5><b>Approver (s) <span class="asteriskicon"> *</span></b></h5></div>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <button type="button" class="btn btn-sm btn-light" style="color:blue;" data-toggle="modal" data-target="#searchmodal"> <i class="flaticon-search-2" aria-hidden="true"></i>&nbsp; Search User</button>
+                                                         <button type="button" id="btnRemoveApprover" style="color:red;" class="btn btn-sm btn-light" title="Remove Approvers from List"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Remove</button>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-right">
+
+                                                        <input type="hidden" id="ApproverEmployeeID" />
+                                                        <input type="hidden" id="ApproverEmployeeName" />
+
+                                                        <input type="hidden" id="ApproverEmployeeEmail" />
+                                                        <input type="hidden" id="ApproverEmployeeDesignation" />
+                                                        <input type="hidden" id="ApproverEmployeeRoles" />
+                                                        <input type="hidden" id="ApproverEmployeeSubCategory" />
+                                                        <input type="hidden" id="ApproverEmployeeCategory" />
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="table-responsive">
+                                                                    <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><center>Select to remove</center></th>
+                                                                                <th><center>Employee ID</center></th>
+                                                                                <th><center>Employee Name</center></th>
+                                                                                <th><center>Employee Email Address</center></th>
+                                                                                <th><center>Employee Designation</center></th>
+                                                                                <th><center>Employee Role (s)</center></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="aprrovallist">
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action text-right card_footer_button">
+                                    <button type="button" onclick="SubmitContract();" class="btn btn-success" style="font-size:17px;"><b>Save and Continue</b></button>
+                                    @*<button type="button" onclick="SubmitContractdraft();" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i>&nbsp;  Draft</button>*@
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="contracttemplatetype" role="dialog" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered" style="max-width:80%;">
+        <div class="modal-content">
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Template</b></label>
+
+                <div class="text-right model_body_position">
+                    <button href="" data-dismiss="modal" class="modaldismissarrow btn btn-sm btn-light btn_close" title="Close" style="font-size:13px;">Close</button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="height:520px; overflow:auto">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table id="basic-datatables" class="display table table-striped table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><center>Preview</center></th>
+                                        <th><center>Select Template</center></th>
+                                        <th><center>Template ID</center></th>
+                                        <th><center>Template Name</center></th>
+                                        @*<th>Description</th>*@
+                                        <th><center>Contract Type</center></th>
+                                        <th><center>Description</center></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="TemplatePreview_tableAppend">
+
+                                    @foreach (var item in Model.Template)
+                                    {
+                                        if ((item.Status == "In Effect") && (item.Enable == "Active"))
+                                        {
+                                    <tr>
+                                                                                @*<td class="redirectionallink">
+                                                    <center>
+                                                        <a href="@Url.Action("Details", "Template", new { id = item.TemplateID })"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                                    </center>
+                                                </td>*@
+                                        <td>
+                                            <center>
+                                                <a href="" id="@item.TemplateID" onclick="TemplatePreview(this.id);" data-toggle="modal" data-target="#TemplatePreview"><i class="fa fa-eye fa-1x" aria-hidden="true"></i></a>
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <center>
+                                                <button type="button" class="btn btn-sm btn-success" id="@item.TemplateID" onclick="SelectFunctionPreview(this.id);" data-dismiss="modal"><i class="fa fa-check" aria-hidden="true"></i>&nbsp; Select</button>
+                                            </center>
+                                        </td>
+                                        <td><center>@item.TemplateID</center></td>
+                                        <td><center>@item.Name</center></td>
+                                        <td><center>@item.Type</center></td>
+                                        <td><center>@item.Description</center></td>
+                                    </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="card-action text-right card_footer_button">
+                    <input type="submit" class="btn btn-success" value="Select" id="CaptureHodList">
+                    <button type="submit" class="btn btn-danger" data-dismiss="modal"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Cancel</button>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="TemplatePreview" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 75%; padding-left:80px; padding-right:80px;" role="document">
+        <div class="modal-content VersionCompare_Modal" style="height:600px;">
+            <div class="modal-header">
+                <div class="col-sm-7 form-inline">
+                    <span style="font-size:20px; color:white;"><b>Template Preview : <span id="previewtemplateid" style="font-size:20px;"></span> - <span id="previewtemplatename" style="font-size:20px;"></span></b></span>
+                    
+                </div>
+                <div class="text-right model_body_position">
+                    <button type="button" class="btn btn-sm btn-success template_preview" style="font-size:13px;" onclick="SelectFunctionPreview(this.id);" data-dismiss="modal"><i class="fa fa-check" aria-hidden="true"></i>&nbsp; Select this Template</button>
+                    &nbsp; &nbsp; &nbsp; <button href="" data-dismiss="modal" class="modaldismissarrow btn btn-sm btn-light btn_close" title="Close" style="font-size:13px;">Close</button>
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <textarea name="editor4" id="IDofEditor4"></textarea>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-interface-5 fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <button href="" data-dismiss="modal" class="modaldismissarrow btn btn-sm btn-light btn_close" title="Close" style="font-size:13px;">Close</button>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button class="btn btn-light btn-sm btn_create" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="Approvers_Table" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th><center>Select User</center></th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+
+    $(".form_validation").keyup(function () {
+        //if (this.validity.patternMismatch) {
+
+        //        this.style.borderColor = "red";
+        //         this.focus();
+
+        //    }
+        //alert('Alphabets and Special Characters are not allowed');
+        //return (false);
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+        this.focus();
+    });
+
+</script>
+
+<script>
+    function InvalidName(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Contract Name');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidDescription(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Enter an Contract Description');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidType(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('select an Contract Type');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+
+    function InvalidCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Cluster type');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidSubCategory(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Function');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+    function InvalidContractType(textbox) {
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Select an Type');
+            //document.getElementById("myDiv").style.borderColor = "red";
+            textbox.style.borderColor = "red";
+        }
+        else if (textbox.validity.patternMismatch) {
+            textbox.setCustomValidity('Numbers and Special Characters are not allowed');
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+
+        return true;
+    }
+</script>
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+    CKEDITOR.replace('editor4', {
+        bodyClass: 'document-editor',
+        contentsCss: ['../../Content/ckeditor/mystyles.css'],
+        height: 480,
+        removePlugins: 'autogrow',
+        extraAllowedContent: 'span',
+        on:
+        {
+            instanceReady: function (evt) {
+                // Hide the editor top bar.
+                document.getElementById('cke_1_top').style.display = 'none';
+            }
+        }
+
+        // blockedKeystrokes: [13]
+    });
+    CKEDITOR.disableAutoInLine = true;
+    CKEDITOR.config.allowedContent = true;
+
+
+    // CKEDITOR.instances.IDofEditor.execCommand('lite-acceptall');
+    //CKEDITOR.config.readOnly = true;
+    CKEDITOR.scriptLoader.load('../../Content/assets/js/plugin/webfont/webfont.min.js');
+    // CKEDITOR.config.fullPage = true;
+    // CKEDITOR.config.blockedKeystrokes( CKEDITOR.CTRL + 120, false );
+    CKEDITOR.config.keystrokes = [[CKEDITOR.CTRL + 90 /*Shift-Enter*/, 'null ']];
+    CKEDITOR.config.removePlugins = 'elementspath,resize';
+
+
+
+    //CKEDITOR.config.removePlugins = 'contextmenu,liststyle,tabletools,tableselection';
+    //CKEDITOR.config.keystrokes =
+    // [
+    //     [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
+    // ];
+    // CKEDITOR.inline('editor1', {
+    //     blockedKeystrokes: [120, CKEDITOR.CTRL + 120]
+    // });
+    //CKEDITOR.config.readOnly = true;
+    // Add code to display your toolbar here (example)
+    CKEDITOR.on('paste', function (evt) {
+        // Create a standalone filter passing 'p' and 'b' elements.
+        var filter = new CKEDITOR.filter('p b'),
+            // Parse the HTML string to a pseudo-DOM structure.
+            fragment = CKEDITOR.htmlParser.fragment.fromHtml(evt.data.dataValue),
+            writer = new CKEDITOR.htmlParser.basicWriter();
+        filter.applyTo(fragment);
+        fragment.writeHtml(writer);
+        evt.data.dataValue = writer.getHtml();
+    });
+
+
+    CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+        CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+            var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+            if (!(sel && !sel.isLocked)) { retrun; }
+            var el = sel.getStartElement();
+            if ((el && el.is && el.is("del"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("del"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("ins"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("ins"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("h4"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("h4"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("p"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("p"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("span"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor4.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor4.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor4.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("span"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    function TemplatePreview(ID) {
+        
+            var Template = "";
+            var TemplateID = "";
+            var TemplateName = "";
+            //alert(ID);
+            $.ajax({
+                type: "POST",
+                url: "/Contract/GetTemplateForPreview",
+                data: { ID: ID },
+                success: function (response) {
+
+                    //alert(response);
+                    //$("#TemplateCompareDivision").html(response);
+                    //$('#IDofEditor2').html(response);
+                    //alert(response[2]);
+                    Template = Template + response[1];
+                    TemplateID = TemplateID + response[0];
+                    TemplateName = TemplateName + response[2];
+                    CKEDITOR.instances.IDofEditor4.setData(Template);
+                    $('.template_preview').attr("id", ID);
+                    // $("#IDofEditor41").html(response);
+                    CKEDITOR.instances.IDofEditor4.setReadOnly(true);
+                    $("#previewtemplateid").html(TemplateID);
+                    //alert(TemplateID);
+                    $("#previewtemplatename").html(TemplateName);
+
+
+                    //CKEDITOR.instances['editor2'].setData(response);
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+
+                }
+            });
+       
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+        });
+    });
+</script>
+
+
+@*<script>
+
+
+    var tempCatRefresh = 0;
+    $(function () {
+        // $("#contractname").focusout(function () {
+        //  alert("hello");
+        if (tempCatRefresh == 0) {
+            tempCatRefresh = tempCatRefresh + 1;
+            tempCatRefresh = tempCatRefresh + 1
+            $.ajax({
+                type: "POST",
+                url: "/Contract/getCategory",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+
+                success: function (response) {
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("Contractcategory");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+
+                    option.text = "-- Select --";
+                    option.disabled = true;
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        x.add(option);
+                    });
+                }
+
+            });
+        }
+    });
+
+    $("#Contractcategory").change(function () {
+        var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/Contract/getSubCategory',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+
+                $('#Contractsubcategory')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("Contractsubcategory");
+
+                var option = document.createElement("option");
+                option.text = "-- Select --";
+                option.disabled = true;
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            }
+        });
+    });
+
+
+</script>*@
+
+
+
+<script>
+
+    $(function () {
+        $("#typeformtemplate").change(function () {
+            var selectedText = $(this).find("option:selected").text();
+            // var TemplateType = $(this).val();
+            //alert(selectedText);
+            if (selectedText == "Choose From Template") {
+                var x = '<div class="form-group"><label for="">Template Name</label><div class="input-group"><input type="text" maxlength="50" class="form-control" id="Template_Name"><input type="hidden" name="ContractIDforTemplate" id="ContractIDforTemplate"/><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#contracttemplatetype"><i class="flaticon-search-2" aria-hidden="true"></i></button></div></div>';
+                $('#formtemplate').html(x);
+            }
+
+            else if (selectedText == "Upload Existing Contract") {
+                var x = '<div class="form-group"><br/><p id="Existing_Contract">Save and Continue to Upload</p></div>';
+                $("#formtemplate").html(x);
+            }
+
+            else if (selectedText == "Create Fresh Contract") {
+                var x = '<div class="form-group"><label>Contract Name</label><div class="input-group"><input type="text" maxlength="50" readonly id="ContractName"  value ="' + $("#contractname").val() + '" class="form-control" aria-label="Text input with dropdown button"></div></div>';
+                $("#formtemplate").html(x);
+            }
+
+        });
+    });
+
+</script>
+
+
+<script>
+    $("#contractname").keyup(function () {
+        //alert("changed");
+        var name = $("#contractname").val();
+
+        var selectedtexttype = $('#typeformtemplate').find("option:selected").text();
+        (selectedtexttype == "Fresh Contract")
+        {
+            $("#ContractName").val(name);
+        }
+
+    });
+</script>
+
+
+<script>
+    function SelectFunctionPreview(TemplateID) {
+        //alert(TemplateID);
+        var TemplateName = "";
+        var TemplateID_Contract = "";
+        $.ajax({
+            type: "POST",
+            url: "/Contract/getTemplateModalDetails",
+            data: { TemplateID: TemplateID },
+
+
+            success: function (response) {
+                // alert(response.Name);
+                $.each(response, function (index, value) {
+                    TemplateName = TemplateName + value.Name;
+                    TemplateID_Contract = TemplateID_Contract + value.TemplateID;
+                });
+                
+                $("#Template_Name").val(TemplateName);
+                $("#ContractIDforTemplate").val(TemplateID_Contract);
+                $("#contracttemplatetype").modal('hide');
+            },
+
+        });
+    }
+</script>
+
+
+
+
+<script>
+
+    $(document).on('click', '.browse', function () {
+        var file = $(this).parent().parent().parent().find('.file');
+        file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+        $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+    });
+
+</script>
+
+
+<script>
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Contract/GetType_List",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+
+                str = "";
+                for (var i = 0; i < response.length; ++i) {
+                    //alert(response[i]);
+                    str += '<option value="' + response[i] + '" />'; // Storing options in variable
+                }
+
+                var my_list = document.getElementById("type_of_contract");
+                my_list.innerHTML = str;
+
+            },
+
+
+        });
+    });
+
+</script>
+
+<script>
+        $(function () {
+            var currentuserid = "@CurrentUserID()";
+            var Cluster = "";
+            var Function = "";
+            $.ajax({
+                url: '/Contract/getclusterandfunction',
+                type: 'POST',
+                data: { currentuserid: currentuserid },
+
+                dataType: 'json',
+                success: function (response) {
+                    if (response[0] == "success") {
+                            //alert(response[1]);
+                            $('#Contractcategory').val(response[2]);
+                        $("#Contractsubcategory").val(response[1]);
+                        Cluster = Cluster + response[2];
+                        Function = Function + response[1];
+
+                    }
+                    var TemplateCluster = Cluster;
+            var TemplateFunction = Function;
+        var Template = "";
+        //alert(TemplateCluster);
+        if ((TemplateCluster).length > 1 && (TemplateFunction).length > 1) {
+            $.ajax({
+                url: '/Template/GetApproversBasedOnClusterAndFunction',
+                type: 'POST',
+                data: { TemplateCluster: TemplateCluster, TemplateFunction: TemplateFunction },
+
+                dataType: 'json',
+                success: function (response) {
+                    $.each(response, function (index, value) {
+
+                       // console.log(response);
+                    //console.log(value);
+                    var Approver1ID = value.Approver1ID;
+                        var Approver2ID = value.Approver2ID;
+                        var Approver3ID = value.Approver3ID;
+                        var Approver4ID = value.Approver4ID;
+                        var Approver5ID = value.Approver5ID;
+                        var Approver6ID = value.Approver6ID;
+                        var Approver7ID = value.Approver7ID;
+                        var Approver8ID = value.Approver8ID;
+                        var Approver9ID = value.Approver9ID;
+                        var Approver10ID = value.Approver10ID;
+                        @*if (Approver1ID == @CurrentUserID() +"") { Approver1ID = 0 }
+                    if (Approver2ID == @CurrentUserID() +"") { Approver2ID = 0 }
+            if (Approver3ID == @CurrentUserID() +"") { Approver3ID = 0 }
+    if (Approver4ID == @CurrentUserID() +"") { Approver4ID = 0 }
+    if (Approver5ID == @CurrentUserID() +"") { Approver5ID = 0 }
+    if (Approver6ID == @CurrentUserID() +"") { Approver6ID = 0 }
+    if (Approver7ID == @CurrentUserID() +"") { Approver7ID = 0 }
+    if (Approver8ID == @CurrentUserID() +"") { Approver8ID = 0 }
+    if (Approver9ID == @CurrentUserID() +"") { Approver9ID = 0 }
+    if (Approver10ID == @CurrentUserID() +"") { Approver10ID = 0 }*@
+
+
+                        var ApproverTableData = "";
+                        if (Approver1ID > 0) {
+                            var EmployeeID = Approver1ID;
+                            $.ajax({
+                                url: '/Approvals/GetUserById',
+                                type: 'POST',
+                                data: { EmployeeID: EmployeeID },
+
+                                dataType: 'json',
+                                success: function (response) {
+                                    // console.log(response);
+                                    if (currentuserid != EmployeeID) {
+                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver1ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                        //alert(ApproverTableData);
+                                        $("#aprrovallist").html(ApproverTableData);
+                                    }
+                                    if (Approver2ID > 0) {
+                                        //   alert("2ND Approver");
+                                        var EmployeeID = Approver2ID;
+                                        $.ajax({
+                                            url: '/Approvals/GetUserById',
+                                            type: 'POST',
+                                            data: { EmployeeID: EmployeeID },
+
+                                            dataType: 'json',
+                                            success: function (response) {
+                                                // console.log(response);
+                                                if (currentuserid != EmployeeID) {
+                                                    ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver2ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                    //alert(ApproverTableData);
+                                                    $("#aprrovallist").html(ApproverTableData);
+                                                }
+
+                                                if (Approver3ID > 0) {
+                                                    var EmployeeID = Approver3ID;
+                                                    $.ajax({
+                                                        url: '/Approvals/GetUserById',
+                                                        type: 'POST',
+                                                        data: { EmployeeID: EmployeeID },
+                                                        dataType: 'json',
+                                                        success: function (response) {
+                                                            // console.log(response);
+                                                            if (currentuserid != EmployeeID) {
+                                                                ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver3ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                //alert(ApproverTableData);
+                                                                $("#aprrovallist").html(ApproverTableData);
+                                                            }
+                                                            if (Approver4ID > 0) {
+                                                                var EmployeeID = Approver4ID;
+                                                                $.ajax({
+                                                                    url: '/Approvals/GetUserById',
+                                                                    type: 'POST',
+                                                                    data: { EmployeeID: EmployeeID },
+                                                                    dataType: 'json',
+                                                                    success: function (response) {
+                                                                        // console.log(response);
+                                                                        if (currentuserid != EmployeeID) {
+                                                                            ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver4ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                            //alert(ApproverTableData);
+                                                                            $("#aprrovallist").html(ApproverTableData);
+                                                                        }
+                                                                        if (Approver5ID > 0) {
+                                                                            var EmployeeID = Approver5ID;
+                                                                            $.ajax({
+                                                                                url: '/Approvals/GetUserById',
+                                                                                type: 'POST',
+                                                                                data: { EmployeeID: EmployeeID },
+                                                                                dataType: 'json',
+                                                                                success: function (response) {
+                                                                                    // console.log(response);
+                                                                                    if (currentuserid != EmployeeID) {
+                                                                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver5ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                        //alert(ApproverTableData);
+                                                                                        $("#aprrovallist").html(ApproverTableData);
+                                                                                    }
+                                                                                    if (Approver6ID > 0) {
+                                                                                        var EmployeeID = Approver6ID;
+                                                                                        $.ajax({
+                                                                                            url: '/Approvals/GetUserById',
+                                                                                            type: 'POST',
+                                                                                            data: { EmployeeID: EmployeeID },
+                                                                                            dataType: 'json',
+                                                                                            success: function (response) {
+                                                                                                // console.log(response);
+                                                                                                if (currentuserid != EmployeeID) {
+                                                                                                    ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver6ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                    //alert(ApproverTableData);
+                                                                                                    $("#aprrovallist").html(ApproverTableData);
+                                                                                                }
+                                                                                                if (Approver7ID > 0) {
+                                                                                                    var EmployeeID = Approver7ID;
+                                                                                                    $.ajax({
+                                                                                                        url: '/Approvals/GetUserById',
+                                                                                                        type: 'POST',
+                                                                                                        data: { EmployeeID: EmployeeID },
+                                                                                                        dataType: 'json',
+                                                                                                        success: function (response) {
+                                                                                                            // console.log(response);
+                                                                                                            if (currentuserid != EmployeeID) {
+                                                                                                                ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver7ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                //alert(ApproverTableData);
+                                                                                                                $("#aprrovallist").html(ApproverTableData);
+                                                                                                            }
+                                                                                                            if (Approver8ID > 0) {
+                                                                                                                var EmployeeID = Approver8ID;
+                                                                                                                $.ajax({
+                                                                                                                    url: '/Approvals/GetUserById',
+                                                                                                                    type: 'POST',
+                                                                                                                    data: { EmployeeID: EmployeeID },
+                                                                                                                    dataType: 'json',
+                                                                                                                    success: function (response) {
+                                                                                                                        // console.log(response);
+                                                                                                                        if (currentuserid != EmployeeID) {
+                                                                                                                            ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver8ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                            //alert(ApproverTableData);
+                                                                                                                            $("#aprrovallist").html(ApproverTableData);
+                                                                                                                        }
+                                                                                                                        if (Approver9ID > 0) {
+                                                                                                                            var EmployeeID = Approver9ID;
+                                                                                                                            $.ajax({
+                                                                                                                                url: '/Approvals/GetUserById',
+                                                                                                                                type: 'POST',
+                                                                                                                                data: { EmployeeID: EmployeeID },
+                                                                                                                                dataType: 'json',
+                                                                                                                                success: function (response) {
+                                                                                                                                    // console.log(response);
+                                                                                                                                    if (currentuserid != EmployeeID) {
+                                                                                                                                        ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver9ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                                        //alert(ApproverTableData);
+                                                                                                                                        $("#aprrovallist").html(ApproverTableData);
+                                                                                                                                    }
+                                                                                                                                    if (Approver10ID > 0) {
+                                                                                                                                        var EmployeeID = Approver10ID;
+                                                                                                                                        $.ajax({
+                                                                                                                                            url: '/Approvals/GetUserById',
+                                                                                                                                            type: 'POST',
+                                                                                                                                            data: { EmployeeID: EmployeeID },
+                                                                                                                                            dataType: 'json',
+                                                                                                                                            success: function (response) {
+                                                                                                                                                // console.log(response);
+                                                                                                                                                if (currentuserid != EmployeeID) {
+                                                                                                                                                    ApproverTableData = ApproverTableData + "<tr><td><input type='checkbox' name='record' class = 'larger' /></td><td class = 'EmployeeIdDetails'>" + Approver10ID + "</td><td>" + response[1] + "</td><td>" + response[2] + "</td><td>" + response[3] + "</td><td>" + response[4] + "</td></tr>";
+                                                                                                                                                    //alert(ApproverTableData);
+                                                                                                                                                    $("#aprrovallist").html(ApproverTableData);
+
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        });
+
+                                                                                                                                    }
+
+                                                                                                                                }
+                                                                                                                            });
+
+                                                                                                                        }
+
+                                                                                                                    }
+                                                                                                                });
+
+                                                                                                            }
+
+                                                                                                        }
+                                                                                                    });
+
+                                                                                                }
+
+                                                                                            }
+                                                                                        });
+
+                                                                                    }
+
+                                                                                }
+                                                                            });
+
+                                                                        }
+
+
+                                                                    }
+                                                                });
+
+                                                            }
+
+                                                        }
+                                                    });
+                                                }
+
+
+                                            }
+                                        });
+                                        // $("#aprrovallist").html(ApproverTableData)
+                                    }
+
+                                }
+
+                            });
+
+                        }
+                    });
+    $("#ApproversTable tbody").html(Template);
+                }
+            });
+        }
+                }
+            });
+            
+        });
+</script>
+
+
+@**************************Integrated*****************************@
+<script>
+   
+    function AddedUser(EmpID) {
+        var AppUsers = [];
+
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            var UID = Userlist[i].innerHTML;
+            AppUsers.push(UID);
+            if (UID == EmpID) {
+                return false;
+            }
+        }
+        console.log(AppUsers);
+        return true;
+
+    }
+    function CheckLimit() {
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails").length;
+        if (Userlist < 10) {
+
+            $('.btn_add').attr('disabled', false);
+            return true;
+        }
+        $('.btn_add').attr('disabled', true);
+        return false;
+
+    }
+
+</script>
+<script>
+    //$("#ApproverEmployeeID").focusout(function () {
+    //    var EmployeeID = $('#ApproverEmployeeID').val();
+
+    //    if (EmployeeID.length > 0) {
+    //        $.ajax({
+    //            url: '/Contract/GetUserById',
+    //            type: 'POST',
+    //            data: { EmployeeID: EmployeeID },
+
+    //            dataType: 'json',
+    //            success: function (response) {
+    //                // console.log(response);
+    //                if (response[0] == "success") {
+    //                    $('#ApproverEmployeeName').val(response[1]);
+    //                    $('#ApproverEmployeeEmail').val(response[2]);
+    //                    $('#ApproverEmployeeDesignation').val(response[3]);
+    //                    $('#ApproverEmployeeRoles').val(response[4]);
+    //                    $('#ApproverEmployeeSubCategory').val(response[5]);
+    //                    $('#ApproverEmployeeCategory').val(response[6]);
+    //                }
+    //                else if (response[0] == "error") {
+    //                    alert("error");
+    //                }
+
+    //                else if (response[0] == "failure") {
+    //                   // alert("No User found with Employee ID :" + EmployeeID);
+    //                     $.notify(
+    //                    {
+    //                        // options
+    //                         title: 'Adding Approver to List',
+    //                        message: 'No User found with Employee ID :' + EmployeeID,
+    //                        target: '_blank',
+    //                        icon: 'fa fa-exclamation-triangle'
+    //                    },
+    //                    {
+    //                        // settings
+    //                        element: 'body',
+    //                        position: null,
+    //                        type: "danger",
+    //                        allow_dismiss: true,
+    //                        newest_on_top: false,
+    //                        showProgressbar: false,
+    //                        placement: {
+    //                            from: "top",
+    //                            align: "right"
+    //                        },
+    //                        offset: 20,
+    //                        spacing: 10,
+    //                        z_index: 1031,
+    //                        delay: 5000,
+    //                        timer: 1000,
+    //                        url_target: '_blank',
+    //                        mouse_over: null,
+    //                        animate: {
+    //                            enter: 'animated fadeInDown',
+    //                            exit: 'animated fadeOutUp'
+    //                        },
+    //                        onShow: null,
+    //                        onShown: null,
+    //                        onClose: null,
+    //                        onClosed: null,
+    //                        icon_type: 'class',
+    //                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+    //                            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+    //                            '<span data-notify="icon"></span> ' +
+    //                            '<span data-notify="title">{1}</span> ' +
+    //                            '<span data-notify="message">{2}</span>' +
+    //                            '<div class="progress" data-notify="progressbar">' +
+    //                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+    //                            '</div>' +
+    //                            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+    //                            '</div>'
+    //                    });
+    //                }
+    //            }
+    //        });
+    //    }
+
+    //    else {
+    //        $('#ApproverEmployeeID').val("");
+    //        $('#ApproverEmployeeName').val("");
+    //        $('#ApproverEmployeeEmail').val("");
+    //    }
+
+
+
+    //});
+    $("btnAddNewApprover").click(function () {
+        AddDetailsToTable();
+    });
+    $("#btnRemoveApprover").click(function () {
+        $("#ApproversTable tbody").find('input[name="record"]').each(function () {
+            if ($(this).is(":checked")) {
+                $(this).parents("tr").remove();
+            }
+            CheckLimit();
+        });
+
+    });
+</script>
+@*****************getUserby Name*************8*@
+
+@*<script>
+        $("#ApproverEmployeeName").focusout(function () {
+            var EmployeeName = $('#ApproverEmployeeName').val();
+            if (EmployeeName.length > 0) {
+                $.ajax({
+                    url: '/Contract/GetUserByName',
+                    type: 'POST',
+                    data: { EmployeeName: EmployeeName },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] == "success") {
+                            $('#ApproverEmployeeID').val(response[1]);
+                            $('#ApproverEmployeeEmail').val(response[2]);
+                            $('#ApproverEmployeeDesignation').val(response[3]);
+                            $('#ApproverEmployeeRoles').val(response[4]);
+                             $('#ApproverEmployeeSubCategory').val(response[5]);
+                            $('#ApproverEmployeeCategory').val(response[6]);
+                        }
+                        else if (response[0] == "error") {
+                            alert("error");
+                        }
+
+                        else if (response[0] == "failure") {
+                             //alert("No User found with Employee Name :" + EmployeeName);
+                            $.notify(
+                            {
+                                // options
+                                title: 'Adding Approver to List',
+                                message: 'No User found with Employee Name :' + EmployeeName,
+                                target: '_blank',
+                                icon: 'fa fa-exclamation-triangle'
+                            },
+                            {
+                                // settings
+                                element: 'body',
+                                position: null,
+                                type: "danger",
+                                allow_dismiss: true,
+                                newest_on_top: false,
+                                showProgressbar: false,
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                },
+                                offset: 20,
+                                spacing: 10,
+                                z_index: 1031,
+                                delay: 5000,
+                                timer: 1000,
+                                url_target: '_blank',
+                                mouse_over: null,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                                onShow: null,
+                                onShown: null,
+                                onClose: null,
+                                onClosed: null,
+                                icon_type: 'class',
+                                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                    '<span data-notify="icon"></span> ' +
+                                    '<span data-notify="title">{1}</span> ' +
+                                    '<span data-notify="message">{2}</span>' +
+                                    '<div class="progress" data-notify="progressbar">' +
+                                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                    '</div>' +
+                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                    '</div>'
+                            });
+                        }
+                    }
+                });
+            }
+
+            else {
+                $('#ApproverEmployeeID').val("");
+                $('#ApproverEmployeeName').val("");
+                $('#ApproverEmployeeEmail').val("");
+            }
+
+
+
+        });
+    </script>*@
+@*****************getUserby Email*************8*@
+
+@*<script>
+        $("#ApproverEmployeeEmail").focusout(function () {
+            var EmployeeEmail = $('#ApproverEmployeeEmail').val();
+            if (EmployeeEmail.length > 0) {
+                $.ajax({
+                    url: '/Contract/GetUserByEmail',
+                    type: 'POST',
+                    data: { EmployeeEmail: EmployeeEmail },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] == "success") {
+                            $('#ApproverEmployeeID').val(response[1]);
+                            $('#ApproverEmployeeName').val(response[2]);
+                            $('#ApproverEmployeeDesignation').val(response[3]);
+                            $('#ApproverEmployeeRoles').val(response[4]);
+                            $('#ApproverEmployeeSubCategory').val(response[5]);
+                            $('#ApproverEmployeeCategory').val(response[6]);
+                        }
+                        else if (response[0] == "error") {
+                            alert("error");
+                        }
+
+                        else if (response[0] == "failure") {
+                           //alert("No User found with Employee Email :" + EmployeeEmail);
+                             $.notify(
+                            {
+                                // options
+                                 title: 'Adding Approver to List',
+                                message: 'No User found with Employee Email :' + EmployeeEmail,
+                                target: '_blank',
+                                icon: 'fa fa-exclamation-triangle'
+                            },
+                            {
+                                // settings
+                                element: 'body',
+                                position: null,
+                                type: "danger",
+                                allow_dismiss: true,
+                                newest_on_top: false,
+                                showProgressbar: false,
+                                placement: {
+                                    from: "top",
+                                    align: "right"
+                                },
+                                offset: 20,
+                                spacing: 10,
+                                z_index: 1031,
+                                delay: 5000,
+                                timer: 1000,
+                                url_target: '_blank',
+                                mouse_over: null,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                                onShow: null,
+                                onShown: null,
+                                onClose: null,
+                                onClosed: null,
+                                icon_type: 'class',
+                                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                    '<span data-notify="icon"></span> ' +
+                                    '<span data-notify="title">{1}</span> ' +
+                                    '<span data-notify="message">{2}</span>' +
+                                    '<div class="progress" data-notify="progressbar">' +
+                                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                    '</div>' +
+                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                    '</div>'
+                            });
+                        }
+                    }
+                });
+            }
+
+            else {
+                $('#ApproverEmployeeID').val("");
+                $('#ApproverEmployeeName').val("");
+                $('#ApproverEmployeeEmail').val("");
+            }
+
+
+
+        });
+    </script>*@
+@*****************************************************************@
+
+<script>
+    function SubmitContract() {
+        var ContractName = $("#contractname").val();
+
+        var ContractType = $("#ContractType").val();
+        var ContractDescription = $("#contractdescription").val();
+        var ContractCluster = $("#Contractcategory").val();
+        var ContractFunction = $("#Contractsubcategory").val();
+        var ContractTemplateType = $("#typeformtemplate").val();
+        var CuurrentUserID = $("#Initiator").val();
+        var ContractIDforTemplate = $("#ContractIDforTemplate").val();
+
+        var UID = [];
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            UID.push(Userlist[i].innerHTML);
+            //AppUsers.push(UID);
+        }
+
+        if (ContractTemplateType == "Choose From Template") {
+
+            if ((ContractName.length > 0) && (ContractType.length > 0) && (ContractCluster.length > 0) && (ContractFunction.length > 0) && (ContractTemplateType.length > 0) && (ContractIDforTemplate.length > 0)) {
+                if (Userlist.length > 1) {
+                    $.ajax({
+                        url: '/Contract/SaveApproversToDB',
+                        type: 'POST',
+                        data: { UID: UID, ContractName: ContractName, ContractType: ContractType, ContractDescription: ContractDescription, ContractCluster: ContractCluster, ContractFunction: ContractFunction, ContractTemplateType: ContractTemplateType, CuurrentUserID: CuurrentUserID, ContractIDforTemplate: ContractIDforTemplate },
+
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+                            if (response[0] == "success") {
+                                if (ContractTemplateType == "Upload Existing Contract") {
+
+                                    swal("Contract details saved successfully", {
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Contract/ExistingContractView/' + response[1];
+                                        }
+                                    });
+                                }
+                                else {
+
+                                    swal("Contract details saved successfully", {
+
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Contract/DraftView/' + response[1];
+                                        }
+                                    });
+                                }
+                            }
+                            else {
+                                swal("Error in Creating", {
+
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            visible: true
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal("Minimum of two Approvers Required", {
+                        icon: "warning",
+                    });
+                }
+            }
+            else {
+                swal("All fields are required", {
+                    icon: "warning",
+                });
+            }
+        }
+        else if(ContractTemplateType == "Upload Existing Contract" || ContractTemplateType == "Create Fresh Contract"){
+            if ((ContractName.length > 0) && (ContractType.length > 0) && (ContractCluster.length > 0) && (ContractFunction.length > 0) && (ContractTemplateType.length > 0)) {
+                if (Userlist.length > 1) {
+                    $.ajax({
+                        url: '/Contract/SaveApproversToDB',
+                        type: 'POST',
+                        data: { UID: UID, ContractName: ContractName, ContractType: ContractType, ContractDescription: ContractDescription, ContractCluster: ContractCluster, ContractFunction: ContractFunction, ContractTemplateType: ContractTemplateType, CuurrentUserID: CuurrentUserID, ContractIDforTemplate: ContractIDforTemplate },
+
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+                            if (response[0] == "success") {
+                                if (ContractTemplateType == "Upload Existing Contract") {
+
+                                    swal("Contract details saved successfully", {
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Contract/ExistingContractView/' + response[1];
+                                        }
+                                    });
+                                }
+                                else {
+
+                                    swal("Contract details saved successfully", {
+
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Contract/DraftView/' + response[1];
+                                        }
+                                    });
+                                }
+                            }
+                            else {
+                                swal("Error in Creating", {
+
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            visible: true
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal("Minimum of two Approvers Required", {
+                        icon: "warning",
+                    });
+                }
+            }
+            else {
+                swal("All fields are required", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+                swal("All fields are required", {
+                    icon: "warning",
+                });
+            }
+    }
+</script>
+
+<script>
+    $("#Contractsubcategory55353").focusout(function () {
+
+        // alert("hello");
+
+        var ContractCluster = $("#Contractcategory").val();
+        var ContractFunction = $("#Contractsubcategory").val();
+        var Contract = "";
+
+        if ((ContractCluster).length > 1 && (ContractFunction).length > 1) {
+            $.ajax({
+                url: '/Contract/GetApproversBasedOnClusterAndFunction',
+                type: 'POST',
+                data: { ContractCluster: ContractCluster, ContractFunction: ContractFunction },
+
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response);
+                    $.each(response, function (index, value) {
+                        var UserRole = "";
+                        if (value.UserRoleAdmin == true) {
+                            UserRole = UserRole + "Admin ,";
+                        }
+                        if (value.UserRoleInitiator == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Initiator ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Initiator ,";
+                            }
+                        }
+                        if (value.UserRoleApprover == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + "Approver ,";
+                            }
+                        }
+                        if (value.UserRoleFinance == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Finance Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Finance Approver ,";
+                            }
+                        }
+
+                        if (value.UserRoleLegal == true) {
+                            if (UserRole.Length > 0) {
+                                UserRole = UserRole + " , Legal Approver ,";
+                            }
+                            else {
+                                UserRole = UserRole + " Legal Approver ,";
+                            }
+                        }
+                        if (value.UserEmployeeID != @CurrentUserID()) {
+
+                            Contract = Contract + "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + value.UserEmployeeID + "</td><td>" + value.UserEmployeeName + "</td><td>" + value.UserEmployeeEmail + "</td><td>" + value.UserEmployeeDesignation + "</td><td>" + UserRole + "</td></tr>";
+                        }
+                        });
+                    $("#ApproversTable tbody").html(Contract);
+                }
+
+            });
+        }
+    });
+</script>
+<script>
+
+    $('#discard').click(function (e) {
+
+        swal({
+         title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Contract/Repository'
+
+            }
+        });
+    });
+</script>
+
+@*<script>
+        function SubmitContractdraft() {
+            var ContractName = $("#contractname").val();
+
+            var ContractType = $("#ContractType").val();
+            var ContractDescription = $("#contractdescription").val();
+            var ContractCluster = $("#Contractcategory").val();
+            var ContractFunction = $("#Contractsubcategory").val();
+            var ContractTemplateType = $("#typeformtemplate").val();
+            var CuurrentUserID = $("#Initiator").val();
+            var ContractIDforTemplate = $("#ContractIDforTemplate").val();
+            var UID = [];
+            var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+            for (var i = 0; i < Userlist.length; i++) {
+                UID.push(Userlist[i].innerHTML);
+                //AppUsers.push(UID);
+            }
+           // if ((ContractName.length > 0) && (ContractType.length > 0) && (ContractCluster.length > 0) && (ContractFunction.length > 0) && (ContractTemplateType.length > 0)) {
+
+                    $.ajax({
+                        url: '/Contract/SaveApproversToDB',
+                        type: 'POST',
+                        data: { UID: UID, ContractName: ContractName, ContractType: ContractType, ContractDescription: ContractDescription, ContractCluster: ContractCluster, ContractFunction: ContractFunction, ContractTemplateType: ContractTemplateType, CuurrentUserID: CuurrentUserID, ContractIDforTemplate: ContractIDforTemplate },
+
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+                            if (response[0] == "success") {
+                                //if (ContractTemplateType == "Upload Existing Contract") {
+
+                                //    swal("New Contract saved successfully", {
+                                //        icon: "success",
+                                //        buttons: {
+                                //            confirm: {
+                                //                visible: true
+                                //            }
+                                //        }
+                                //    }).then(function (result) {
+                                //        if (result == true) {
+                                //            window.location = '/Contract/ExistingContractView/' + response[1];
+                                //        }
+                                //    });
+                                //}
+                               // else {
+
+                              swal("Contract details saved successfully", {
+
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Contract/New/' + response[1];
+                                        }
+                                    });
+                               // }
+                            }
+                            //else {
+                            //    swal("Error in Creating", {
+
+                            //        icon: "error",
+                            //        buttons: {
+                            //            confirm: {
+                            //                visible: true
+                            //            }
+                            //        }
+                            //    });
+                            //}
+                        }
+                    });
+
+                //else {
+                //    swal("Minimum of two Approvers Required", {
+                //        icon: "warning",
+                //    });
+                //}
+           // }
+            //else {
+            //    swal("All fields are required", {
+            //        icon: "warning",
+            //    });
+            //}
+        }
+    </script>*@
+
+
+<script>
+    function UserID() {
+        var currentUserId="@CurrentUserID()";
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Contract/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch: OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+
+                            var select = "";
+                            
+                            var str2 = "Approver";
+                           if ((value.UserStatus == "Active")) {
+                                if ((UserRole.indexOf(str2) != -1)) {
+                                     if ((value.UserEmployeeID != currentUserId))
+                                        {
+                                            select = '<button class="btn btn-sm btn-primary btn_add" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                         
+                                        }
+                                        else {
+                                         select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is current logged in user."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                        }
+                                }
+                                else {
+                                    select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is not an Approver."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                }
+                               
+                            }
+                            else {
+                                select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is currently not active."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                            }
+
+                            tblBasicUser = tblBasicUser + '<tr><td>'+select+'</td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td id="' + value.UserEmployeeID + '_Cat">' + value.UserCategory + '</td><td id="' + value.UserEmployeeID + '_Sub">' + value.UserSubCategory + '</td><td id="' + value.UserEmployeeID + '_Desg">' + value.UserEmployeeDesignation + '</td><td id="' + value.UserEmployeeID + '_Role">' + UserRole + '</td></tr>';
+                        });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+        $('#ApproverEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#ApproverEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#ApproverEmployeeEmail').val($('#' + EmployeeID + '_Email').html());
+        $('#ApproverEmployeeRoles').val($('#' + EmployeeID + '_Role').html());
+        $('#ApproverEmployeeDesignation').val($('#' + EmployeeID + '_Desg').html());
+        $('#ApproverEmployeeCategory').val($('#' + EmployeeID + '_Cat').html());
+        $('#ApproverEmployeeSubCategory').val($('#' + EmployeeID + '_Sub').html());
+        var EmployeeID = $("#ApproverEmployeeID").val();
+        var EmployeeName = $("#ApproverEmployeeName").val();
+        var EmployeeEmail = $("#ApproverEmployeeEmail").val();
+        var EmployeeDesignation = $("#ApproverEmployeeDesignation").val();
+        var EmployeeRole = $("#ApproverEmployeeRoles").val();
+
+        if (EmployeeRole.indexOf('Approver') !== -1) {
+
+            if (CheckLimit()) {
+                var AlreadyAdded = AddedUser(EmployeeID);
+                if (AlreadyAdded) {
+
+
+                    var htmlData = "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + EmployeeID + "</td><td>" + EmployeeName + "</td><td>" + EmployeeEmail + "</td><td>" + EmployeeDesignation + "</td><td>" + EmployeeRole + "</td></tr>";
+                    $("#ApproversTable tbody").append(htmlData);
+                   // $("#searchmodal").modal('hide');
+                      $("#UsererrorCode").css({ "color": "green" });
+                    $("#UsererrorCode").html("User added to Approver list.");
+                    CheckLimit();
+
+                }
+                else {
+                    //alert("User already added");
+                    $("#searchmodal").show();
+                    $("#UsererrorCode").css({ "color": "red" });
+                    $("#UsererrorCode").html("User already added.");
+
+                }
+            }
+        }
+        else {
+            $("#searchmodal").modal('show');
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html(EmployeeName + ' is not approver');
+            //alert("Initator cannot be nominated as approver");
+        }
+    }
+</script>
+

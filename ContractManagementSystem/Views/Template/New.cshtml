@@ -1,0 +1,737 @@
+﻿@model ContractManagementSystem.Models.CommonModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    string CurrentUserID()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+        }
+
+        return userName;
+
+    }
+    string CurrentUserName()
+    {
+        string userName = string.Empty;
+
+        if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+        }
+
+        return userName;
+
+    }
+
+
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Template Master</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="~/Home/Dashboard">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Template/Repository">Template Master</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        New Template
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            @*<div class="card-title"><b>Template</b></div>*@
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="card-title"><b>New Template </b></div>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <button @*onclick="window.location = '/Template/Repository'"*@ class="btn btn-sm btn-light" id="discard" value="Discard"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="Cluster">Template Name <span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="65" title="Numbers and Special characters not allowed" class="form-control" id="TemplateName" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="Name" placeholder="Enter Template Name" required="required">
+                                            <input type="hidden" class="form-control" name="Initiator" id="Initiator" value="@CurrentUserID()" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="entity">Type of Contract <span class="asteriskicon"> *</span></label>
+                                            <input type="text" maxlength="180" title="Numbers and Special characters not allowed" class="form-control" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="Type" id="type_of_entities" list="type_of_entity" placeholder="Enter Contract Type" required />
+                                            <datalist id="type_of_entity">
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="description">Template Description</label>
+                                            <textarea maxlength="1800" class="form-control text_area" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" name="Description" id="TemplateDescription" placeholder="Enter Template Description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                    <div class="col-sm-12" id="TemplateEnable">
+                                        <div class="form-group form-inline">
+                                            <label for="initiator">Enable</label>&nbsp; &nbsp;
+                                            <div>
+                                                <label class="switch">
+                                                    <input type="checkbox">
+                                                    <span class="slider round round1"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>*@
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header CardHeader_Approvers">
+                                                <div class="row align-items-center">
+                                                    <div class="col-sm-6">
+                                                        <div class="card-title"><h5><b>Approver (s) <span class="asteriskicon"> *</span></b></h5></div>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <button type="button" style="color:blue;" class="btn btn-sm btn-light" data-toggle="modal" data-target="#searchmodal"> <i class="flaticon-search-2" aria-hidden="true"></i>&nbsp; Search User</button>
+                                                        <button type="button" style="color:red;" id="btnRemoveApprover" class="btn btn-sm btn-light" title="Remove Approvers from List"><i class="flaticon-interface-5" aria-hidden="true"></i>&nbsp; Remove</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-right">
+
+                                                        <input type="hidden" id="ApproverEmployeeID" />
+                                                        <input type="hidden" id="ApproverEmployeeName" />
+
+                                                        <input type="hidden" id="ApproverEmployeeEmail" />
+                                                        <input type="hidden" id="ApproverEmployeeDesignation" />
+                                                        <input type="hidden" id="ApproverEmployeeRoles" />
+                                                        <input type="hidden" id="ApproverEmployeeSubCategory" />
+                                                        <input type="hidden" id="ApproverEmployeeCategory" />
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="table-responsive">
+                                                                    <table id="ApproversTable" class="display table table-bordered  appoverTabel">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><center>Select to remove</center></th>
+                                                                                <th><center>Employee ID</center></th>
+                                                                                <th><center>Employee Name</center></th>
+                                                                                <th><center>Employee Email Address</center></th>
+                                                                                <th><center>Employee Designation</center></th>
+                                                                                <th><center>Employee Role (s)</center></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="aprrovallist">
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action  card_footer_button text-right">
+
+                                    <button type="button" onclick="SubmitTemplate2();" class="btn btn-success" style="font-size:17px;"><b>Save and Continue</b></button>
+                                    @*<button type="button" onclick="SubmitTemplatedarft();" class="btn btn-success"><i class="fa fa-bookmark" aria-hidden="true"></i>&nbsp;  Draft</button>*@
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="searchmodal" role="dialog" tabindex="-1">
+    @*<div class="text-right model_body_position">
+        <a href="" data-dismiss="modal" class="modaldismissarrow"><i class="flaticon-interface-5 fa-3x " aria-hidden="true"></i></a>
+    </div>*@
+
+    <div class="modal-dialog" style="max-width:80%;">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header modalheadercolor websitecolour">
+                <label style="font-size: 20px !important;"><b>Search Employee</b></label>
+                <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close" style="color:white;">Close</button>
+            </div>
+            <div class="modal-body" style="height:480px; overflow: auto;">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group form-inline">
+                            <div class="col-md-2">
+                                <label class="col-form-label"><b>Search By :</b></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="UserSearchOption" name="UserSearchType" style="padding-bottom:3px;padding-top:3px;">
+                                    <option> Employee ID </option>
+                                    <option> Employee Name </option>
+                                    <option> Employee Email Address </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" maxlength="180" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9@('@')._-\s]/g, '');" class="form-control input-full" placeholder="Type here and click search" id="EmployeeDetail" />
+                            </div>
+                            <div class="col-md-2">
+                                <center>
+                                    <button type="button" class="btn btn-sm btn-light btn_create" id="valbtn" onclick="UserID();">Search User</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <center><h3><b id="UsererrorCode"></b></h3></center>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tableFixHead_search">
+                            <table id="Approvers_Table" class="display table table-bordered  appoverTabel">
+                                <thead>
+                                    <tr>
+                                        <th><center>Select User</center></th>
+                                        <th><center>Employee ID</center></th>
+                                        <th><center>Employee Name</center></th>
+                                        <th><center>Employee Email Address</center></th>
+                                        <th><center>Cluster</center></th>
+                                        <th><center>Function</center></th>
+                                        <th><center>Employee Designation</center></th>
+                                        <th><center>Employee Role (s)</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblUsersSearchList"></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+
+<script>
+    function expandTextarea(Class) {
+        var x = document.getElementsByClassName(Class);
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener('keyup', function () {
+                this.style.overflow = 'hidden';
+                this.style.height = 0;
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    }
+    expandTextarea("text_area");
+</script>
+
+
+@**************************Integrated*****************************@
+<script>
+   
+    function AddedUser(EmpID) {
+        var AppUsers = [];
+
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            var UID = Userlist[i].innerHTML;
+            AppUsers.push(UID);
+            if (UID == EmpID) {
+                return false;
+            }
+        }
+        //console.log(AppUsers);
+        return true;
+
+    }
+    function CheckLimit() {
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails").length;
+        if (Userlist < 10) {
+
+            $('.btn_add').attr('disabled', false);
+            return true;
+        }
+        $('.btn_add').attr('disabled', true);
+        return false;
+
+    }
+</script>
+<script>
+
+   
+    $("#btnRemoveApprover").click(function () {
+        $("#ApproversTable tbody").find('input[name="record"]').each(function () {
+            if ($(this).is(":checked")) {
+                $(this).parents("tr").remove();
+            }
+            CheckLimit();
+        });
+
+    });
+</script>
+
+<script>
+    function SubmitTemplate2() {
+        var CurrentUserName = "@CurrentUserName()";
+        var TemplateName = $("#TemplateName").val();
+        var TemplateType = $("#type_of_entities").val();
+
+        var TemplateDescription = $("#TemplateDescription").val();
+        var CurrentUserID = $("#Initiator").val();
+        var UID = [];
+        var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+        for (var i = 0; i < Userlist.length; i++) {
+            UID.push(Userlist[i].innerHTML);
+            //AppUsers.push(UID);
+        }
+
+        var requiredCheckboxes = $('#TemplateEnable :checkbox');
+        if (requiredCheckboxes.is(':checked')) {
+            var Enable = "Active";
+        }
+        else {
+            var Enable = "InActive";
+        }
+
+        if ("@User.IsInRole("legal")" == "True") {
+            if ((TemplateName.length > 0) && (TemplateType.length > 0)) {
+
+                $.ajax({
+                    url: '/Template/SaveApproversToDB',
+                    type: 'POST',
+                    data: { Enable:Enable, TemplateName: TemplateName, TemplateType: TemplateType, TemplateDescription: TemplateDescription, UID: UID, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] == "success") {
+
+                            swal("Template details saved successfully", {
+
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = '/Template/DraftView/' + response[1];
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in Creating", {
+
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                swal("Fill all the required fields", {
+                    icon: "warning",
+                });
+            }
+        }
+        else {
+            if ((TemplateName.length > 0) && (TemplateType.length > 0) && (Userlist.length > 0)) {
+
+
+                $.ajax({
+                    url: '/Template/SaveApproversToDB',
+                    type: 'POST',
+                    data: { Enable:Enable, TemplateName: TemplateName, TemplateType: TemplateType, TemplateDescription: TemplateDescription, UID: UID, CurrentUserID: CurrentUserID },
+
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response);
+                        if (response[0] == "success") {
+
+                            swal("Template details saved successfully", {
+
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            }).then(function (result) {
+                                if (result == true) {
+                                    window.location = '/Template/DraftView/' + response[1];
+                                }
+                            });
+
+                        }
+                        else {
+                            swal("Error in Creating", {
+
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        visible: true
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                swal("Fill all the required fields", {
+                    icon: "warning",
+                });
+            }
+        }
+
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Template/GetType_List",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                // alert(response)
+                str = "";
+                for (var i = 0; i < response.length; ++i) {
+                    //alert(response[i]);
+                    str += '<option value="' + response[i] + '" />'; // Storing options in variable
+                }
+
+                var my_list = document.getElementById("type_of_entity");
+                my_list.innerHTML = str;
+
+            },
+
+
+        });
+    });
+
+</script>
+<script>
+
+    $('#discard').click(function (e) {
+
+        swal({
+           title: 'Are you sure?',
+            text: "You want to Cancel !",
+            type: 'warning',
+              buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, Keep it !',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, Cancel it !',
+                    className: 'btn btn-danger'
+                },
+
+            }
+        }).then(function (value) {
+            if (value == true) {
+                window.location = '/Template/Repository'
+
+            }
+        });
+    });
+</script>
+
+@*<script>
+        function SubmitTemplatedarft() {
+            var TemplateName = $("#TemplateName").val();
+            var TemplateType = $("#type_of_entities").val();
+            var TemplateCluster = $("#templatecategory").val();
+            var TemplateFunction = $("#templatesubcategory").val();
+            var TemplateDescription = $("#TemplateDescription").val();
+            var CurrentUserID = $("#Initiator").val();
+            var UID = [];
+            var Userlist = document.getElementsByClassName("EmployeeIdDetails");
+            for (var i = 0; i < Userlist.length; i++) {
+                UID.push(Userlist[i].innerHTML);
+                //AppUsers.push(UID);
+            }
+           // if ((TemplateName.length > 0) && (TemplateType.length > 0) && (TemplateCluster.length > 0) && (TemplateFunction.length > 0)) {
+               // if (Userlist.length > 1) {
+                    $.ajax({
+                        url: '/Template/SaveApproversToDB',
+                        type: 'POST',
+                        data: { TemplateName: TemplateName, TemplateType: TemplateType, TemplateCluster: TemplateCluster, TemplateFunction: TemplateFunction, TemplateDescription: TemplateDescription, UID: UID, CurrentUserID: CurrentUserID },
+
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+                            if (response[0] == "success") {
+
+                                swal("Template Drafted Successfully", {
+
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                visible: true
+                                            }
+                                        }
+                                    }).then(function (result) {
+                                        if (result == true) {
+                                            window.location = '/Template/New/' + response[1];
+                                        }
+                                    });
+
+                            }
+                            else {
+                                swal("Error in Creating", {
+
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            visible: true
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+               // }
+                //else {
+                //    swal("Minimum of two Approvers Required", {
+                //        icon: "warning",
+                //    });
+                //}
+            //}
+            //else {
+            //    swal("Fill all the required fields", {
+            //        icon: "warning",
+            //    });
+            //}
+        }
+    </script>*@
+
+<script>
+    function UserID() {
+        var currentUserId="@CurrentUserID()";
+        var EmployeeDetails = $("#EmployeeDetail").val();
+        var tblBasicUser = "";
+        if (EmployeeDetails.length > 0) {
+            $("#UsererrorCode").html("");
+            var OptionToSearch = $("#UserSearchOption").val();
+            $.ajax({
+                type: "POST",
+                url: "/Template/getHodDetails",
+                data: { EmployeeDetails: EmployeeDetails, OptionToSearch: OptionToSearch },
+
+
+                success: function (response) {
+                    tblUserList = "";
+                    console.log(response);
+                    if (response.length > 0) {
+
+                        $("#UsererrorCode").css({ "color": "green" });
+                        $("#UsererrorCode").html("Record found.");
+
+                        $.each($(response), function (index, value) {
+                            var UserRole = "";
+                            if (value.UserRoleAdmin == true) {
+                                UserRole = UserRole + "Admin";
+                            }
+
+                            if (value.UserRoleInitiator == true) {
+
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Initiator";
+                                }
+                                else {
+                                    UserRole = UserRole + "Initiator";
+                                }
+                            }
+                            if (value.UserRoleApprover == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Approver";
+                                }
+                            }
+                            if (value.UserRoleFinance == true) {
+                                if (UserRole.length > 0) {
+                                    UserRole = UserRole + ", Finance Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Finance Approver";
+                                }
+                            }
+
+                            if (value.UserRoleLegal == true) {
+                                if (UserRole.length > 0) {
+
+                                    UserRole = UserRole + ", Legal Approver";
+                                }
+                                else {
+                                    UserRole = UserRole + "Legal Approver";
+                                }
+                            }
+
+                            var select = "";
+
+                            var str2 = "Legal Approver";
+                            if ((value.UserStatus == "Active")) {
+                                if ((UserRole.indexOf(str2) != -1)) {
+                                     if ((value.UserEmployeeID != currentUserId))
+                                        {
+                                            select = '<button class="btn btn-sm btn-primary btn_add" id="' + value.UserEmployeeID + '" onclick="SelectFunction(' + value.UserEmployeeID + ');">Select</button>';
+                         
+                                        }
+                                        else {
+                                         select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is current logged in user."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                        }
+                                }
+                                else {
+                                    select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is not an Legal Approver."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                                }
+                               
+                            }
+                            else {
+                                select = '<h5 style="color:red;" title="' + value.UserEmployeeName + ' is currently not active."><i class="fas fa-exclamation-circle" aria-hidden="true">&nbsp;Restricted</i></h5>'; 
+                            }
+
+                            tblBasicUser = tblBasicUser + '<tr><td>'+select+'</td><td id="' + value.UserEmployeeID + '_ID">' + value.UserEmployeeID + '</td><td id="' + value.UserEmployeeID + '_Name">' + value.UserEmployeeName + '</td><td id="' + value.UserEmployeeID + '_Email">' + value.UserEmployeeEmail + '</td><td id="' + value.UserEmployeeID + '_Cat">' + value.UserCategory + '</td><td id="' + value.UserEmployeeID + '_Sub">' + value.UserSubCategory + '</td><td id="' + value.UserEmployeeID + '_Desg">' + value.UserEmployeeDesignation + '</td><td id="' + value.UserEmployeeID + '_Role">' + UserRole + '</td></tr>';
+                        });
+                        $("#tblUsersSearchList").html(tblBasicUser);
+
+
+                    }
+                    else {
+                        $("#UsererrorCode").css({ "color": "red" });
+                        $("#UsererrorCode").html("No Record found.");
+                    }
+                }
+            });
+        }
+        else {
+            $("#hodemployeeid").val("");
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html("Please enter the Employee ID / Name / Email to search");
+        }
+    }
+
+</script>
+<script>
+    function SelectFunction(EmployeeID) {
+        $('#ApproverEmployeeID').val($('#' + EmployeeID + '_ID').html());
+        $('#ApproverEmployeeName').val($('#' + EmployeeID + '_Name').html());
+        $('#ApproverEmployeeEmail').val($('#' + EmployeeID + '_Email').html());
+        $('#ApproverEmployeeRoles').val($('#' + EmployeeID + '_Role').html());
+        $('#ApproverEmployeeDesignation').val($('#' + EmployeeID + '_Desg').html());
+        $('#ApproverEmployeeCategory').val($('#' + EmployeeID + '_Cat').html());
+        $('#ApproverEmployeeSubCategory').val($('#' + EmployeeID + '_Sub').html());
+        var EmployeeID = $("#ApproverEmployeeID").val();
+        var EmployeeName = $("#ApproverEmployeeName").val();
+        var EmployeeEmail = $("#ApproverEmployeeEmail").val();
+        var EmployeeDesignation = $("#ApproverEmployeeDesignation").val();
+        var EmployeeRole = $("#ApproverEmployeeRoles").val();
+
+        if (EmployeeRole.indexOf('Approver') !== -1) {
+
+            if (CheckLimit()) {
+                var AlreadyAdded = AddedUser(EmployeeID);
+                if (AlreadyAdded) {
+
+
+                    var htmlData = "<tr><td><input type='checkbox' name='record' class = 'larger'/></td><td class = 'EmployeeIdDetails'>" + EmployeeID + "</td><td>" + EmployeeName + "</td><td>" + EmployeeEmail + "</td><td>" + EmployeeDesignation + "</td><td>" + EmployeeRole + "</td></tr>";
+                    $("#ApproversTable tbody").append(htmlData);
+                   // $("#searchmodal").modal('hide');
+                      $("#UsererrorCode").css({ "color": "green" });
+                    $("#UsererrorCode").html("User added to Approver list.");
+                    CheckLimit();
+
+                }
+                else {
+                    //alert("User already added");
+                    $("#searchmodal").show();
+                    $("#UsererrorCode").css({ "color": "red" });
+                    $("#UsererrorCode").html("User already added.");
+
+                }
+            }
+        }
+        else {
+            $("#searchmodal").modal('show');
+            $("#UsererrorCode").css({ "color": "red" });
+            $("#UsererrorCode").html(EmployeeName + ' is not approver');
+            //alert("Initator cannot be nominated as approver");
+        }
+    }
+</script>
+
+
+

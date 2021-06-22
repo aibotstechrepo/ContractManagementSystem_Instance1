@@ -1,0 +1,1461 @@
+﻿@model ContractManagementSystem.Models.CommonModel
+@{
+    ViewBag.Title = "Audit";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    string getRelativeDateTime(DateTime date)
+    {
+        TimeSpan ts = DateTime.Now - date;
+        if (ts.TotalMinutes < 1)//seconds ago
+            return "just now";
+        if (ts.TotalHours < 1)//min ago
+            return (int)ts.TotalMinutes == 1 ? "1 Minute ago" : (int)ts.TotalMinutes + " Minutes ago";
+        if (ts.TotalDays < 1)//hours ago
+            return (int)ts.TotalHours == 1 ? "1 Hour ago" : (int)ts.TotalHours + " Hours ago";
+        if (ts.TotalDays < 7)//days ago
+            return (int)ts.TotalDays == 1 ? "1 Day ago" : (int)ts.TotalDays + " Days ago";
+        if (ts.TotalDays < 30.4368)//weeks ago
+            return (int)(ts.TotalDays / 7) == 1 ? "1 Week ago" : (int)(ts.TotalDays / 7) + " Weeks ago";
+        if (ts.TotalDays < 365.242)//months ago
+            return (int)(ts.TotalDays / 30.4368) == 1 ? "1 Month ago" : (int)(ts.TotalDays / 30.4368) + " Months ago";
+        //years ago
+        return (int)(ts.TotalDays / 365.242) == 1 ? "1 Year ago" : (int)(ts.TotalDays / 365.242) + " Years ago";
+    }
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Audit</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Audit</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row justify-content-center">
+                                <ul class="nav nav-pills nav-secondary nav-pills-rezise" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-AuditClause-tab" data-toggle="pill" href="#pills-AuditClause" role="tab" aria-controls="pills-AuditContract" aria-selected="true">Clause Audit</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-AuditTemplate-tab" data-toggle="pill" href="#pills-AuditTemplate" role="tab" aria-controls="pills-AuditTemplate" aria-selected="false">Template Audit</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-AuditContract-tab" data-toggle="pill" href="#pills-AuditContract" role="tab" aria-controls="pills-AuditContract" aria-selected="false">Contract Audit</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body" style="margin-right:30px;">
+
+                            <div class="tab-content justify-content-center" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-AuditClause" role="tabpanel" aria-labelledby="pills-AuditClause-tab">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="table-responsive">
+                                                <table id="multi-filter-select_clause" class="display table table-striped table-hover table-bordered" style="width:100%;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th><center>Review</center></th>
+                                                            <th><center>Clause Title</center></th>
+                                                            
+                                                            <th><center>Last Reviewed</center></th>
+                                                            <th><center>Status</center></th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        @foreach (var item in Model.Clause)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <center>
+                                                                        <button class="btn btn-sm btn-primary clause_id" value="@item.ClauseClauseID" id="@item.ClauseClauseID" onclick="ClauseAuditEdit(this.id);"><i class="fa fa-eye" style="color:white;"></i>&nbsp;&nbsp; review</button>
+                                                                    </center>
+                                                                </td>
+                                                                <td>@item.ClauseClauseTitle</td>
+                                                               
+                                                                <td>@getRelativeDateTime(item.ClauseLastModified)</td>
+                                                                <td>@item.ClauseStatus</td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" style="border-left: 1px dashed grey;">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-inline">
+                                                      
+                                                        <button class="btn btn-secondary btn-sm" id="editalert">Edit&emsp;<i class="fa fa-marker"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-danger btn-sm" id="deletealert">Delete&emsp;<i class="fa fa-trash"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-success btn-sm" id="reviewbutton" disabled>Review&emsp;<i class="fa fa-eye" style="color:white;"></i></button>&nbsp;&nbsp;
+                                                        <input id="ClauseIdforReview" type="hidden" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Clause Title</label>
+                                                            <input type="text" id="review_clausetitle" class="form-control edit_enable_disable" title="Numbers and Special characters are not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" name="ClauseClauseTitle" readonly />
+                                                            <input type="hidden" id="review_clauseID" name="ClauseClauseID" />
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Clause Type</label>
+                                                                <select id="review_clausetype" class="form-control edit_enable_disable" name="ClauseClauseType" disabled>
+                                                                </select>
+                                                            </div>
+                                                        </div>*@
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Description</label>
+                                                            <textarea class="form-control edit_enable_disable" id="review_clausedescription" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" name="ClauseClauseDescription" rows="2" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Clause Text</label>
+                                                            @*<textarea class="form-control edit_enable_disable" id="review_clausetext" rows="4" name="ClauseClauseText" readonly></textarea>*@
+                                                            <textarea class="form-control edit_enable_disable" name="editor1" id="IDofEditor" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Audit Comments<span class="asteriskicon"> *</span></label>
+                                                            <textarea class="form-control" id="review_clauseComments" name="AuditClauseComments" oninvalid="InvalidComment(this);" oninput="InvalidComment(this);" rows="5" required="required"></textarea>
+                                                            <input type="hidden" id="Comment_ClauseID" name="AuditClauseID" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="row" style="text-align: right;">
+                                                    <div class="col-sm-12 float-right">
+                                                        <div class="form-group" id="saveanddiscardoption">
+                                                        </div>          
+                                                    </div>
+                                                </div>
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="pills-AuditTemplate" role="tabpanel" aria-labelledby="pills-AuditTemplate-tab">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="table-responsive">
+                                                <table id="multi-filter-select_template" class="display table table-striped table-hover table-bordered" style="width:100%;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th><center>Review</center></th>
+                                                            <th><center>Template Name</center></th>
+                                                            <th><center>Type</center></th>
+                                                            <th><center>Cluster</center></th>
+                                                            <th><center>Function</center></th>
+                                                            
+                                                            <th><center>Last Reviewed</center></th>
+
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        @foreach (var item in Model.Template)
+                                                        {
+                                                            if (item.Status == "In Effect")
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        <center>
+                                                                            <button class="btn btn-sm btn-primary clause_id" value="@item.TemplateID" id="@item.TemplateID" onclick="TemplateAuditEdit(this.id);"><i class="fa fa-eye" style="color:white;"></i>&nbsp;&nbsp;review</button>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>@item.Name</td>
+                                                                    <td>@item.Type</td>
+                                                                    <td>@item.Category</td>
+                                                                    <td>@item.SubCategory</td>
+                                                                   
+                                                                    <td>@item.LastReviewed</td>
+
+                                                                </tr>
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" style="border-left: 1px dashed gray;">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-inline">
+                                                        
+                                                        <button class="btn btn-secondary btn-sm" id="editalerttemplate">Edit&emsp;<i class="fa fa-marker"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-danger btn-sm" id="deletealerttemplate">Delete&emsp;<i class="fa fa-trash"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-success btn-sm" id="reviewbuttontemplate" disabled>Review&emsp;<i class="fa fa-eye" style="color:white;"></i></button>&nbsp;&nbsp;
+                                                        <input id="TemplateIdforReview" type="hidden" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Template Name</label>
+                                                            <input type="text" id="review_TemplateName" title="Numbers and Special characters are not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control edit_enable_disable2" name="Name" readonly />
+                                                            <input type="hidden" id="review_TemplateID" name="TemplateID" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Type</label>
+                                                            <select id="review_templatetype" class="form-control edit_enable_disable2" name="Type" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12" id="review_templatecluster1">
+                                                        <div class="form-group">
+                                                            <label>Cluster</label>
+
+                                                            <select id="review_templatecluster" class="form-control edit_enable_disable2" name="Category" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Function</label>
+                                                            <select id="review_templatefunction" class="form-control edit_enable_disable2" name="SubCategory" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Description</label>
+                                                            <textarea class="form-control edit_enable_disable2" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="review_templatedescription" name="Description" rows="2" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Audit Comments<span class="asteriskicon"> *</span></label>
+                                                            <textarea class="form-control" id="review_TemplateComments" oninvalid="InvalidComment(this);" oninput="InvalidComment(this);" rows="5" required="required"></textarea>
+                                                            <input type="hidden" id="Comment_TemplateID" name="AuditTemplateID" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="row" style="text-align: right;">
+                                                    <div class="col-sm-12 float-right">
+                                                        <div class="form-group" id="saveanddiscardoption2">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="pills-AuditContract" role="tabpanel" aria-labelledby="pills-AuditContract-tab">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="table-responsive">
+                                                <table id="multi-filter-select_contract" class="display table table-striped table-hover table-bordered" style="width:100%;">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th><center>Review</center></th>
+                                                            <th><center>Contract Name</center></th>
+                                                            <th><center>Type</center></th>
+                                                            <th><center>Cluster</center></th>
+                                                            <th><center>Function</center></th>
+
+                                                            <th><center>Last Reviewed</center></th>
+                                                            <th><center>Status</center></th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        @foreach (var item in Model.Contract)
+                                                        {
+                                                            if (item.Status == "In Effect")
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        <center>
+                                                                            <button class="btn btn-sm btn-primary clause_id" value="@item.ContractID" id="@item.ContractID" onclick="ContractAuditEdit(this.id);"><i class="fa fa-eye" style="color:white;"></i>&nbsp;&nbsp;review</button>
+                                                                        </center>
+                                                                    </td>
+                                                                    <td>@item.ContractName</td>
+                                                                    <td>@item.ContractType</td>
+                                                                    <td>@item.ContractCategory</td>
+                                                                    <td>@item.ContractSubCategory</td>
+
+                                                                    <td>@item.LastReviewed</td>
+                                                                    <td>@item.Status</td>
+                                                                </tr>
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" style="border-left: 1px dashed gray;">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-inline">
+                                                       
+                                                        <button class="btn btn-secondary btn-sm" id="editalertContract">Edit&emsp;<i class="fa fa-marker"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-danger btn-sm" id="deletealertContract">Delete&emsp;<i class="fa fa-trash"></i></button>&nbsp;&nbsp;
+                                                        <button class="btn btn-success btn-sm" id="reviewbuttoncontract" disabled>Review&emsp;<i class="fa fa-eye" style="color:white;"></i></button>&nbsp;&nbsp;
+                                                        <input id="ContractIdforReview" type="hidden" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <br>
+
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Contract Name</label>
+                                                            <input type="text" id="review_ContractName" title="Numbers and Special characters are not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');" class="form-control edit_enable_disable3" name="Name" readonly />
+                                                            <input type="hidden" id="review_ContractID" name="ContractID" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Type</label>
+                                                            <select id="review_Contracttype" class="form-control edit_enable_disable3" name="ContractType" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Cluster</label>
+                                                            <select id="review_Contractcluster" class="form-control edit_enable_disable3" name="ContractCategory" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+                                                            @*<input type="text" id="review_templatecluster" />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Function</label>
+                                                            <select id="review_Contractfunction" class="form-control edit_enable_disable3" name="ContractSubCategory" disabled>
+                                                                <option value="" disabled selected>--Select--</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Description</label>
+                                                            <textarea class="form-control edit_enable_disable3" title="Special characters not allowed" onkeyup="this.value = this.value.replace(/[^a-zA-Z0-9.,\s]/g, '');" id="review_Contractdescription" name="Description" rows="2" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Audit Comments<span class="asteriskicon"> *</span></label>
+                                                            <textarea class="form-control" id="review_ContractComments" oninvalid="InvalidComment(this);" oninput="InvalidComment(this);" rows="5" required="required"></textarea>
+                                                            <input type="hidden" id="Comment_ContractID" name="AuditContractID" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="row" style="text-align: right;">
+                                                    <div class="col-sm-12 float-right">
+                                                        <div class="form-group" id="saveanddiscardoption3">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modalload"><!-- Place at bottom of page --></div>
+
+
+
+<script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+
+    CKEDITOR.replace('editor1', {
+        bodyClass: 'document-editor',
+        contentsCss: ['../../Content/ckeditor/mystyles.css'],
+        height: 200,
+        removePlugins: 'lite'
+
+    });
+
+    CKEDITOR.disableAutoInLine = true;
+    CKEDITOR.config.allowedContent = true;
+    //CKEDITOR.config.readOnly = true;
+    //CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+
+
+    CKEDITOR.scriptLoader.load('../../Content/assets/js/plugin/webfont/webfont.min.js');
+    // CKEDITOR.config.fullPage = true;
+    // CKEDITOR.config.blockedKeystrokes( CKEDITOR.CTRL + 120, false );
+    CKEDITOR.config.keystrokes = [[CKEDITOR.CTRL + 90 /*Shift-Enter*/, 'null ']];
+    CKEDITOR.config.removePlugins = 'elementspath,resize';
+
+    CKEDITOR.on('paste', function (evt) {
+        // Create a standalone filter passing 'p' and 'b' elements.
+        var filter = new CKEDITOR.filter('p b'),
+            // Parse the HTML string to a pseudo-DOM structure.
+            fragment = CKEDITOR.htmlParser.fragment.fromHtml(evt.data.dataValue),
+            writer = new CKEDITOR.htmlParser.basicWriter();
+        filter.applyTo(fragment);
+        fragment.writeHtml(writer);
+        evt.data.dataValue = writer.getHtml();
+    });
+
+
+    CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+        CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+            var sel = CKEDITOR.instances.IDofEditor.getSelection();
+            if (!(sel && !sel.isLocked)) { retrun; }
+            var el = sel.getStartElement();
+            if ((el && el.is && el.is("del"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("del"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("ins"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("ins"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("h4"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("h4"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("p"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("p"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+            if ((el && el.is && el.is("span"))) {
+                ev.cancel();
+                CKEDITOR.instances.IDofEditor.on("contentDom", function () {
+                    CKEDITOR.instances.IDofEditor.editable().on("contextmenu", function (ev) {
+                        var sel = CKEDITOR.instances.IDofEditor.getSelection();
+                        if (!(sel && !sel.isLocked)) { retrun; }
+                        var el = sel.getStartElement();
+                        if ((el && el.is && el.is("span"))) {
+                            ev.cancel();
+                            ev.stop();
+                        }
+                    }, null, null, 1);
+                });
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    function InvalidComment(textbox) {
+        if (textbox.value === "") {
+            textbox.setCustomValidity
+                ('Give the Comments');
+            textbox.style.borderColor = "red";
+
+        } else {
+            textbox.setCustomValidity('');
+            textbox.style.borderColor = "#31ce36";
+        }
+        return true;
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#multi-filter-select_clause').DataTable({
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 10,
+            "order": [
+                [0, "desc"]]
+        });
+
+        $('input.search').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#multi-filter-select_template').DataTable({
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 10,
+            "order": [
+                [0, "desc"]]
+        });
+
+        $('input.search').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#multi-filter-select_contract').DataTable({
+            "bSortCellsTop": true,
+            responsive: true,
+            "iDisplayLength": 10,
+            "order": [
+                [0, "desc"]]
+        });
+
+        $('input.search').on('keyup change', function () {
+            var rel = $(this).attr("rel");
+            table.columns(rel).search(this.value).draw();
+        });
+    });
+</script>
+
+
+<script>
+    function ClauseAuditEdit(clauseID) {
+
+        var reviewClauseTitle = "";
+        var reviewClausetype = "";
+        var reviewClauseDescription = "";
+        var reviewClauseText = "";
+        var reviewClauseID = "";
+        var CommentClauseID = "";
+        $.ajax({
+            type: "POST",
+            url: "/AuditTrail/getClauseTableDetails",
+            data: { clauseID: clauseID },
+
+
+            success: function (response) {
+                $.each(response, function (index, value) {
+                    reviewClauseTitle = reviewClauseTitle + value.ClauseClauseTitle;
+                    reviewClausetype = reviewClausetype + value.ClauseClauseType;
+                    reviewClauseDescription = reviewClauseDescription + value.ClauseClauseDescription;
+                    reviewClauseText = reviewClauseText + value.ClauseClauseText;
+                    reviewClauseID = reviewClauseID + value.ClauseClauseID;
+                    CommentClauseID = CommentClauseID + value.ClauseClauseID;
+                });
+                $("#review_clausetitle").val(reviewClauseTitle);
+                $("#review_clausetype").val(reviewClausetype);
+                $("#review_clausedescription").val(reviewClauseDescription);
+                //$("#IDofEditor").val(reviewClauseText);
+                CKEDITOR.instances.IDofEditor.setData(reviewClauseText);
+                $("#review_clauseID").val(reviewClauseID);
+                $("#Comment_ClauseID").val(CommentClauseID);
+                $("#ClauseIdforReview").val(reviewClauseID);
+                $("#reviewbutton").removeAttr('disabled');
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+
+    }
+</script>
+
+<script>
+    //Edit button alert design
+    $('#editalert').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit!", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'Cancel !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+
+                // if (willDelete) {
+                $('.edit_enable_disable').removeAttr('readonly');
+                $('.edit_enable_disable').removeAttr('readonly');
+                $('.edit_enable_disable').removeAttr('disabled');
+                 CKEDITOR.instances.IDofEditor.setReadOnly(false);
+                $("#saveanddiscardoption").html('<button type="submit" onclick="ClauseandAuditSave();" class="btn btn-success saverecord"> <i class="far fa-save"></i>&nbsp;&nbsp;Save</button>&nbsp;<button type="button" onclick="window.location.reload();" class="btn btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i>&nbsp;&nbsp;Discard</button>');
+                document.getElementById("editalert").disabled = true;
+
+            } else {
+                //swal("Cancelled", " ", "error");
+
+            }
+        });
+    });
+</script>
+
+<script>
+    function ClauseandAuditSave() {
+        var clauseid = $("#review_clauseID").val();
+        var clausetitle = $("#review_clausetitle").val();
+        var clausetype = $("#review_clausetype").val();
+        var clausedescription = $("#review_clausedescription").val();
+        var clausetext = CKEDITOR.instances.IDofEditor.getData();
+        var AuditComments = $("#review_clauseComments").val();
+        var AuditClauseID = $("#Comment_ClauseID").val();
+
+
+        //alert("asd");
+        $.ajax({
+            url: "/AuditTrail/ClauseReviewEditSave",
+            type: "POST",
+            data: { clauseid: clauseid, clausetitle: clausetitle, clausedescription: clausedescription, clausetext: clausetext, AuditComments: AuditComments, AuditClauseID: AuditClauseID },
+
+
+            success: function (response) {
+                //alert(response);
+                if (response == "success") {
+                    swal("Updated", {
+                        icon: "success",
+                    }).then(function (result) {
+                        if (result) {
+                            window.location = "/AuditTrail/ClauseAudit";
+                        }
+                    });
+                }
+                else {
+                    swal("Cancelled", {
+                        icon: "error",
+                        text: response,
+                        //}).then((error) => {
+                        //    if (error) {
+
+                        //    }
+                    });
+                }
+            },
+        });
+    }
+</script>
+
+<script>
+    //Delete button alert design
+    $('#deletealert').click(function (e) {
+        e.preventDefault();
+        //var _form = $(this).closest("form");
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, cancel!',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, delete it!',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                //_form.submit();
+                var DeleteClauseID = $("#review_clauseID").val();
+                // alert("hello");
+                $.ajax({
+                    url: '/AuditTrail/DeleteReviewClause',
+                    type: 'POST',
+                    data: { DeleteClauseID: DeleteClauseID },
+
+
+                    success: function (response) {
+                        //alert(response);
+                        if (response == "success") {
+                            swal("Successfully removed the record", {
+                                icon: "success",
+                            }).then(function (result) {
+                                if (result) {
+                                    window.location = "/AuditTrail/ClauseAudit";
+                                }
+                            });
+                        }
+                        else {
+                            swal("Cancelled", {
+                                icon: "error",
+                                text: response,
+                                //}).then((error) => {
+                                //    if (error) {
+
+                                //    }
+                            });
+                        }
+                    },
+                });
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>
+
+@*--------------------Template Audit----------------------*@
+
+<script>
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: "/AuditTrail/getReviewtemplateType",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                //alert("Hello: " + response);
+                var x = document.getElementById("review_templatetype");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+
+                option.text = "-- Select--";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+</script>
+
+
+<script>
+    var tempCatRefresh = 0;
+    $('#review_templatecluster').click(function () {
+        //$(function () {
+        if (tempCatRefresh == 0) {
+            tempCatRefresh = tempCatRefresh + 1;
+            tempCatRefresh = tempCatRefresh + 1
+            $.ajax({
+                type: "POST",
+                url: "/AuditTrail/getTemplateCluster",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("review_templatecluster");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+                     option.text = "-- Select--";
+                    //option.text = "-- Select Category --";
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        x.add(option);
+                    });
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    });
+
+    $("#review_templatecluster").change(function () {
+        var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/AuditTrail/getTemplateFunction',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+
+                $('#review_templatefunction')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("review_templatefunction");
+
+                var option = document.createElement("option");
+                 option.text = "-- Select--";
+                //option.text = "-- Select SubCategory --";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            }
+        });
+    });
+</script>
+
+
+<script>
+    function TemplateAuditEdit(templateID) {
+
+        var reviewTemplatename = "";
+        var reviewtemplatetype = "";
+        var reviewtemplatecluster = "";
+        var reviewtemplatefunction = "";
+        var reviewtemplateDescription = "";
+
+        var reviewTemplateID = "";
+        var CommentTemplateID = "";
+        //alert(clauseID);
+        $.ajax({
+            type: "POST",
+            url: "/AuditTrail/getTemplateTableDetails",
+            data: { templateID: templateID },
+
+
+            success: function (response) {
+                //$("review_clausetitle").val(response.ClauseClauseTitle)
+                //alert(response.ClauseClauseTitle);
+                $.each(response, function (index, value) {
+                    reviewTemplatename = reviewTemplatename + value.Name;
+                    reviewtemplatetype = reviewtemplatetype + value.Type;
+                    reviewtemplatecluster = reviewtemplatecluster + value.Category;
+                    //reviewtemplatecluster = "select";
+                    reviewtemplatefunction = reviewtemplatefunction + value.SubCategory;
+                    reviewtemplateDescription = reviewtemplateDescription + value.Description;
+                    reviewTemplateID = reviewTemplateID + value.TemplateID;
+                    CommentTemplateID = CommentTemplateID + value.TemplateID;
+                    //alert(value.Category);
+                });
+                $("#review_TemplateName").val(reviewTemplatename);
+                $("#review_templatetype").val(reviewtemplatetype);
+                //document.getElementById("review_templatecluster").value(reviewtemplatefunction);
+                $("#review_templatecluster").val(reviewtemplatefunction);
+                $("#review_templatefunction").val(reviewtemplatefunction);
+                $("#review_templatedescription").val(reviewtemplateDescription);
+                $("#review_TemplateID").val(reviewTemplateID);
+                $("#Comment_TemplateID").val(CommentTemplateID);
+                $("#TemplateIdforReview").val(CommentTemplateID);
+                $("#reviewbuttontemplate").removeAttr('disabled');
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+
+    }
+</script>
+
+<script>
+    //Edit button alert design
+    $('#editalerttemplate').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit!", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'Cancel !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+
+                // if (willDelete) {
+                $('.edit_enable_disable2').removeAttr('readonly');
+                $('.edit_enable_disable2').removeAttr('readonly');
+                $('.edit_enable_disable2').removeAttr('disabled');
+                $("#saveanddiscardoption2").html('<button type="submit" onclick="TemplateandAuditSave();" class="btn btn-success saverecord">Save</button>&nbsp;<button type="button" onclick="window.location.reload();" class="btn btn-danger">Discard</button>');
+                document.getElementById("editalerttemplate").disabled = true;
+
+            } else {
+                //swal("Cancelled", " ", "error");
+            }
+        });
+    });
+</script>
+
+
+<script>
+    function TemplateandAuditSave() {
+        var templateid = $("#review_TemplateID").val();
+        var templatename = $("#review_TemplateName").val();
+        var templatetype = $("#review_templatetype").val();
+        var templatecluster = $("#review_templatecluster").val();
+        var templatefunction = $("#review_templatefunction").val();
+        var templatedescription = $("#review_templatedescription").val();
+
+        var AuditComments = $("#review_TemplateComments").val();
+        var AuditTemplateID = $("#Comment_TemplateID").val();
+
+
+        //alert("asd");
+        $.ajax({
+            url: "/AuditTrail/TemplateReviewEditSave",
+            type: "POST",
+            data: { templateid: templateid, templatename: templatename, templatetype: templatetype, templatecluster: templatecluster, templatefunction: templatefunction, templatedescription: templatedescription, AuditComments: AuditComments, AuditTemplateID: AuditTemplateID },
+
+
+            success: function (response) {
+                //alert(response);
+                if (response == "success") {
+                    swal("Updated", {
+                        icon: "success",
+                    }).then(function (result) {
+                        if (result) {
+                            window.location = "/AuditTrail/ClauseAudit";
+                        }
+                    });
+                }
+                else {
+                    swal("Cancelled", {
+                        icon: "error",
+                        text: response,
+                        //}).then((error) => {
+                        //    if (error) {
+
+                        //    }
+                    });
+                }
+            },
+        });
+    }
+</script>
+
+<script>
+    //Delete button alert design
+    $('#deletealerttemplate').click(function (e) {
+        e.preventDefault();
+        //var _form = $(this).closest("form");
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, cancel!',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, delete it!',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                //_form.submit();
+                var DeleteTemplateID = $("#review_TemplateID").val();
+                // alert("hello");
+                $.ajax({
+                    url: '/AuditTrail/DeleteReviewTemplate',
+                    type: 'POST',
+                    data: { DeleteTemplateID: DeleteTemplateID },
+                    success: function (response) {
+                        //alert(response);
+                        if (response == "success") {
+                            swal("Successfully removed the record", {
+                                icon: "success",
+                            }).then(function (result) {
+                                if (result) {
+                                    //if (save) {
+                                    window.location = "/AuditTrail/ClauseAudit";
+                                }
+                            });
+                        }
+                        else {
+                            swal("Cancelled", {
+                                icon: "error",
+                                text: response,
+                                //}).then((error) => {
+                                //    if (error) {
+
+                                //    }
+                            });
+                        }
+                    },
+                });
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>
+
+
+@*--------------------------Contract Audit-----------------------*@
+
+<script>
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: "/AuditTrail/getReviewContractType",
+            data: '{name: "' + $("#txtName").val() + '" }',
+
+            success: function (response) {
+                //alert("Hello: " + response);
+                var x = document.getElementById("review_Contracttype");
+                x.innerHTML = "";
+                var option = document.createElement("option");
+
+                option.text = "-- Select --";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+</script>
+
+<script>
+    var tempCatRefresh = 0;
+    $('#review_Contractcluster').click(function () {
+        //$(function () {
+        if (tempCatRefresh == 0) {
+            tempCatRefresh = tempCatRefresh + 1;
+            tempCatRefresh = tempCatRefresh + 1
+            $.ajax({
+                type: "POST",
+                url: "/AuditTrail/getContractCluster",
+                data: '{name: "' + $("#txtName").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //alert("Hello: " + response);
+                    var x = document.getElementById("review_Contractcluster");
+                    x.innerHTML = "";
+                    var option = document.createElement("option");
+                    option.text = "-- Select --";
+                    //option.text = "-- Select Category --";
+                    x.add(option);
+                    $.each(response, function (index, value) {
+                        var option = document.createElement("option");
+                        option.text = value;
+                        x.add(option);
+                    });
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    });
+
+    $("#review_Contractcluster").change(function () {
+        var user_category_id = $(this).val();
+        //alert("data :" + deptid);
+        $.ajax({
+            url: '/AuditTrail/getContractFunction',
+            type: 'post',
+            data: { user_category_id: user_category_id },
+
+            dataType: 'json',
+            success: function (response) {
+
+                $('#review_Contractfunction')
+                    .find('option')
+                    .remove();
+
+                var x = document.getElementById("review_Contractfunction");
+
+                var option = document.createElement("option");
+                option.text = "-- Select --";
+                //option.text = "-- Select SubCategory --";
+                x.add(option);
+                $.each(response, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value;
+                    x.add(option);
+                });
+            }
+        });
+    });
+</script>
+
+
+<script>
+    function ContractAuditEdit(ContractID) {
+
+        var reviewContractname = "";
+        var reviewContracttype = "";
+        var reviewContractcluster = "";
+        var reviewContractfunction = "";
+        var reviewContractDescription = "";
+
+        var reviewContractID = "";
+        var CommentContracteID = "";
+        //alert(clauseID);
+        $.ajax({
+            type: "POST",
+            url: "/AuditTrail/getContractTableDetails",
+            data: { ContractID: ContractID },
+
+
+            success: function (response) {
+                //$("review_clausetitle").val(response.ClauseClauseTitle)
+                //alert(response.ClauseClauseTitle);
+                $.each(response, function (index, value) {
+                    reviewContractname = reviewContractname + value.ContractName;
+                    reviewContracttype = reviewContracttype + value.ContractType;
+                    reviewContractcluster = reviewContractcluster + value.ContractCategory;
+                    //reviewtemplatecluster = "select";
+                    reviewContractfunction = reviewContractfunction + value.ContractSubCategory;
+                    reviewContractDescription = reviewContractDescription + value.Description;
+                    reviewContractID = reviewContractID + value.ContractID;
+                    CommentContracteID = CommentContracteID + value.ContractID;
+                    //alert(value.ContractCategory);
+                });
+                $("#review_ContractName").val(reviewContractname);
+                $("#review_Contracttype").val(reviewContracttype);
+
+                $("#review_Contractcluster").val(reviewContractcluster);
+                $("#review_Contractfunction").val(reviewContractfunction);
+                $("#review_Contractdescription").val(reviewContractDescription);
+                $("#review_ContractID").val(reviewContractID);
+                $("#Comment_ContractID").val(CommentContracteID);
+                $("#ContractIdforReview").val(CommentContracteID);
+                $("#reviewbuttoncontract").removeAttr('disabled');
+            },
+
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+
+    }
+</script>
+
+<script>
+    //Edit button alert design
+    $('#editalertContract').click(function (e) {
+        e.preventDefault();
+        swal(" Are you sure you want to Edit!", {
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'Cancel !',
+                    className: 'btn btn-danger'
+                },
+                confirm: {
+                    text: 'Yes, Edit it',
+                    className: 'btn btn-success'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+
+                //if (willDelete) {
+                $('.edit_enable_disable3').removeAttr('readonly');
+                $('.edit_enable_disable3').removeAttr('readonly');
+                $('.edit_enable_disable3').removeAttr('disabled');
+                $("#saveanddiscardoption3").html('<button type="submit" onclick="ContractandAuditSave();" class="btn btn-success saverecord">Save</button>&nbsp;<button type="button" onclick="window.location.reload();" class="btn btn-danger">Discard</button>');
+                document.getElementById("editalertContract").disabled = true;
+
+            } else {
+                //swal("Cancelled", " ", "error");
+
+            }
+        });
+    });
+</script>
+
+<script>
+    function ContractandAuditSave() {
+        var Contractid = $("#review_ContractID").val();
+        var Contractname = $("#review_ContractName").val();
+        var Contracttype = $("#review_Contracttype").val();
+        var Contractcluster = $("#review_Contractcluster").val();
+        var Contractfunction = $("#review_Contractfunction").val();
+        var Contractdescription = $("#review_Contractdescription").val();
+
+        var AuditComments = $("#review_ContractComments").val();
+        var AuditContractID = $("#Comment_ContractID").val();
+
+
+        //alert("asd");
+        $.ajax({
+            url: "/AuditTrail/ContractReviewEditSave",
+            type: "POST",
+            data: { Contractid: Contractid, Contractname: Contractname, Contracttype: Contracttype, Contractcluster: Contractcluster, Contractfunction: Contractfunction, Contractdescription: Contractdescription, AuditComments: AuditComments, AuditContractID: AuditContractID },
+
+
+            success: function (response) {
+                //alert(response);
+                if (response == "success") {
+                    swal("Updated", {
+                        icon: "success",
+                    }).then(function (result) {
+                        if (result) {
+                            window.location = "/AuditTrail/ClauseAudit";
+                        }
+                    });
+                }
+                else {
+                    swal("Cancelled", {
+                        icon: "error",
+                        text: response,
+                        //}).then((error) => {
+                        //    if (error) {
+
+                        //    }
+                    });
+                }
+            },
+        });
+    }
+</script>
+
+<script>
+    //Delete button alert design
+    $('#deletealertContract').click(function (e) {
+        e.preventDefault();
+        //var _form = $(this).closest("form");
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            buttons: {
+                cancel: {
+                    visible: true,
+                    text: 'No, cancel!',
+                    className: 'btn btn-success'
+                },
+                confirm: {
+                    text: 'Yes, delete it!',
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then(function (value) {
+            if (value == true) {
+                //_form.submit();
+                var DeleteContractID = $("#review_ContractID").val();
+                // alert("hello");
+                $.ajax({
+                    url: '/AuditTrail/DeleteReviewContract',
+                    type: 'POST',
+                    data: { DeleteContractID: DeleteContractID },
+
+
+                    success: function (response) {
+                        //alert(response);
+                        if (response == "success") {
+                            swal("Successfully removed the record", {
+                                icon: "success",
+                            }).then(function (result) {
+                                if (result) {
+                                    window.location = "/AuditTrail/ClauseAudit";
+                                }
+                            });
+                        }
+                        else {
+                            swal("Cancelled", {
+                                icon: "error",
+                                text: response,
+                                //}).then((error) => {
+                                //    if (error) {
+
+                                //    }
+                            });
+                        }
+                    },
+                });
+            } else {
+                swal("Your Data is safe", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>
+
+<script>
+  
+    $("#reviewbutton").click(function () {
+        var ClauseID = $("#ClauseIdforReview").val();
+        window.location = "/Clause/Details/" + ClauseID;
+    });
+    
+     $("#reviewbuttontemplate").click(function () {
+        var TemplateID = $("#TemplateIdforReview").val();
+        window.location = "/Template/Details/" + TemplateID;
+     });
+    
+     $("#reviewbuttoncontract").click(function () {
+        var ContractID = $("#ContractIdforReview").val();
+        window.location = "/Contract/Details/" + ContractID;
+     });
+</script>

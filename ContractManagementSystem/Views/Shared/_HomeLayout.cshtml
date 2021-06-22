@@ -1,0 +1,669 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="X-UA-Compatible" content="IE=11,chrome=1">
+    <title>@ViewBag.Title</title>
+
+    @{
+        string CurrentUserID()
+        {
+            string userName = string.Empty;
+
+            if (HttpContext.Current.Request.IsAuthenticated)
+            {
+                userName = HttpContext.Current.User.Identity.Name.Split('|')[1];
+            }
+
+            return userName;
+
+        }
+
+    }
+
+    <!-- Fonts and icons -->
+    <script src="../../Content/assets/js/plugin/webfont/webfont.min.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../Content/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Content/assets/css/atlantis.min.css">
+
+    <link href="../../Content/assets/css/fonts.min.css" rel="stylesheet" />
+
+    <link href="../../Content/assets/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+
+    <link href="../../Content/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="../../Content/Custom_css/custom_css.css" rel="stylesheet" />
+
+
+
+    <style type="text/css">
+        .modalload {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('/Content/assets/img/preloader.gif') 50% 50% no-repeat;
+        }
+
+        .loading .modalload {
+            overflow: hidden;
+        }
+
+        /* Anytime the body has the loading class, our
+        modal element will be visible */
+        .loading .modalload {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    @{
+        string CurrentUserName()
+        {
+            string userName = string.Empty;
+
+            if (HttpContext.Current.Request.IsAuthenticated)
+            {
+                userName = HttpContext.Current.User.Identity.Name.Split('|')[0];
+            }
+
+            return userName;
+
+        }
+    }
+
+    <div class="wrapper">
+        <div class="main-header">
+            <!-- Logo Header -->
+            <div class="logo-header justify-content-center" data-background-color="blue" align="center">
+                @if (User.IsInRole("reviewer"))
+                {
+                    <a href="" class="logo">
+                        <img src="~/Content/assets/img/1.png" alt="navbar brand" class="navbar-brand">@Html.Raw("&nbsp;")@Html.Raw("&nbsp;")@Html.Raw("&nbsp;")@Html.Raw("&nbsp;")
+                    </a>
+                }
+                else
+                {
+                    <a href="~/Home/Dashboard" class="logo">
+                        <img src="~/Content/assets/img/1.png" alt="navbar brand" class="navbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;
+                    </a>
+                }
+
+                @*<h1 style="color:white">CMS</h1>*@
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+
+                        <i class="icon-menu"></i>
+                    </span>
+                </button>
+                <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="icon-menu"></i>
+                    </button>
+                </div>
+
+            </div>
+            <!-- End Logo Header -->
+            <!-- Navbar Header -->
+            <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2" style="padding-bottom:15px; padding-top:15px;">
+
+
+                @*<div class="container-fluid">*@
+                <h2 style="color:white;"><b> Contract Management System</b></h2>
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    @if (User.IsInRole("admin") || User.IsInRole("initiator") || User.IsInRole("approver") || User.IsInRole("legal") || User.IsInRole("finance"))
+                    {
+                        <a href="" data-toggle="modal" data-target="#myModal"><i class="flaticon-chart-pie fa-1x" aria-hidden="true" style="color:white;"></i></a>
+
+
+                    }&nbsp; &nbsp; &nbsp; &nbsp; &emsp;
+                    <span style="color:white">Hello!&ensp;@CurrentUserName()&ensp;</span> &nbsp; &nbsp;
+                    <div class="dropdown">
+                        <a href="" onclick="Logout();" id="dropdownMenuButton" style="color:white; font-size:20px;"><i class="flaticon-power fa-1x" aria-hidden="true"></i></a>
+
+                    </div>
+                </ul>
+                @*</div>*@
+            </nav>
+            <!-- End Navbar -->
+        </div>
+
+        <!-- Sidebar -->
+       
+            <div class="sidebar sidebar-style-2">
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                       
+                        <ul class="nav nav-primary" id="activebtn">
+                            @if (User.IsInRole("admin") || User.IsInRole("approver") || User.IsInRole("initiator"))
+                            {
+                                <li class="nav-item" id="dashboardactive">
+                                    <a href="~/Home/Dashboard" aria-expanded="false">
+                                        <i class="flaticon-home"></i>
+                                        <p>Dashboard</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("approver") || User.IsInRole("initiator"))
+                            {
+
+                                <li class="nav-item" id="templateactive">
+                                    <a href="~/Template/Repository">
+                                        <i class="flaticon-file" aria-hidden="true"></i>
+                                        <p>Template Master</p>
+
+                                    </a>
+                                    @*<a data-toggle="collapse" href="#base" id="posuvnik">
+                    <i class="fa fa-file-archive" aria-hidden="true"></i>
+                    <p>Template</p>
+                </a>
+                <div class="collapse test" id="base">
+                    <ul class="nav nav-collapse">
+                        <li id="templaterepositoryactive">
+                            <a href="~/Template/Repository" style="color:black;">
+                                <span class="sub-item">Repository</span>
+                            </a>
+                        </li>
+                        <li id="templatenewactive">
+                            <a href="~/Template/New">
+                                <span class="sub-item">New</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>*@
+                                </li>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("approver") || User.IsInRole("initiator") || User.IsInRole("reviewer"))
+                            {
+
+                                <li class="nav-item" id="contractactive">
+                                    <a href="~/Contract/Repository">
+                                        <i class="flaticon-file-1" aria-hidden="true"></i>
+                                        <p>Contract</p>
+
+                                    </a>
+
+                                </li>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("approver") || User.IsInRole("initiator") || User.IsInRole("reviewer"))
+                            {
+                                <li class="nav-item" id="addendumactive">
+                                    <a href="~/Addendum/Repository">
+                                        <i class="flaticon-file-1" aria-hidden="true"></i>
+                                        <p>Addendum</p>
+
+                                    </a>
+
+                                </li>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("approver") || User.IsInRole("initiator"))
+                            {
+                                <li class="nav-item" id="searchactive">
+                                    <a href="~/Search/Index">
+                                        <i class="flaticon-search-2" aria-hidden="true"></i>
+                                        <p>Search & Report</p>
+
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("admin"))
+                            {
+
+                                <li class="nav-item" id="useractive">
+                                    <a href="~/Users/Repository">
+                                        <i class="flaticon-user-5" aria-hidden="true"></i>
+                                        <p>User Master</p>
+
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" id="vendoractive">
+                                    <a href="~/Vendor/Repository">
+                                        <i class="flaticon-users" aria-hidden="true"></i>
+                                        <p>Vendor Master</p>
+
+                                    </a>
+
+                                </li>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("legal"))
+                            {
+                                <li class="nav-item" id="clausesactive">
+                                    <a href="~/Clause/Repository">
+                                        <i class="flaticon-list" aria-hidden="true"></i>
+                                        <p>Clause Master</p>
+
+                                    </a>
+
+                                </li>
+                            }
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item" id="clusteractive">
+                                    <a href="~/DivisionMaster/Cluster">
+                                        <i class="flaticon-layers" aria-hidden="true"></i>
+                                        <p>Cluster Master</p>
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item" id="functionactive">
+                                    <a href="~/DivisionMaster/Function">
+                                        <i class="flaticon-layers-1" aria-hidden="true"></i>
+                                        <p>Function Master</p>
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item" id="approvalactive">
+                                    <a href="~/Approvals/Repository">
+                                        <i class="flaticon-success" aria-hidden="true"></i>
+                                        <p>Approval Workflow</p>
+
+                                    </a>
+
+                                </li>
+                                @*<li class="nav-item" id="auditactive">
+                <a href="~/AuditTrail/ClauseAudit">
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                    <p>Audit</p>
+
+                </a>
+
+            </li>*@
+                                <li class="nav-item" id="alertactive">
+                                    <a href="~/Configuration/Index" id="alertsactive2">
+                                        <i class="flaticon-settings" aria-hidden="true"></i>
+                                        <p>Configuration</p>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+
+
+                        </div>
+                </div>
+            </div>
+
+            @********************************Integrated on 14/3/20*********************************@
+            <div class="modal fade" id="myModal" role="dialog" tabindex="-1">
+
+
+                <div class="modal-dialog" style="max-width: 50%; padding-left:20px;">
+
+                    <div class="modal-content" style="background:#f3f3f3;">
+                        <div class="modal-header" style="background:darkblue; color:white;">
+                            <h2><b>Analytics</b></h2>
+                            @*<div class="text-right">*@
+                            <button data-dismiss="modal" class="modaldismissarrow text-right btn btn-sm btn-light btn_close" title="Close" style="color:white; font-size:13px;"> @*<i class="flaticon-error"></i> &nbsp;*@ Close</button>
+                            @*</div>*@
+                        </div>
+                        <div style="padding-left:2rem; padding-right:2rem; padding-top:2rem; padding-bottom:2rem;">
+                            <div class="row">
+                                @*<div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title"><b>Contract expiry timeline</b></div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                                                <canvas id="lineChart" width="375" height="300" class="chartjs-render-monitor" style="display: block; width: 375px; height: 300px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+                                @* <div style="padding-left:2rem; padding-right:2rem;">*@
+
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title"><b>Contracts Overview</b></div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                                                <canvas id="pieChart" style="width: 375px; height: 300px; display: block;" width="375" height="300" class="chartjs-render-monitor"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            @******************************************************************************************************************************@
+            <!-- End Sidebar -->
+
+            <div class="container-fluid" id="page-content">
+                @RenderBody()
+            </div>
+            @*<div class="modalload"> Place at bottom of page </div>*@
+
+        </div>
+
+
+    <!--   Core JS Files   -->
+    <script src="../../Content/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="../../Content/assets/js/core/bootstrap.min.js"></script>
+
+
+    <!-- jQuery UI -->
+    <script src="../../Content/assets/js/core/popper.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../Content/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+    <!-- jQuery Sparkline -->
+    <script src="../../Content/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+
+    <!-- Datatables -->
+    @*<script src="../../Content/assets/js/plugin/datatables/datatables.min.js"></script>*@
+    <script src="../../Content/DataTables/datatables.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="../../Content/assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+    <script src="../../Content/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="../../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Atlantis JS -->
+    <script src="../../Content/assets/js/atlantis.min.js"></script>
+
+    <script src="~/Content/assets/js/moment.js"></script>
+    <script src="~/Content/assets/js/datepicker.js"></script>
+    <script src="~/Content/assets/js/tempusdominus-bootstrap-4.js"></script>
+
+    <script src="../../Content/assets/js/bootstrap-slider.min.js"></script>
+
+    <script src="../../Content/assets/js/jspdf.min.js"></script>
+    <script src="../../Content/assets/js/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="../../Content/assets/js/tableHTMLExport.js"></script>
+
+    @*<script src="~/Scripts/default_jquery/jquery-3.3.1.min.js"></script>*@
+    <script src="~/Content/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    @***************************************Integrated on 13/3/20*******************************************@
+    <script>
+        $("a[href^='#']").click(function (e) {
+            e.preventDefault();
+
+            var position = $($(this).attr("href")).offset().top;
+
+            $("body, html").animate({
+                scrollTop: position
+            } /* speed */);
+        });
+    </script>
+
+
+    <script>
+        $body = $("body");
+
+        $(document).on({
+            ajaxStart: function () { $body.addClass("loading"); },
+            ajaxStop: function () { $body.removeClass("loading"); }
+        });
+    </script>
+    @******************************************************************************************************@
+
+    @*<script>
+            document.body.style.zoom = "90%";
+        </script>*@
+
+    
+    @*<script type="text/javascript">
+        window.onerror = function (e) { return true; }
+    </script>*@
+    <script>
+        $(function () {
+            var url = window.location.href;
+            var page = url.split('/');
+            var page2 = null;
+            var page3 = null;
+            if (page.length >= 4) {
+                page2 = $.trim(page[3]);
+                //page4 = $.trim(page[4]);
+            }
+            if (page.length >= 5) {
+                page3 = page[4];
+            }
+
+            if (page2.length < 2) {
+                $("#dashboardactive").addClass("active");
+            }
+            else if (page2 == "Template") {
+                $("#templateactive").addClass("active");
+            }
+            else if (page2 == "Home") {
+                $("#dashboardactive").addClass("active");
+            }
+            else if (page2 == "Configuration") {
+                $("#alertactive").addClass("active");
+            }
+
+            else if (page2 == "Search") {
+                $("#searchactive").addClass("active");
+            }
+            else if ((page2 == "Contract")) {
+                $("#contractactive").addClass("active");
+            }
+            else if ((page2 == "Addendum")) {
+                $("#addendumactive").addClass("active");
+            }
+            else if (page2 == "Users") {
+                $("#useractive").addClass("active");
+            }
+            else if (page2 == "Vendor") {
+                $("#vendoractive").addClass("active");
+            }
+            else if (page2 == "Clause") {
+                $("#clausesactive").addClass("active");
+            }
+            else if (page3 == "Cluster") {
+                $("#clusteractive").addClass("active");
+            }
+            else if (page3 == "Function") {
+                $("#functionactive").addClass("active");
+            }
+            else if (page2 == "Approvals") {
+                $("#approvalactive").addClass("active");
+            }
+            //else if (page2 == "AuditTrail") {
+            //    $("#auditactive").addClass("active");
+            //}
+            //else if (page2 == "Template" && page4 == "Repository") {
+            //    $("#templaterepositoryactive").addClass("active");
+            //}
+            //else if (page2 == "Template" && page4 == "New") {
+            //    $("#templatenewactive").addClass("active");
+            //}
+
+        });
+    </script>
+
+    <script>
+        function Logout() {
+            $.ajax({
+                type: "POST",
+                url: "/Account/Logout",
+
+                success: function (response) {
+                    if (response == "Invalid") {
+                        $(function () {
+                            $.notify(
+                                {
+                                    // options
+                                    title: 'Unable to Logout',
+                                    message: 'Kindly close the browser and clear browsing history',
+                                    target: '_blank'
+                                },
+                                {
+                                    // settings
+                                    element: 'body',
+                                    position: null,
+                                    type: "warning",
+                                    allow_dismiss: true,
+                                    newest_on_top: false,
+                                    showProgressbar: false,
+                                    placement: {
+                                        from: "top",
+                                        align: "right"
+                                    },
+                                    offset: 20,
+                                    spacing: 10,
+                                    z_index: 1031,
+                                    delay: 5000,
+                                    timer: 1000,
+                                    url_target: '_blank',
+                                    mouse_over: null,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                    onShow: null,
+                                    onShown: null,
+                                    onClose: null,
+                                    onClosed: null,
+                                    icon_type: 'class',
+                                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                        '<span data-notify="icon"></span> ' +
+                                        '<span data-notify="title">{1}</span> ' +
+                                        '<span data-notify="message">{2}</span>' +
+                                        '<div class="progress" data-notify="progressbar">' +
+                                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                        '</div>' +
+                                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                        '</div>'
+                                });
+                        });
+                    }
+                    else {
+                        window.location.href = response;
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+
+    //var pieChart = document.getElementById('pieChart').getContext('2d');
+
+   @*var pieChart = document.getElementById('pieChart').getContext('2d');
+
+    $(document).ready(setTimeout(function () {
+        var pieChart = document.getElementById('pieChart').getContext('2d');
+
+        var PendingSignoff = 0;
+        var Expired = 0;
+        var PendingApproval = 0;
+        var Rework = 0;
+        var EmployeeID = @CurrentUserID();
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/ContractStatistics",
+            data: { EmployeeID: EmployeeID },
+
+
+            success: function (response) {
+                PendingSignoff = response[0]; Expired = response[1]; PendingApproval = response[2], Rework = response[3];
+
+                // Pendingapproval = Pendingapproval + response;
+                $('#pending_signoff').html(response[0]);
+                $('#expired').html(response[1]);
+                $('#pending_approval').html(response[2]);
+                $('#contract_rework').html(response[3]);
+                piGraph(PendingSignoff, PendingApproval, Rework, Expired);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }), 5);
+    function piGraph(PendingSignoff, PendingApproval, Rework, Expired)
+
+     {
+
+           // alert(Pendingapproval+ undernegotiation+ rework+ expiry);
+
+            var myPieChart = new Chart(pieChart, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+
+                        data: [PendingSignoff, PendingApproval, Rework, Expired],
+                        backgroundColor: ["#1572e8", "#31ce36", "#ffad46", "#f25961"],
+                        borderWidth: 0
+                    }],
+                    labels: ['Pending SignOff', 'Pending Approval', 'Rejected', 'Expired']
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontColor: 'rgb(154, 154, 154)',
+                            fontSize: 11,
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    pieceLabel: {
+                        render: 'percentage',
+                        fontColor: 'white',
+                        fontSize: 14,
+                    },
+                    tooltips: false,
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 20,
+                            bottom: 20
+                        }
+                    }
+                }
+            })
+        };*@
+
+
+    </script>
+
+
+</body>
+</html>
+

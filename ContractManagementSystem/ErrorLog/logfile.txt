@@ -1,0 +1,624 @@
+------Info(2021-06-22 21:18:46.3472)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-22 21:18:46.6146)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-22 21:18:46.6475)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-22 21:18:46.6594)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-22 21:18:46.6594)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-22 21:18:46.6714)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-22 21:18:46.6714)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-22 21:18:46.6714)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-22 21:18:46.6953)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-22 21:18:46.7033)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:18:47.0635)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:18:47.6253)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-22 21:19:01.0656)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-22 21:19:01.0656)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-22 21:19:01.4500)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Info(2021-06-22 21:19:02.0824)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Password Match
+
+------Info(2021-06-22 21:19:02.1263)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:19:02.1263)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User is Active
+
+------Info(2021-06-22 21:19:02.1878)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Home Dashboard Page
+
+------Info(2021-06-22 21:19:02.1878)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Dashboard
+
+------Info(2021-06-22 21:19:06.6229)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home GetNextApproverName
+
+------Info(2021-06-22 21:19:06.6229)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-22 21:19:06.6229)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home ContractStatistics
+
+------Info(2021-06-22 21:19:06.6229)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Statistic Details : Checking Status
+
+------Info(2021-06-22 21:19:06.6817)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-22 21:19:07.0375)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking Contract Statistic Details : Status Count Found
+
+------Info(2021-06-22 21:19:14.6239)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Template Repository Page
+
+------Info(2021-06-22 21:19:14.6239)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Debug(2021-06-22 21:19:15.5223)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:19:29.2632)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Logout
+
+------Info(2021-06-22 21:19:29.2632)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Logout
+
+------Info(2021-06-22 21:19:29.2632)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Setting Auth Cookie and Redericting to user
+
+------Info(2021-06-22 21:19:29.3436)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Template Repository Page
+
+------Info(2021-06-22 21:19:29.3605)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Info(2021-06-22 21:19:29.3605)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Debug(2021-06-22 21:19:40.9770)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:26:37.2957)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-22 21:26:37.5438)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-22 21:26:37.5949)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-22 21:26:37.6069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-22 21:26:37.6069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-22 21:26:37.6069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-22 21:26:37.6069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-22 21:26:37.6069)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-22 21:26:37.6519)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-22 21:26:37.6629)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:26:37.8334)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:26:38.5488)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-22 21:26:48.1144)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-22 21:26:48.1144)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-22 21:26:48.5136)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Error(2021-06-22 21:26:58.7621)VINOD-PC------
+                       Exception Type:System.Data.Entity.Core.EntityException |                       Exception Message:The underlying provider failed on Open. |                       Stack Trace: |                       Additional Info:'Account' Controller , 'Login 'Action HTTP POST Main Exception Message: The underlying provider failed on Open. | Exception Stacktrace   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at ContractManagementSystem.Controllers.AccountController.Login(String UserName, String Password) in F:\Desktop\ABT - Repo\CMS - FBD\ContractManagementSystem\Controllers\AccountController.cs:line 48
+
+------Info(2021-06-22 21:27:01.0345)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-22 21:27:01.0345)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-22 21:27:01.0345)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Error(2021-06-22 21:27:01.0859)VINOD-PC------
+                       Exception Type:System.Data.Entity.Core.EntityException |                       Exception Message:The underlying provider failed on Open. |                       Stack Trace: |                       Additional Info:'Account' Controller , 'Login 'Action HTTP POST Main Exception Message: The underlying provider failed on Open. | Exception Stacktrace   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at ContractManagementSystem.Controllers.AccountController.Login(String UserName, String Password) in F:\Desktop\ABT - Repo\CMS - FBD\ContractManagementSystem\Controllers\AccountController.cs:line 48
+
+------Info(2021-06-22 21:27:02.0971)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-22 21:27:02.0971)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-22 21:27:02.0971)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Debug(2021-06-22 21:27:02.1580)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Error(2021-06-22 21:27:02.1580)VINOD-PC------
+                       Exception Type:System.Data.Entity.Core.EntityException |                       Exception Message:The underlying provider failed on Open. |                       Stack Trace: |                       Additional Info:'Account' Controller , 'Login 'Action HTTP POST Main Exception Message: The underlying provider failed on Open. | Exception Stacktrace   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at ContractManagementSystem.Controllers.AccountController.Login(String UserName, String Password) in F:\Desktop\ABT - Repo\CMS - FBD\ContractManagementSystem\Controllers\AccountController.cs:line 48
+
+------Info(2021-06-22 21:28:37.8535)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Default Quartz.NET properties loaded from embedded resource file
+
+------Debug(2021-06-22 21:28:38.0131)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+
+------Info(2021-06-22 21:28:38.0620)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+
+------Info(2021-06-22 21:28:38.0620)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz Scheduler v.3.0.7.0 created.
+
+------Info(2021-06-22 21:28:38.0769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:RAMJobStore initialized.
+
+------Info(2021-06-22 21:28:38.0769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.
+  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+
+------Info(2021-06-22 21:28:38.0769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler 'DefaultQuartzScheduler' initialized
+
+------Info(2021-06-22 21:28:38.0769)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Quartz scheduler version: 3.0.7.0
+
+------Info(2021-06-22 21:28:38.1078)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+
+------Debug(2021-06-22 21:28:38.1756)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:28:38.2594)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:28:38.8149)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Info(2021-06-22 21:28:43.9761)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Login
+
+------Info(2021-06-22 21:28:43.9761)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Login
+
+------Info(2021-06-22 21:28:44.2863)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User Found
+
+------Info(2021-06-22 21:28:44.9030)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Password Match
+
+------Info(2021-06-22 21:28:44.9465)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:28:44.9465)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking User Details: User is Active
+
+------Info(2021-06-22 21:28:45.0193)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Home Dashboard Page
+
+------Info(2021-06-22 21:28:45.0193)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Dashboard
+
+------Info(2021-06-22 21:28:48.5270)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home GetNextApproverName
+
+------Info(2021-06-22 21:28:48.5270)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for UserMaster Details: ID match
+
+------Info(2021-06-22 21:28:48.5439)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Home ContractStatistics
+
+------Info(2021-06-22 21:28:48.5439)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Contract Statistic Details : Checking Status
+
+------Info(2021-06-22 21:28:48.5838)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details : Status Found
+
+------Info(2021-06-22 21:28:49.1573)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, Checking Contract Statistic Details : Status Count Found
+
+------Info(2021-06-22 21:28:52.8994)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Template Repository Page
+
+------Info(2021-06-22 21:28:52.8994)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Debug(2021-06-22 21:29:01.5829)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:29:03.3608)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details
+
+------Info(2021-06-22 21:29:03.5433)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Checking Status
+
+------Info(2021-06-22 21:29:03.5444)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Details Found
+
+------Info(2021-06-22 21:29:03.5444)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to Template Details Page
+
+------Info(2021-06-22 21:29:04.0760)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template getLogDetail
+
+------Info(2021-06-22 21:29:04.0760)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogID match
+
+------Info(2021-06-22 21:29:04.0760)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogDetails Found
+
+------Info(2021-06-22 21:29:04.1038)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetType_List
+
+------Info(2021-06-22 21:29:04.1038)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details
+
+------Info(2021-06-22 21:29:04.1507)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details : Template Type Found
+
+------Info(2021-06-22 21:29:04.1636)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetUserById
+
+------Info(2021-06-22 21:29:04.1636)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-22 21:29:04.2654)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-22 21:29:04.2863)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetUserById
+
+------Info(2021-06-22 21:29:04.2863)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-22 21:29:04.3162)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-22 21:29:06.0674)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details
+
+------Info(2021-06-22 21:29:06.1103)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Template DraftView Page
+
+------Info(2021-06-22 21:29:08.8990)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template Templatetabledetails
+
+------Info(2021-06-22 21:29:08.8990)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details : TemplateID match
+
+------Info(2021-06-22 21:29:09.1574)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details : Details Found
+
+------Info(2021-06-22 21:29:09.1868)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetApproversForTemplate
+
+------Info(2021-06-22 21:29:09.1868)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: TemplateID match
+
+------Info(2021-06-22 21:29:09.2491)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template getLogDetail
+
+------Info(2021-06-22 21:29:09.2491)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogID match
+
+------Info(2021-06-22 21:29:09.2491)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogDetails Found
+
+------Info(2021-06-22 21:29:09.2491)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetPaperTypeDetails
+
+------Info(2021-06-22 21:29:09.2491)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Info(2021-06-22 21:29:09.4122)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetApproverComments
+
+------Info(2021-06-22 21:29:09.4122)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details
+
+------Info(2021-06-22 21:29:09.4122)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: TemplateID match
+
+------Info(2021-06-22 21:29:09.4970)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetPaperTypeDetails
+
+------Info(2021-06-22 21:29:09.4970)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Info(2021-06-22 21:29:09.5309)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-22 21:29:09.5309)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-22 21:29:09.5628)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetPaperTypeDetails
+
+------Info(2021-06-22 21:29:09.5628)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Configuration Details : Paper TYpe match
+
+------Info(2021-06-22 21:29:09.5987)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Configuration Details : Details Found
+
+------Info(2021-06-22 21:29:09.8371)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetTemplateNameOnID
+
+------Info(2021-06-22 21:29:09.8371)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details: TemplateID match
+
+------Info(2021-06-22 21:29:09.8420)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Details Found
+
+------Info(2021-06-22 21:29:10.3577)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Details Found
+
+------Info(2021-06-22 21:29:10.8199)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Template Initiator and Approvers Comments Found
+
+------Info(2021-06-22 21:29:28.6308)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Template Details
+
+------Info(2021-06-22 21:29:28.6638)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Checking Status
+
+------Info(2021-06-22 21:29:28.6638)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details: Details Found
+
+------Info(2021-06-22 21:29:28.6638)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to Template Details Page
+
+------Info(2021-06-22 21:29:28.9518)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template getLogDetail
+
+------Info(2021-06-22 21:29:28.9518)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogID match
+
+------Info(2021-06-22 21:29:28.9518)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Log Details: LogDetails Found
+
+------Info(2021-06-22 21:29:28.9518)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetUserById
+
+------Info(2021-06-22 21:29:28.9518)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-22 21:29:28.9797)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetType_List
+
+------Info(2021-06-22 21:29:28.9797)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Template Details
+
+------Info(2021-06-22 21:29:28.9837)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking Contract Details : Template Type Found
+
+------Info(2021-06-22 21:29:29.0097)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-22 21:29:29.0286)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-22 21:29:29.0525)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Template GetUserById
+
+------Info(2021-06-22 21:29:29.0525)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: EmployeeID match
+
+------Info(2021-06-22 21:29:29.1348)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.1348)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.1348)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.1348)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.1348)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: Checking Status
+
+------Info(2021-06-22 21:29:29.1378)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking User Details: UserRole is Not Active
+
+------Info(2021-06-22 21:29:29.1378)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessed DB, Checking UserMaster Details: User Details Found
+
+------Info(2021-06-22 21:29:30.5303)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Contract Repository Page
+
+------Info(2021-06-22 21:29:30.5303)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Repository
+
+------Debug(2021-06-22 21:29:31.5008)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Info(2021-06-22 21:29:36.7702)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to AlertSystem Details Page
+
+------Info(2021-06-22 21:29:51.1634)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt Alerts And Notification getLogDetail
+
+------Info(2021-06-22 21:29:51.1634)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for LogDetails
+
+------Info(2021-06-22 21:29:51.1863)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accesed DB, LogDetails  Found
+
+------Info(2021-06-22 21:29:58.7166)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Attempt UID Logout
+
+------Info(2021-06-22 21:29:58.7166)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing DB for Logout
+
+------Info(2021-06-22 21:29:58.7166)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Setting Auth Cookie and Redericting to user
+
+------Info(2021-06-22 21:29:58.7694)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Redirecting to AlertSystem Details Page
+
+------Info(2021-06-22 21:29:58.8073)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Accessing Login Page
+
+------Debug(2021-06-22 21:30:00.2764)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:30:23.9578)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:30:53.6718)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:31:18.3641)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:31:41.8696)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
+------Debug(2021-06-22 21:32:07.1183)VINOD-PC------
+                       Exception Type: |                       Exception Message: |                       Stack Trace: |                       Additional Info:Batch acquisition of 0 triggers
+
